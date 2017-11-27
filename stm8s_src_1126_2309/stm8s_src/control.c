@@ -640,7 +640,8 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_AH_OUT_EN();
 			PWM_BH_OUT_DIS();
 			PWM_CH_OUT_DIS();
-			CNT_AL_OUT_DIS();
+			//CNT_AL_OUT_DIS();
+			PWM_AL_OUT_EN();		// reyno added
 			CNT_BL_OUT_EN();
 			CNT_CL_OUT_DIS();
 			break ;
@@ -648,7 +649,8 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_AH_OUT_EN();
 			PWM_BH_OUT_DIS();
 			PWM_CH_OUT_DIS();
-			CNT_AL_OUT_DIS();
+			//CNT_AL_OUT_DIS();
+			PWM_AL_OUT_EN();		// reyno added
 			CNT_BL_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
@@ -657,7 +659,8 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_BH_OUT_EN();
 			PWM_CH_OUT_DIS();
 			CNT_AL_OUT_DIS();
-			CNT_BL_OUT_DIS();
+			//CNT_BL_OUT_DIS();
+			PWM_BL_OUT_EN();		// reyno added
 			CNT_CL_OUT_EN();
 			break ;
 		case 4 ://BA
@@ -665,7 +668,8 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_BH_OUT_EN();
 			PWM_CH_OUT_DIS();
 			CNT_AL_OUT_EN();
-			CNT_BL_OUT_DIS();
+			//CNT_BL_OUT_DIS();
+			PWM_BL_OUT_EN();		// reyno added
 			CNT_CL_OUT_DIS();
 			break ;
 		case 5 ://CA
@@ -674,7 +678,8 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_CH_OUT_EN();
 			CNT_AL_OUT_EN();
 			CNT_BL_OUT_DIS();
-			CNT_CL_OUT_DIS();
+			// CNT_CL_OUT_DIS();
+			PWM_CL_OUT_EN();		// reyno added
 			break ;
 		case 6 :	//CB
 			PWM_AH_OUT_DIS();
@@ -682,7 +687,8 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_CH_OUT_EN();
 			CNT_AL_OUT_DIS();
 			CNT_BL_OUT_EN();
-			CNT_CL_OUT_DIS();
+			// CNT_CL_OUT_DIS();
+			PWM_CL_OUT_EN();		// reyno added
 			break ;		
 		default : 	
 			break ;

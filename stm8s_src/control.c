@@ -637,58 +637,89 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 	switch(STEP)
 	{
 		case 1 : // AB
+			PWM_AL_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			PWM_CL_OUT_DIS();
+
 			PWM_AH_OUT_EN();
-			PWM_BH_OUT_DIS();
-			PWM_CH_OUT_DIS();
-			//CNT_AL_OUT_DIS();
 			PWM_AL_OUT_EN();		// reyno added
+
+			PWM_BH_OUT_DIS();
 			CNT_BL_OUT_EN();
+
+			PWM_CH_OUT_DIS();
 			CNT_CL_OUT_DIS();
 			break ;
 		case 2 :	//AC
+			PWM_AL_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			PWM_CL_OUT_DIS();
+
 			PWM_AH_OUT_EN();
-			PWM_BH_OUT_DIS();
-			PWM_CH_OUT_DIS();
-			//CNT_AL_OUT_DIS();
 			PWM_AL_OUT_EN();		// reyno added
+
+			PWM_BH_OUT_DIS();
 			CNT_BL_OUT_DIS();
+
+			PWM_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
 		case 3 : //BC
+			PWM_AL_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			PWM_CL_OUT_DIS();
+
 			PWM_AH_OUT_DIS();
+			CNT_AL_OUT_DIS();		// reyno added
+
 			PWM_BH_OUT_EN();
+			PWM_BL_OUT_EN();
+
 			PWM_CH_OUT_DIS();
-			CNT_AL_OUT_DIS();
-			//CNT_BL_OUT_DIS();
-			PWM_BL_OUT_EN();		// reyno added
 			CNT_CL_OUT_EN();
+
 			break ;
 		case 4 ://BA
+			PWM_AL_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			PWM_CL_OUT_DIS();
+
 			PWM_AH_OUT_DIS();
+			CNT_AL_OUT_EN();		// reyno added
+
 			PWM_BH_OUT_EN();
+			PWM_BL_OUT_EN();
+
 			PWM_CH_OUT_DIS();
-			CNT_AL_OUT_EN();
-			//CNT_BL_OUT_DIS();
-			PWM_BL_OUT_EN();		// reyno added
 			CNT_CL_OUT_DIS();
 			break ;
 		case 5 ://CA
+			PWM_AL_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			PWM_CL_OUT_DIS();
+
 			PWM_AH_OUT_DIS();
+			CNT_AL_OUT_EN();		// reyno added
+
 			PWM_BH_OUT_DIS();
-			PWM_CH_OUT_EN();
-			CNT_AL_OUT_EN();
 			CNT_BL_OUT_DIS();
-			// CNT_CL_OUT_DIS();
-			PWM_CL_OUT_EN();		// reyno added
+
+			PWM_CH_OUT_EN();
+			PWM_CL_OUT_EN();
 			break ;
 		case 6 :	//CB
+			PWM_AL_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			PWM_CL_OUT_DIS();
+
 			PWM_AH_OUT_DIS();
+			CNT_AL_OUT_DIS();		// reyno added
+
 			PWM_BH_OUT_DIS();
-			PWM_CH_OUT_EN();
-			CNT_AL_OUT_DIS();
 			CNT_BL_OUT_EN();
-			// CNT_CL_OUT_DIS();
-			PWM_CL_OUT_EN();		// reyno added
+
+			PWM_CH_OUT_EN();
+			PWM_CL_OUT_EN();
 			break ;		
 		default : 	
 			break ;

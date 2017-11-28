@@ -1,11 +1,13 @@
 stm8s_stdperiph_driver\inc\stm8s_adc2.h
 stm8s_stdperiph_driver\inc\stm8s_clk.h
 stm8s_stdperiph_driver\inc\stm8s_gpio.h
+stm8s_stdperiph_driver\inc\stm8s_spi.h
 stm8s_stdperiph_driver\inc\stm8s_tim1.h
 stm8s_stdperiph_driver\inc\stm8s_tim4.h
 stm8s_stdperiph_driver\src\stm8s_adc2.c
 stm8s_stdperiph_driver\src\stm8s_clk.c
 stm8s_stdperiph_driver\src\stm8s_gpio.c
+stm8s_stdperiph_driver\src\stm8s_spi.c
 stm8s_stdperiph_driver\src\stm8s_tim1.c
 stm8s_stdperiph_driver\src\stm8s_tim4.c
 control.c
@@ -16,8 +18,8 @@ stm8s_it.c
 stm8s_conf.h
 stm8s_it.h
 stm8s_stdperiph_driver\inc\stm8s.h
-c:\program files\cosmic\cxstm8\hstm8\mods0.h
-c:\program files\cosmic\cxstm8\hstm8\string.h
+c:\program files (x86)\cosmic\cxstm8_32k\hstm8\mods0.h
+c:\program files (x86)\cosmic\cxstm8_32k\hstm8\string.h
 stm8s_stdperiph_driver\inc\stm8s_awu.h
 stm8s_stdperiph_driver\inc\stm8s_beep.h
 stm8s_stdperiph_driver\inc\stm8s_exti.h
@@ -26,7 +28,6 @@ stm8s_stdperiph_driver\inc\stm8s_i2c.h
 stm8s_stdperiph_driver\inc\stm8s_itc.h
 stm8s_stdperiph_driver\inc\stm8s_iwdg.h
 stm8s_stdperiph_driver\inc\stm8s_rst.h
-stm8s_stdperiph_driver\inc\stm8s_spi.h
 stm8s_stdperiph_driver\inc\stm8s_tim2.h
 stm8s_stdperiph_driver\inc\stm8s_tim3.h
 stm8s_stdperiph_driver\inc\stm8s_uart1.h

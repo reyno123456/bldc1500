@@ -329,6 +329,19 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  //static unsigned char flag = 0;
+		
+	TIM2->SR1 = 0x00;  // 清除更新标志
+
+/*
+	if (flag == 0){
+		LED_RUN_ON();
+		flag = 1;
+	}else{		
+		LED_RUN_OFF();
+		flag = 0;
+	}
+*/
  }
 
 /**
@@ -540,11 +553,21 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 	volatile static uint16 usCnt = 0 ;
 	static uint16 IT_NT1 =  0 ;
 	static uint16 usPwmValue =  1;
+	//static unsigned char flag = 0;
 		
 	TIM4->SR1 = 0x00;  // 清除更新标志
 
+/*
+	if (flag == 0){
+		LED_RUN_ON();
+		flag = 1;
+	}else{		
+		LED_RUN_OFF();
+		flag = 0;
+	}
+*/
 	usCnt++;
-	if(usCnt >= 50)    // 20us * 50 = 1ms
+	if(usCnt >= 5)    // 20us * 50 = 1ms
 	{
 		usCnt = 0 ;
 		tBC_Param.usTick1ms++;

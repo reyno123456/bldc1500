@@ -3,8 +3,8 @@ DumpRWOnFly1=0
 DumpRWOnFly2=0
 DumpRWOnFly3=0
 DumpRWOnFly4=0
-WatchVariables1=tBC_Param.R_VRAD!2;tBC_Param.usDCbusVolt!2;
-FormatWatch1=1
+WatchVariables1=tBC_Param.R_VRAD!2;tBC_Param.usDCbusVolt!2;step!0;Value!0;adc_value!0;adc_table!0;
+FormatWatch1=0
 FormatViewType1=1
 FormatViewAddress1=0
 WatchRWOnFlyTab1=0
@@ -34,6 +34,6 @@ ShowRegisterAddress=1
 [DebugState_v1-Debug.AddOn.St7McuIcdConf]
 McuName=STM8S207C8
 [DebugState_v1-Debug.AddOn.IcdBreak]
-ICDBreak0=CR:0x00000000,BK1:0x00000000,BK2:0x00000000
+ICDBreak0=CR:0x00000000,BK1:0x00ffffff,BK2:0x00ffffff
 [DebugState_v1-Debug.AddOn.SteppingMode]
 Mode=hardware

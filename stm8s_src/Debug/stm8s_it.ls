@@ -169,318 +169,320 @@
  596                     ; 328  {
  597                     	switch	.text
  598  0082               f_TIM2_UPD_OVF_BRK_IRQHandler:
- 602                     ; 332  }
- 605  0082 80            	iret
- 628                     ; 339  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
- 628                     ; 340  {
- 629                     	switch	.text
- 630  0083               f_TIM2_CAP_COM_IRQHandler:
- 634                     ; 344  }
- 637  0083 80            	iret
- 660                     ; 354  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
- 660                     ; 355  {
- 661                     	switch	.text
- 662  0084               f_TIM3_UPD_OVF_BRK_IRQHandler:
- 666                     ; 359  }
- 669  0084 80            	iret
- 692                     ; 366  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
- 692                     ; 367  {
- 693                     	switch	.text
- 694  0085               f_TIM3_CAP_COM_IRQHandler:
- 698                     ; 371  }
- 701  0085 80            	iret
- 724                     ; 381  INTERRUPT_HANDLER(UART1_TX_IRQHandler, 17)
- 724                     ; 382  {
- 725                     	switch	.text
- 726  0086               f_UART1_TX_IRQHandler:
- 730                     ; 386  }
- 733  0086 80            	iret
- 756                     ; 393  INTERRUPT_HANDLER(UART1_RX_IRQHandler, 18)
- 756                     ; 394  {
- 757                     	switch	.text
- 758  0087               f_UART1_RX_IRQHandler:
- 762                     ; 398  }
- 765  0087 80            	iret
- 787                     ; 432 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
- 787                     ; 433 {
- 788                     	switch	.text
- 789  0088               f_I2C_IRQHandler:
- 793                     ; 437 }
- 796  0088 80            	iret
- 819                     ; 471  INTERRUPT_HANDLER(UART3_TX_IRQHandler, 20)
- 819                     ; 472  {
- 820                     	switch	.text
- 821  0089               f_UART3_TX_IRQHandler:
- 825                     ; 476  }
- 828  0089 80            	iret
- 851                     ; 483  INTERRUPT_HANDLER(UART3_RX_IRQHandler, 21)
- 851                     ; 484  {
- 852                     	switch	.text
- 853  008a               f_UART3_RX_IRQHandler:
- 857                     ; 488  }
- 860  008a 80            	iret
- 882                     ; 497  INTERRUPT_HANDLER(ADC2_IRQHandler, 22)
- 882                     ; 498  {
- 883                     	switch	.text
- 884  008b               f_ADC2_IRQHandler:
- 888                     ; 502  }
- 891  008b 80            	iret
- 893                     	bsct
- 894  0003               L333_usCnt:
- 895  0003 0000          	dc.w	0
- 896  0005               L533_IT_NT1:
- 897  0005 0000          	dc.w	0
- 898  0007               L733_usPwmValue:
- 899  0007 0001          	dc.w	1
- 967                     ; 537 INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
- 967                     ; 538 {
- 968                     	switch	.text
- 969  008c               f_TIM4_UPD_OVF_IRQHandler:
- 971       00000002      OFST:	set	2
- 972  008c 3b0002        	push	c_x+2
- 973  008f be00          	ldw	x,c_x
- 974  0091 89            	pushw	x
- 975  0092 3b0002        	push	c_y+2
- 976  0095 be00          	ldw	x,c_y
- 977  0097 89            	pushw	x
- 978  0098 89            	pushw	x
- 981                     ; 544 	TIM4->SR1 = 0x00;  // 清除更新标志
- 983  0099 725f5342      	clr	21314
- 984                     ; 546 	usCnt++;
- 986  009d be03          	ldw	x,L333_usCnt
- 987  009f 1c0001        	addw	x,#1
- 988  00a2 bf03          	ldw	L333_usCnt,x
- 989                     ; 547 	if(usCnt >= 50)    // 20us * 50 = 1ms
- 991  00a4 be03          	ldw	x,L333_usCnt
- 992  00a6 a30032        	cpw	x,#50
- 993  00a9 250a          	jrult	L373
- 994                     ; 549 		usCnt = 0 ;
- 996  00ab 5f            	clrw	x
- 997  00ac bf03          	ldw	L333_usCnt,x
- 998                     ; 550 		tBC_Param.usTick1ms++;
-1000  00ae be17          	ldw	x,_tBC_Param+23
-1001  00b0 1c0001        	addw	x,#1
-1002  00b3 bf17          	ldw	_tBC_Param+23,x
-1003  00b5               L373:
-1004                     ; 554 	if(BldcStatus == STATUS_STOP)
-1006  00b5 3d08          	tnz	_tBC_Param+8
-1007  00b7 2609          	jrne	L573
-1008                     ; 556 		usPwmValue = 1;
-1010  00b9 ae0001        	ldw	x,#1
-1011  00bc bf07          	ldw	L733_usPwmValue,x
-1012                     ; 557 		return ;
-1014  00be acac01ac      	jpf	L47
-1015  00c2               L573:
-1016                     ; 560 	T_Dly60C++;
-1018  00c2 be04          	ldw	x,_tBC_Param+4
-1019  00c4 1c0001        	addw	x,#1
-1020  00c7 bf04          	ldw	_tBC_Param+4,x
-1021                     ; 562 	if ( BldcStatus == STATUS_START)   // 启动中	
-1023  00c9 b608          	ld	a,_tBC_Param+8
-1024  00cb a101          	cp	a,#1
-1025  00cd 2674          	jrne	L773
-1026                     ; 564 		if (tBC_Param.StartStep == 0 )	//运行第一步
-1028  00cf be11          	ldw	x,_tBC_Param+17
-1029  00d1 2615          	jrne	L104
-1030                     ; 566 			T_Dly60C = 0 ;
-1032  00d3 5f            	clrw	x
-1033  00d4 bf04          	ldw	_tBC_Param+4,x
-1034                     ; 567 			tBC_Param.StartStep ++ ;
-1036  00d6 be11          	ldw	x,_tBC_Param+17
-1037  00d8 1c0001        	addw	x,#1
-1038  00db bf11          	ldw	_tBC_Param+17,x
-1039                     ; 568 			Timer1_PWM_Value(R_CurPwm);
-1041  00dd be02          	ldw	x,_tBC_Param+2
-1042  00df cd0000        	call	_Timer1_PWM_Value
-1044                     ; 569 			AutoRunOne() ;
-1046  00e2 cd0000        	call	_AutoRunOne
-1048                     ; 570 			IT_NT1 = 0;
-1050  00e5 5f            	clrw	x
-1051  00e6 bf05          	ldw	L533_IT_NT1,x
-1052  00e8               L104:
-1053                     ; 573 		if (tBC_Param.StartStep >= 20)
-1055  00e8 be11          	ldw	x,_tBC_Param+17
-1056  00ea a30014        	cpw	x,#20
-1057  00ed 2504          	jrult	L304
-1058                     ; 575 			TIM1_CMP4_IEN_ENB();
-1060  00ef 72185254      	bset	21076,#4
-1061  00f3               L304:
-1062                     ; 578 		IT_NT1++;
-1064  00f3 be05          	ldw	x,L533_IT_NT1
-1065  00f5 1c0001        	addw	x,#1
-1066  00f8 bf05          	ldw	L533_IT_NT1,x
-1067                     ; 579 		if (IT_NT1 >= START_ORIEN_PERIOD)
-1069  00fa be05          	ldw	x,L533_IT_NT1
-1070  00fc a307d0        	cpw	x,#2000
-1071  00ff 2516          	jrult	L504
-1072                     ; 581 			IT_NT1  = 0 ;
-1074  0101 5f            	clrw	x
-1075  0102 bf05          	ldw	L533_IT_NT1,x
-1076                     ; 582 			if(R_CurPwm <= V_PWMRUN_MIN)
-1078  0104 be02          	ldw	x,_tBC_Param+2
-1079  0106 a30015        	cpw	x,#21
-1080  0109 240c          	jruge	L504
-1081                     ; 584 				R_CurPwm ++ ;
-1083  010b be02          	ldw	x,_tBC_Param+2
-1084  010d 1c0001        	addw	x,#1
-1085  0110 bf02          	ldw	_tBC_Param+2,x
-1086                     ; 585 				Timer1_PWM_Value(R_CurPwm);
-1088  0112 be02          	ldw	x,_tBC_Param+2
-1089  0114 cd0000        	call	_Timer1_PWM_Value
-1091  0117               L504:
-1092                     ; 589 		if (T_Dly60C >= START_INIT_PERIOD)
-1094  0117 be04          	ldw	x,_tBC_Param+4
-1095  0119 a303e8        	cpw	x,#1000
-1096  011c 2404          	jruge	L67
-1097  011e acac01ac      	jpf	L714
-1098  0122               L67:
-1099                     ; 591 			T_Dly60C = 0;
-1101  0122 5f            	clrw	x
-1102  0123 bf04          	ldw	_tBC_Param+4,x
-1103                     ; 593 			tBC_Param.StartStep++;
-1105  0125 be11          	ldw	x,_tBC_Param+17
-1106  0127 1c0001        	addw	x,#1
-1107  012a bf11          	ldw	_tBC_Param+17,x
-1108                     ; 594 			if (tBC_Param.StartStep > 2000)
-1110  012c be11          	ldw	x,_tBC_Param+17
-1111  012e a307d1        	cpw	x,#2001
-1112  0131 2506          	jrult	L314
-1113                     ; 596 				Error_code.bit.ErStart = 1 ;
-1115  0133 72100000      	bset	_Error_code,#0
-1117  0137 2073          	jra	L714
-1118  0139               L314:
-1119                     ; 600 				AutoRunOne();
-1121  0139 cd0000        	call	_AutoRunOne
-1123                     ; 601 				T_DlyTest = DEMAGNETIZE;
-1125  013c ae0010        	ldw	x,#16
-1126  013f bf0b          	ldw	_tBC_Param+11,x
-1127  0141 2069          	jra	L714
-1128  0143               L773:
-1129                     ; 605 	else if(BldcStatus == STATUS_RUN )   // 运行中
-1131  0143 b608          	ld	a,_tBC_Param+8
-1132  0145 a10a          	cp	a,#10
-1133  0147 2644          	jrne	L124
-1134                     ; 607 		IT_NT1++ ;
-1136  0149 be05          	ldw	x,L533_IT_NT1
-1137  014b 1c0001        	addw	x,#1
-1138  014e bf05          	ldw	L533_IT_NT1,x
-1139                     ; 608 		if( IT_NT1 >= 4000)
-1141  0150 be05          	ldw	x,L533_IT_NT1
-1142  0152 a30fa0        	cpw	x,#4000
-1143  0155 2506          	jrult	L324
-1144                     ; 610 			IT_NT1  = 0 ;
-1146  0157 5f            	clrw	x
-1147  0158 bf05          	ldw	L533_IT_NT1,x
-1148                     ; 611 			CmdPwmSlow() ;
-1150  015a cd0000        	call	_CmdPwmSlow
-1152  015d               L324:
-1153                     ; 615 		if(T_DlyTest != 0)
-1155  015d be0b          	ldw	x,_tBC_Param+11
-1156  015f 2709          	jreq	L524
-1157                     ; 617 			T_DlyTest-- ;
-1159  0161 be0b          	ldw	x,_tBC_Param+11
-1160  0163 1d0001        	subw	x,#1
-1161  0166 bf0b          	ldw	_tBC_Param+11,x
-1163  0168 2042          	jra	L714
-1164  016a               L524:
-1165                     ; 621 			usValue = ((uint16)TIM1->CNTRH<<8)+TIM1->CNTRL;
-1167  016a c6525e        	ld	a,21086
-1168  016d 5f            	clrw	x
-1169  016e 97            	ld	xl,a
-1170  016f 4f            	clr	a
-1171  0170 02            	rlwa	x,a
-1172  0171 01            	rrwa	x,a
-1173  0172 cb525f        	add	a,21087
-1174  0175 2401          	jrnc	L27
-1175  0177 5c            	incw	x
-1176  0178               L27:
-1177  0178 02            	rlwa	x,a
-1178  0179 1f01          	ldw	(OFST-1,sp),x
-1179  017b 01            	rrwa	x,a
-1180                     ; 622 			if (usValue < (R_CurPwm-10))
-1182  017c be02          	ldw	x,_tBC_Param+2
-1183  017e 1d000a        	subw	x,#10
-1184  0181 1301          	cpw	x,(OFST-1,sp)
-1185  0183 2327          	jrule	L714
-1186                     ; 624 				Check_BEMF_Voltage();
-1188  0185 cd0000        	call	_Check_BEMF_Voltage
-1190                     ; 625 				BldcRun();
-1192  0188 cd0000        	call	_BldcRun
-1194  018b 201f          	jra	L714
-1195  018d               L124:
-1196                     ; 629 	else if( BldcStatus == STATUS_DLY3C)// 延时30C中
-1198  018d b608          	ld	a,_tBC_Param+8
-1199  018f a10b          	cp	a,#11
-1200  0191 2619          	jrne	L714
-1201                     ; 631 		T_Dly30C -- ;
-1203  0193 be06          	ldw	x,_tBC_Param+6
-1204  0195 1d0001        	subw	x,#1
-1205  0198 bf06          	ldw	_tBC_Param+6,x
-1206                     ; 632 		if(T_Dly30C == 0)
-1208  019a be06          	ldw	x,_tBC_Param+6
-1209  019c 260e          	jrne	L714
-1210                     ; 634 			BLDC_RUN_ONESTEP(BldcStep);	
-1212  019e b609          	ld	a,_tBC_Param+9
-1213  01a0 cd0000        	call	_BLDC_RUN_ONESTEP
-1215                     ; 635 			BldcStatus = STATUS_RUN ;
-1217  01a3 350a0008      	mov	_tBC_Param+8,#10
-1218                     ; 636 			tBC_Param.ucZeroCrossFlag = 0 ;
-1220  01a7 3f2a          	clr	_tBC_Param+42
-1221                     ; 639 			T_Dly60C = 0 ;	
-1223  01a9 5f            	clrw	x
-1224  01aa bf04          	ldw	_tBC_Param+4,x
-1225  01ac               L714:
-1226                     ; 643 }
-1227  01ac               L47:
-1230  01ac 5b02          	addw	sp,#2
-1231  01ae 85            	popw	x
-1232  01af bf00          	ldw	c_y,x
-1233  01b1 320002        	pop	c_y+2
-1234  01b4 85            	popw	x
-1235  01b5 bf00          	ldw	c_x,x
-1236  01b7 320002        	pop	c_x+2
-1237  01ba 80            	iret
-1260                     ; 652 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
-1260                     ; 653 {
-1261                     	switch	.text
-1262  01bb               f_EEPROM_EEC_IRQHandler:
-1266                     ; 657 }
-1269  01bb 80            	iret
-1281                     	xref	_BLDC_RUN_ONESTEP
-1282                     	xref	_AutoRunOne
-1283                     	xref	_BldcRun
-1284                     	xref	_BldcLik
-1285                     	xref	_Check_BEMF_Voltage
-1286                     	xref	_CmdPwmSlow
-1287                     	xref	_Timer1_PWM_Value
-1288                     	xref	_AdcSwitch
-1289                     	xref.b	_Error_code
-1290                     	xref.b	_tBC_Param
-1291                     	xdef	f_EEPROM_EEC_IRQHandler
-1292                     	xdef	f_TIM4_UPD_OVF_IRQHandler
-1293                     	xdef	f_ADC2_IRQHandler
-1294                     	xdef	f_UART3_TX_IRQHandler
-1295                     	xdef	f_UART3_RX_IRQHandler
-1296                     	xdef	f_I2C_IRQHandler
-1297                     	xdef	f_UART1_RX_IRQHandler
-1298                     	xdef	f_UART1_TX_IRQHandler
-1299                     	xdef	f_TIM3_CAP_COM_IRQHandler
-1300                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
-1301                     	xdef	f_TIM2_CAP_COM_IRQHandler
-1302                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
-1303                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
-1304                     	xdef	f_TIM1_CAP_COM_IRQHandler
-1305                     	xdef	f_SPI_IRQHandler
-1306                     	xdef	f_EXTI_PORTE_IRQHandler
-1307                     	xdef	f_EXTI_PORTD_IRQHandler
-1308                     	xdef	f_EXTI_PORTC_IRQHandler
-1309                     	xdef	f_EXTI_PORTB_IRQHandler
-1310                     	xdef	f_EXTI_PORTA_IRQHandler
-1311                     	xdef	f_CLK_IRQHandler
-1312                     	xdef	f_AWU_IRQHandler
-1313                     	xdef	f_TLI_IRQHandler
-1314                     	xdef	f_TRAP_IRQHandler
-1315                     	xdef	f_NonHandledInterrupt
-1316                     	xref.b	c_x
-1317                     	xref.b	c_y
-1336                     	end
+ 602                     ; 334 	TIM2->SR1 = 0x00;  // 清除更新标志
+ 604  0082 725f5302      	clr	21250
+ 605                     ; 345  }
+ 608  0086 80            	iret
+ 631                     ; 352  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
+ 631                     ; 353  {
+ 632                     	switch	.text
+ 633  0087               f_TIM2_CAP_COM_IRQHandler:
+ 637                     ; 357  }
+ 640  0087 80            	iret
+ 663                     ; 367  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
+ 663                     ; 368  {
+ 664                     	switch	.text
+ 665  0088               f_TIM3_UPD_OVF_BRK_IRQHandler:
+ 669                     ; 372  }
+ 672  0088 80            	iret
+ 695                     ; 379  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
+ 695                     ; 380  {
+ 696                     	switch	.text
+ 697  0089               f_TIM3_CAP_COM_IRQHandler:
+ 701                     ; 384  }
+ 704  0089 80            	iret
+ 727                     ; 394  INTERRUPT_HANDLER(UART1_TX_IRQHandler, 17)
+ 727                     ; 395  {
+ 728                     	switch	.text
+ 729  008a               f_UART1_TX_IRQHandler:
+ 733                     ; 399  }
+ 736  008a 80            	iret
+ 759                     ; 406  INTERRUPT_HANDLER(UART1_RX_IRQHandler, 18)
+ 759                     ; 407  {
+ 760                     	switch	.text
+ 761  008b               f_UART1_RX_IRQHandler:
+ 765                     ; 411  }
+ 768  008b 80            	iret
+ 790                     ; 445 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
+ 790                     ; 446 {
+ 791                     	switch	.text
+ 792  008c               f_I2C_IRQHandler:
+ 796                     ; 450 }
+ 799  008c 80            	iret
+ 822                     ; 484  INTERRUPT_HANDLER(UART3_TX_IRQHandler, 20)
+ 822                     ; 485  {
+ 823                     	switch	.text
+ 824  008d               f_UART3_TX_IRQHandler:
+ 828                     ; 489  }
+ 831  008d 80            	iret
+ 854                     ; 496  INTERRUPT_HANDLER(UART3_RX_IRQHandler, 21)
+ 854                     ; 497  {
+ 855                     	switch	.text
+ 856  008e               f_UART3_RX_IRQHandler:
+ 860                     ; 501  }
+ 863  008e 80            	iret
+ 885                     ; 510  INTERRUPT_HANDLER(ADC2_IRQHandler, 22)
+ 885                     ; 511  {
+ 886                     	switch	.text
+ 887  008f               f_ADC2_IRQHandler:
+ 891                     ; 515  }
+ 894  008f 80            	iret
+ 896                     	bsct
+ 897  0003               L333_usCnt:
+ 898  0003 0000          	dc.w	0
+ 899  0005               L533_IT_NT1:
+ 900  0005 0000          	dc.w	0
+ 901  0007               L733_usPwmValue:
+ 902  0007 0001          	dc.w	1
+ 970                     ; 550 INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+ 970                     ; 551 {
+ 971                     	switch	.text
+ 972  0090               f_TIM4_UPD_OVF_IRQHandler:
+ 974       00000002      OFST:	set	2
+ 975  0090 3b0002        	push	c_x+2
+ 976  0093 be00          	ldw	x,c_x
+ 977  0095 89            	pushw	x
+ 978  0096 3b0002        	push	c_y+2
+ 979  0099 be00          	ldw	x,c_y
+ 980  009b 89            	pushw	x
+ 981  009c 89            	pushw	x
+ 984                     ; 558 	TIM4->SR1 = 0x00;  // 清除更新标志
+ 986  009d 725f5342      	clr	21314
+ 987                     ; 569 	usCnt++;
+ 989  00a1 be03          	ldw	x,L333_usCnt
+ 990  00a3 1c0001        	addw	x,#1
+ 991  00a6 bf03          	ldw	L333_usCnt,x
+ 992                     ; 570 	if(usCnt >= 5)    // 20us * 50 = 1ms
+ 994  00a8 be03          	ldw	x,L333_usCnt
+ 995  00aa a30005        	cpw	x,#5
+ 996  00ad 250a          	jrult	L373
+ 997                     ; 572 		usCnt = 0 ;
+ 999  00af 5f            	clrw	x
+1000  00b0 bf03          	ldw	L333_usCnt,x
+1001                     ; 573 		tBC_Param.usTick1ms++;
+1003  00b2 be17          	ldw	x,_tBC_Param+23
+1004  00b4 1c0001        	addw	x,#1
+1005  00b7 bf17          	ldw	_tBC_Param+23,x
+1006  00b9               L373:
+1007                     ; 577 	if(BldcStatus == STATUS_STOP)
+1009  00b9 3d08          	tnz	_tBC_Param+8
+1010  00bb 2609          	jrne	L573
+1011                     ; 579 		usPwmValue = 1;
+1013  00bd ae0001        	ldw	x,#1
+1014  00c0 bf07          	ldw	L733_usPwmValue,x
+1015                     ; 580 		return ;
+1017  00c2 acb001b0      	jpf	L47
+1018  00c6               L573:
+1019                     ; 583 	T_Dly60C++;
+1021  00c6 be04          	ldw	x,_tBC_Param+4
+1022  00c8 1c0001        	addw	x,#1
+1023  00cb bf04          	ldw	_tBC_Param+4,x
+1024                     ; 585 	if ( BldcStatus == STATUS_START)   // 启动中	
+1026  00cd b608          	ld	a,_tBC_Param+8
+1027  00cf a101          	cp	a,#1
+1028  00d1 2674          	jrne	L773
+1029                     ; 587 		if (tBC_Param.StartStep == 0 )	//运行第一步
+1031  00d3 be11          	ldw	x,_tBC_Param+17
+1032  00d5 2615          	jrne	L104
+1033                     ; 589 			T_Dly60C = 0 ;
+1035  00d7 5f            	clrw	x
+1036  00d8 bf04          	ldw	_tBC_Param+4,x
+1037                     ; 590 			tBC_Param.StartStep ++ ;
+1039  00da be11          	ldw	x,_tBC_Param+17
+1040  00dc 1c0001        	addw	x,#1
+1041  00df bf11          	ldw	_tBC_Param+17,x
+1042                     ; 591 			Timer1_PWM_Value(R_CurPwm);
+1044  00e1 be02          	ldw	x,_tBC_Param+2
+1045  00e3 cd0000        	call	_Timer1_PWM_Value
+1047                     ; 592 			AutoRunOne() ;
+1049  00e6 cd0000        	call	_AutoRunOne
+1051                     ; 593 			IT_NT1 = 0;
+1053  00e9 5f            	clrw	x
+1054  00ea bf05          	ldw	L533_IT_NT1,x
+1055  00ec               L104:
+1056                     ; 596 		if (tBC_Param.StartStep >= 20)
+1058  00ec be11          	ldw	x,_tBC_Param+17
+1059  00ee a30014        	cpw	x,#20
+1060  00f1 2504          	jrult	L304
+1061                     ; 598 			TIM1_CMP4_IEN_ENB();
+1063  00f3 72185254      	bset	21076,#4
+1064  00f7               L304:
+1065                     ; 601 		IT_NT1++;
+1067  00f7 be05          	ldw	x,L533_IT_NT1
+1068  00f9 1c0001        	addw	x,#1
+1069  00fc bf05          	ldw	L533_IT_NT1,x
+1070                     ; 602 		if (IT_NT1 >= START_ORIEN_PERIOD)
+1072  00fe be05          	ldw	x,L533_IT_NT1
+1073  0100 a307d0        	cpw	x,#2000
+1074  0103 2516          	jrult	L504
+1075                     ; 604 			IT_NT1  = 0 ;
+1077  0105 5f            	clrw	x
+1078  0106 bf05          	ldw	L533_IT_NT1,x
+1079                     ; 605 			if(R_CurPwm <= V_PWMRUN_MIN)
+1081  0108 be02          	ldw	x,_tBC_Param+2
+1082  010a a30015        	cpw	x,#21
+1083  010d 240c          	jruge	L504
+1084                     ; 607 				R_CurPwm ++ ;
+1086  010f be02          	ldw	x,_tBC_Param+2
+1087  0111 1c0001        	addw	x,#1
+1088  0114 bf02          	ldw	_tBC_Param+2,x
+1089                     ; 608 				Timer1_PWM_Value(R_CurPwm);
+1091  0116 be02          	ldw	x,_tBC_Param+2
+1092  0118 cd0000        	call	_Timer1_PWM_Value
+1094  011b               L504:
+1095                     ; 612 		if (T_Dly60C >= START_INIT_PERIOD)
+1097  011b be04          	ldw	x,_tBC_Param+4
+1098  011d a303e8        	cpw	x,#1000
+1099  0120 2404          	jruge	L67
+1100  0122 acb001b0      	jpf	L714
+1101  0126               L67:
+1102                     ; 614 			T_Dly60C = 0;
+1104  0126 5f            	clrw	x
+1105  0127 bf04          	ldw	_tBC_Param+4,x
+1106                     ; 616 			tBC_Param.StartStep++;
+1108  0129 be11          	ldw	x,_tBC_Param+17
+1109  012b 1c0001        	addw	x,#1
+1110  012e bf11          	ldw	_tBC_Param+17,x
+1111                     ; 617 			if (tBC_Param.StartStep > 2000)
+1113  0130 be11          	ldw	x,_tBC_Param+17
+1114  0132 a307d1        	cpw	x,#2001
+1115  0135 2506          	jrult	L314
+1116                     ; 619 				Error_code.bit.ErStart = 1 ;
+1118  0137 72100000      	bset	_Error_code,#0
+1120  013b 2073          	jra	L714
+1121  013d               L314:
+1122                     ; 623 				AutoRunOne();
+1124  013d cd0000        	call	_AutoRunOne
+1126                     ; 624 				T_DlyTest = DEMAGNETIZE;
+1128  0140 ae0010        	ldw	x,#16
+1129  0143 bf0b          	ldw	_tBC_Param+11,x
+1130  0145 2069          	jra	L714
+1131  0147               L773:
+1132                     ; 628 	else if(BldcStatus == STATUS_RUN )   // 运行中
+1134  0147 b608          	ld	a,_tBC_Param+8
+1135  0149 a10a          	cp	a,#10
+1136  014b 2644          	jrne	L124
+1137                     ; 630 		IT_NT1++ ;
+1139  014d be05          	ldw	x,L533_IT_NT1
+1140  014f 1c0001        	addw	x,#1
+1141  0152 bf05          	ldw	L533_IT_NT1,x
+1142                     ; 631 		if( IT_NT1 >= 4000)
+1144  0154 be05          	ldw	x,L533_IT_NT1
+1145  0156 a30fa0        	cpw	x,#4000
+1146  0159 2506          	jrult	L324
+1147                     ; 633 			IT_NT1  = 0 ;
+1149  015b 5f            	clrw	x
+1150  015c bf05          	ldw	L533_IT_NT1,x
+1151                     ; 634 			CmdPwmSlow() ;
+1153  015e cd0000        	call	_CmdPwmSlow
+1155  0161               L324:
+1156                     ; 638 		if(T_DlyTest != 0)
+1158  0161 be0b          	ldw	x,_tBC_Param+11
+1159  0163 2709          	jreq	L524
+1160                     ; 640 			T_DlyTest-- ;
+1162  0165 be0b          	ldw	x,_tBC_Param+11
+1163  0167 1d0001        	subw	x,#1
+1164  016a bf0b          	ldw	_tBC_Param+11,x
+1166  016c 2042          	jra	L714
+1167  016e               L524:
+1168                     ; 644 			usValue = ((uint16)TIM1->CNTRH<<8)+TIM1->CNTRL;
+1170  016e c6525e        	ld	a,21086
+1171  0171 5f            	clrw	x
+1172  0172 97            	ld	xl,a
+1173  0173 4f            	clr	a
+1174  0174 02            	rlwa	x,a
+1175  0175 01            	rrwa	x,a
+1176  0176 cb525f        	add	a,21087
+1177  0179 2401          	jrnc	L27
+1178  017b 5c            	incw	x
+1179  017c               L27:
+1180  017c 02            	rlwa	x,a
+1181  017d 1f01          	ldw	(OFST-1,sp),x
+1182  017f 01            	rrwa	x,a
+1183                     ; 645 			if (usValue < (R_CurPwm-10))
+1185  0180 be02          	ldw	x,_tBC_Param+2
+1186  0182 1d000a        	subw	x,#10
+1187  0185 1301          	cpw	x,(OFST-1,sp)
+1188  0187 2327          	jrule	L714
+1189                     ; 647 				Check_BEMF_Voltage();
+1191  0189 cd0000        	call	_Check_BEMF_Voltage
+1193                     ; 648 				BldcRun();
+1195  018c cd0000        	call	_BldcRun
+1197  018f 201f          	jra	L714
+1198  0191               L124:
+1199                     ; 652 	else if( BldcStatus == STATUS_DLY3C)// 延时30C中
+1201  0191 b608          	ld	a,_tBC_Param+8
+1202  0193 a10b          	cp	a,#11
+1203  0195 2619          	jrne	L714
+1204                     ; 654 		T_Dly30C -- ;
+1206  0197 be06          	ldw	x,_tBC_Param+6
+1207  0199 1d0001        	subw	x,#1
+1208  019c bf06          	ldw	_tBC_Param+6,x
+1209                     ; 655 		if(T_Dly30C == 0)
+1211  019e be06          	ldw	x,_tBC_Param+6
+1212  01a0 260e          	jrne	L714
+1213                     ; 657 			BLDC_RUN_ONESTEP(BldcStep);	
+1215  01a2 b609          	ld	a,_tBC_Param+9
+1216  01a4 cd0000        	call	_BLDC_RUN_ONESTEP
+1218                     ; 658 			BldcStatus = STATUS_RUN ;
+1220  01a7 350a0008      	mov	_tBC_Param+8,#10
+1221                     ; 659 			tBC_Param.ucZeroCrossFlag = 0 ;
+1223  01ab 3f2a          	clr	_tBC_Param+42
+1224                     ; 662 			T_Dly60C = 0 ;	
+1226  01ad 5f            	clrw	x
+1227  01ae bf04          	ldw	_tBC_Param+4,x
+1228  01b0               L714:
+1229                     ; 666 }
+1230  01b0               L47:
+1233  01b0 5b02          	addw	sp,#2
+1234  01b2 85            	popw	x
+1235  01b3 bf00          	ldw	c_y,x
+1236  01b5 320002        	pop	c_y+2
+1237  01b8 85            	popw	x
+1238  01b9 bf00          	ldw	c_x,x
+1239  01bb 320002        	pop	c_x+2
+1240  01be 80            	iret
+1263                     ; 675 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+1263                     ; 676 {
+1264                     	switch	.text
+1265  01bf               f_EEPROM_EEC_IRQHandler:
+1269                     ; 680 }
+1272  01bf 80            	iret
+1284                     	xref	_BLDC_RUN_ONESTEP
+1285                     	xref	_AutoRunOne
+1286                     	xref	_BldcRun
+1287                     	xref	_BldcLik
+1288                     	xref	_Check_BEMF_Voltage
+1289                     	xref	_CmdPwmSlow
+1290                     	xref	_Timer1_PWM_Value
+1291                     	xref	_AdcSwitch
+1292                     	xref.b	_Error_code
+1293                     	xref.b	_tBC_Param
+1294                     	xdef	f_EEPROM_EEC_IRQHandler
+1295                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+1296                     	xdef	f_ADC2_IRQHandler
+1297                     	xdef	f_UART3_TX_IRQHandler
+1298                     	xdef	f_UART3_RX_IRQHandler
+1299                     	xdef	f_I2C_IRQHandler
+1300                     	xdef	f_UART1_RX_IRQHandler
+1301                     	xdef	f_UART1_TX_IRQHandler
+1302                     	xdef	f_TIM3_CAP_COM_IRQHandler
+1303                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+1304                     	xdef	f_TIM2_CAP_COM_IRQHandler
+1305                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+1306                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+1307                     	xdef	f_TIM1_CAP_COM_IRQHandler
+1308                     	xdef	f_SPI_IRQHandler
+1309                     	xdef	f_EXTI_PORTE_IRQHandler
+1310                     	xdef	f_EXTI_PORTD_IRQHandler
+1311                     	xdef	f_EXTI_PORTC_IRQHandler
+1312                     	xdef	f_EXTI_PORTB_IRQHandler
+1313                     	xdef	f_EXTI_PORTA_IRQHandler
+1314                     	xdef	f_CLK_IRQHandler
+1315                     	xdef	f_AWU_IRQHandler
+1316                     	xdef	f_TLI_IRQHandler
+1317                     	xdef	f_TRAP_IRQHandler
+1318                     	xdef	f_NonHandledInterrupt
+1319                     	xref.b	c_x
+1320                     	xref.b	c_y
+1339                     	end

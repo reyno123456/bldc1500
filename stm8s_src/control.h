@@ -17,7 +17,7 @@
 #define BIT7 0x80
 
 #define TIM1_DIV2		(uint8)1
-#define TIM4_DIV16		(uint8)4
+#define TIM4_DIV16		(uint8)8
 #define ADC_DIV2		(uint8)0
 
 #define TIMER1_CNT    1000  // T=1000*0.125=125U  //PWMÆµÂÊ  8KHZ
@@ -40,6 +40,10 @@
 #define CNT_BL_OUT_DIS() (GPIOB->ODR |= GPIO_PIN_1)
 #define CNT_CL_OUT_EN()  (GPIOB->ODR &= (uint8_t)(~GPIO_PIN_2))
 #define CNT_CL_OUT_DIS() (GPIOB->ODR |= GPIO_PIN_2)
+#define PWM_AL_OUT_EN()  (TIM1->CCER1 |= TIM1_CCER1_CC1NE)		// reyno added
+#define PWM_BL_OUT_EN()  (TIM1->CCER1 |= TIM1_CCER1_CC2NE)		// reyno added
+#define PWM_CL_OUT_EN()  (TIM1->CCER2 |= TIM1_CCER2_CC3NE)		// reyno added
+
 // High side driver logic input (active high) 
 #define PWM_AH_OUT_EN()  (TIM1->CCER1 |= TIM1_CCER1_CC1E)
 #define PWM_AH_OUT_DIS() (TIM1->CCER1 &= (uint8_t)(~TIM1_CCER1_CC1E))

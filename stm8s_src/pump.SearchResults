@@ -1,4 +1,0 @@
----- DLY_ADVANCED Matches (3 in 3 files) ----
-Control.c:#ifdef	DLY_ADVANCED
-Control.h:#define DLY_ADVANCED
-Stm8s_it.c:#ifdef	DLY_ADVANCED		

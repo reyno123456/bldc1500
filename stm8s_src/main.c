@@ -31,6 +31,11 @@
 #include "control.h"
 #include "string.h"
 
+static void AppStopToAlignment(void);
+void delay_us(unsigned int us);
+
+unsigned short adc_table[10];
+
 
 /* Private defines -----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -203,6 +208,210 @@ void Init_ADC( void )
 	//ADC2->CSR |= BIT5; // Bit 5 EOCIE: Interrupt enable for EOC
 }
 
+unsigned short get_adc(void)
+{
+	unsigned short value;
+	AdcSwitch(PHASE_C_BEMF_ADC_CHAN);
+	value = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
+	return value; 
+}
+
+void init_timer2(void)
+{								
+	TIM2->IER = 0x00 ;		// 禁止中断
+	TIM2->EGR = 0x01 ;		// 允许产生更新事件
+	TIM2->PSCR = 32768 ;		// 计数器时钟=16MHZ/16=1M
+													
+	TIM2->ARRH = 60;
+	TIM2->ARRL = 200;
+
+	TIM2->CNTRH = 0;				// 设定计数器的初值
+	TIM2->CNTRL = 0;				// 设定计数器的初值												
+	// b0 = 1,允许计数器工作 b1 = 0,允许更新
+	// 设置控制器，启动定时器
+	TIM2->CR1 |= 0 ;
+
+	// 允许更新中断
+	TIM2->IER |= 0x01;
+	TIM2->CR1 |= 0x01;
+}
+
+void delay_us(unsigned int us)
+{
+	unsigned int i;
+	for (i = 0; i < us; i++)
+	{
+		
+	}
+}
+
+void delay_ms(unsigned int ms)
+{
+	unsigned int i,j;
+	for (j = 0; j < ms; j++)
+	{
+		for (i = 0; i < 1000; i++)
+		{
+			
+		}
+	}
+}
+
+void bldc_one_loop(unsigned short duty, unsigned int ms)
+{
+	unsigned char flag = 1;
+	Timer1_PWM_Value(duty);
+
+	for (flag = 1; flag <= 6; flag++)
+	{
+		BLDC_RUN_ONESTEP(flag);
+		delay_ms(ms);
+	}
+}
+
+void bldc_open_loop(void)
+{
+	unsigned short duty;
+	unsigned int ms = 121;
+	static unsigned char step = 1;
+	unsigned int i;
+	static unsigned short adc_value = 0;
+/*
+	for (duty = 1; duty < 120; ms--)
+	{
+		bldc_one_loop(duty, ms);
+	}
+*/
+/*
+	bldc_one_loop(10, 100);
+	bldc_one_loop(20, 80);
+	bldc_one_loop(30, 60);
+	bldc_one_loop(40, 50);
+	bldc_one_loop(50, 40);
+	bldc_one_loop(60, 30);
+	bldc_one_loop(70, 20);
+*/
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(70, 28);
+	}	
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(100, 15);
+	}
+
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(150, 10);
+	}
+	
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(200, 8);
+	}
+	
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(200, 4);
+	}
+	
+	for (i = 0; i < 100; i++)
+	{
+		bldc_one_loop(200, 3);
+	}
+	
+	for (i = 0; i < 100; i++)
+	{
+		bldc_one_loop(280,2);
+	}
+
+	while(1)
+	{
+		bldc_one_loop(300,2);
+	}
+
+#if 0
+	i = 0;
+	while(1)
+	{
+		if (step == 5)
+		{
+			if (i == 10)
+				i = 0;
+		}
+		BLDC_RUN_ONESTEP(step++);
+		if (step == 8)
+		{
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+			
+			adc_value = get_adc();
+			adc_table[i++] = adc_value;
+			delay_us(300);
+		}
+		
+		delay_ms(8);
+		if (step > 6){
+			step = 1;
+		}
+	}
+#endif
+}
+
+static void AppStopToAlignment(void)
+{
+	Timer1_PWM_Value(400);
+	PWM_AH_OUT_DIS();
+	PWM_BH_OUT_DIS();
+	PWM_CH_OUT_EN();
+	CNT_AL_OUT_EN();
+	CNT_BL_OUT_EN();
+	CNT_CL_OUT_DIS();
+
+	delay_ms(100);
+
+	Timer1_PWM_Value(50);
+	PWM_AH_OUT_DIS();
+	PWM_BH_OUT_DIS();
+	PWM_CH_OUT_DIS();
+	CNT_AL_OUT_DIS();
+	CNT_BL_OUT_DIS();
+	CNT_CL_OUT_DIS();	
+}
+
 void main(void)
 {
 	static uint16 flag = 0;
@@ -211,11 +420,56 @@ void main(void)
 	Init_Clk();
 	Init_Io();
 	memset(&tBC_Param, 0, sizeof(tBC_Param));
-	Init_Timer1_PWM(TIMER1_CNT, TIM1_DIV2);  // 8k
-	Init_TIM4(20,TIM4_DIV16);
+	Init_Timer1_PWM(2400, TIM1_DIV2);  // 8k
+	//Init_TIM4(200,0xFF);
 	Init_ADC();
-	
+	//init_timer2();
+/*
+	while(1)
+	{
+		if (flag == 0){
+			LED_RUN_ON();
+			delay_ms(1000);
+			flag = 1;
+		}else{		
+			LED_RUN_OFF();
+			delay_ms(1000);
+			flag = 0;
+		}
+	}
+*/	
 	_asm("rim");
+	Timer1_PWM_Value(50);
+	AppStopToAlignment();
+	bldc_open_loop();
+#if 0
+	while(1)
+	{
+		BLDC_RUN_ONESTEP(1);
+		delay_ms(200);		
+		BLDC_RUN_ONESTEP(2);
+		delay_ms(200);
+		BLDC_RUN_ONESTEP(3);
+		delay_ms(200);
+		BLDC_RUN_ONESTEP(4);
+		delay_ms(200);
+		BLDC_RUN_ONESTEP(5);
+		delay_ms(200);
+		BLDC_RUN_ONESTEP(6);
+		delay_ms(200);
+		/*
+		if (flag == 0){
+			LED_RUN_ON();
+			delay_ms(1);
+			flag = 1;
+		}else{		
+			LED_RUN_OFF();
+			delay_ms(1);
+			flag = 0;
+		}
+		*/
+	}
+#endif
 	
 	while (1)
 	{

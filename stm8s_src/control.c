@@ -631,8 +631,8 @@ void  AutoRunOne(void)
 //***************************************/
 void BLDC_RUN_ONESTEP(uint8 STEP)
 {
-	TIM1->CNTRH = 0 ;  //计数器清0
-	TIM1->CNTRL = 0 ;
+	//TIM1->CNTRH = 0 ;  //计数器清0
+	//TIM1->CNTRL = 0 ;
 	
 	PWM_AL_OUT_DIS();
 	PWM_BL_OUT_DIS();

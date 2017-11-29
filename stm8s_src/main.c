@@ -363,22 +363,23 @@ void bldc_open_loop(void)
 	{
 		bldc_one_loop(100, 15);
 	}
-while(1)
-{
+
 	for (i = 0; i < 10; i++)
 	{
 		bldc_one_loop(200, 4);
 	}
-}
+
 	for (i = 0; i < 10; i++)
 	{
 		bldc_one_loop(200, 8);
 	}
-	
+while(1)
+{
 	for (i = 0; i < 10; i++)
 	{
-		bldc_one_loop(200, 4);
+		bldc_one_loop(200, 8);
 	}
+}
 	for (i = 0; i < 100; i++)
 	{
 		bldc_one_loop(200, 3);

@@ -634,13 +634,13 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 	TIM1->CNTRH = 0 ;  //¼ÆÊýÆ÷Çå0
 	TIM1->CNTRL = 0 ;
 	
+	PWM_AL_OUT_DIS();
+	PWM_BL_OUT_DIS();
+	PWM_CL_OUT_DIS();
+
 	switch(STEP)
 	{
 		case 1 : // AB
-			PWM_AL_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			PWM_CL_OUT_DIS();
-
 			PWM_AH_OUT_EN();
 			PWM_AL_OUT_EN();		// reyno added
 
@@ -651,10 +651,6 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CL_OUT_DIS();
 			break ;
 		case 2 :	//AC
-			PWM_AL_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			PWM_CL_OUT_DIS();
-
 			PWM_AH_OUT_EN();
 			PWM_AL_OUT_EN();		// reyno added
 
@@ -665,10 +661,6 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CL_OUT_EN();
 			break ;
 		case 3 : //BC
-			PWM_AL_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			PWM_CL_OUT_DIS();
-
 			PWM_AH_OUT_DIS();
 			CNT_AL_OUT_DIS();		// reyno added
 
@@ -680,10 +672,6 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 
 			break ;
 		case 4 ://BA
-			PWM_AL_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			PWM_CL_OUT_DIS();
-
 			PWM_AH_OUT_DIS();
 			CNT_AL_OUT_EN();		// reyno added
 
@@ -694,10 +682,6 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CL_OUT_DIS();
 			break ;
 		case 5 ://CA
-			PWM_AL_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			PWM_CL_OUT_DIS();
-
 			PWM_AH_OUT_DIS();
 			CNT_AL_OUT_EN();		// reyno added
 
@@ -708,10 +692,6 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_CL_OUT_EN();
 			break ;
 		case 6 :	//CB
-			PWM_AL_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			PWM_CL_OUT_DIS();
-
 			PWM_AH_OUT_DIS();
 			CNT_AL_OUT_DIS();		// reyno added
 

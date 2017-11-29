@@ -48,6 +48,10 @@
 #define PWM_CL_OUT_DIS()  (TIM1->CCER2 &= (uint8_t)(~TIM1_CCER2_CC3NE))		// reyno added
 
 // High side driver logic input (active high) 
+#define CNT_AH_OUT_DIS() (GPIOC->ODR &= (uint8_t)(~GPIO_PIN_1))
+#define CNT_BH_OUT_DIS() (GPIOC->ODR &= (uint8_t)(~GPIO_PIN_2))
+#define CNT_CH_OUT_DIS() (GPIOC->ODR &= (uint8_t)(~GPIO_PIN_3))
+
 #define PWM_AH_OUT_EN()  (TIM1->CCER1 |= TIM1_CCER1_CC1E)
 #define PWM_AH_OUT_DIS() (TIM1->CCER1 &= (uint8_t)(~TIM1_CCER1_CC1E))
 #define PWM_BH_OUT_EN()  (TIM1->CCER1 |= TIM1_CCER1_CC2E)

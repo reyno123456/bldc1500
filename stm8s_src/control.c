@@ -634,14 +634,6 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 	TIM1->CNTRH = 0 ;  //¼ÆÊýÆ÷Çå0
 	TIM1->CNTRL = 0 ;
 	
-	PWM_AL_OUT_DIS();
-	PWM_BL_OUT_DIS();
-	PWM_CL_OUT_DIS();
-
-	PWM_AH_OUT_DIS();
-	PWM_BH_OUT_DIS();
-	PWM_CH_OUT_DIS();
-
 	switch(STEP)
 	{
 		case 1 : // AB
@@ -650,76 +642,83 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			TIM1->CCMR3 =0; 
 			PWM_AH_OUT_EN();
 			PWM_AL_OUT_EN();		// reyno added
-
-			//PWM_BH_OUT_DIS();
+			PWM_BH_OUT_DIS();
+			PWM_BL_OUT_DIS();		// reyno added
+			PWM_CH_OUT_DIS();
+			PWM_CL_OUT_DIS();		// reyno added
+			
+			CNT_BH_OUT_DIS();
 			CNT_BL_OUT_EN();
-
-			//PWM_CH_OUT_DIS();
+			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_DIS();
 			break ;
 		case 2 :	//AC
 			PWM_AH_OUT_EN();
 			PWM_AL_OUT_EN();		// reyno added
-			TIM1->CCMR1 =0x6c; 
-			TIM1->CCMR2 =0; 
-			TIM1->CCMR3 =0; 
-
-			//PWM_BH_OUT_DIS();
+			PWM_BH_OUT_DIS();
+			PWM_BL_OUT_DIS();		// reyno added
+			PWM_CH_OUT_DIS();
+			PWM_CL_OUT_DIS();		// reyno added
+			
+			CNT_BH_OUT_DIS();
 			CNT_BL_OUT_DIS();
-
-			//PWM_CH_OUT_DIS();
+			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
 		case 3 : //BC
 			TIM1->CCMR1 =0; 
 			TIM1->CCMR2 =0x6c; 
 			TIM1->CCMR3 =0; 
-			//PWM_AH_OUT_DIS();
+			CNT_AH_OUT_DIS();		// reyno added
 			CNT_AL_OUT_DIS();		// reyno added
-
+			
+			PWM_AH_OUT_DIS();
+			PWM_AL_OUT_DIS();		// reyno added
 			PWM_BH_OUT_EN();
 			PWM_BL_OUT_EN();
-
-			//PWM_CH_OUT_DIS();
+			PWM_CH_OUT_DIS();
+			PWM_CL_OUT_DIS();		// reyno added
+			
+			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
-
 			break ;
 		case 4 ://BA
-			TIM1->CCMR1 =0; 
-			TIM1->CCMR2 =0x6c; 
-			TIM1->CCMR3 =0; 
-			//PWM_AH_OUT_DIS();
+			CNT_AH_OUT_DIS();		// reyno added
 			CNT_AL_OUT_EN();		// reyno added
-
+			PWM_AH_OUT_DIS();
+			PWM_AL_OUT_DIS();		// reyno added
 			PWM_BH_OUT_EN();
 			PWM_BL_OUT_EN();
-
-			//PWM_CH_OUT_DIS();
+			PWM_CH_OUT_DIS();
+			PWM_CL_OUT_DIS();		// reyno added
+			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_DIS();
 			break ;
 		case 5 ://CA
 			TIM1->CCMR1 =0; 
 			TIM1->CCMR2 =0; 
 			TIM1->CCMR3 =0x6c; 
-			//PWM_AH_OUT_DIS();
+			CNT_AH_OUT_DIS();		// reyno added
 			CNT_AL_OUT_EN();		// reyno added
-
-			//PWM_BH_OUT_DIS();
+			CNT_BH_OUT_DIS();
 			CNT_BL_OUT_DIS();
 
+			PWM_AH_OUT_DIS();
+			PWM_AL_OUT_DIS();
+			PWM_BH_OUT_DIS();
+			PWM_BL_OUT_DIS();
 			PWM_CH_OUT_EN();
 			PWM_CL_OUT_EN();
 			break ;
 		case 6 :	//CB
-			TIM1->CCMR1 =0; 
-			TIM1->CCMR2 =0; 
-			TIM1->CCMR3 =0x6c; 
-			//PWM_AH_OUT_DIS();
+			CNT_AH_OUT_DIS();		// reyno added
 			CNT_AL_OUT_DIS();		// reyno added
-
-			//PWM_BH_OUT_DIS();
+			CNT_BH_OUT_DIS();
 			CNT_BL_OUT_EN();
-
+			PWM_AH_OUT_DIS();
+			PWM_AL_OUT_DIS();
+			PWM_BH_OUT_DIS();
+			PWM_BL_OUT_DIS();
 			PWM_CH_OUT_EN();
 			PWM_CL_OUT_EN();
 			break ;		

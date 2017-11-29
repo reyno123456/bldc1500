@@ -362,23 +362,23 @@ void bldc_open_loop(void)
 	for (i = 0; i < 10; i++)
 	{
 		bldc_one_loop(100, 15);
-	}
-
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(200, 4);
-	}
-
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(200, 8);
-	}
+	}	
+/*
 while(1)
 {
 	for (i = 0; i < 10; i++)
 	{
-		bldc_one_loop(200, 8);
+		bldc_one_loop(200, 3);
 	}
+}
+*/
+
+while(1)
+{
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(100, 8);
+	}	
 }
 	for (i = 0; i < 100; i++)
 	{
@@ -485,7 +485,7 @@ void main(void)
 	Init_Clk();
 	Init_Io();
 	memset(&tBC_Param, 0, sizeof(tBC_Param));
-	Init_Timer1_PWM(2400, TIM1_DIV2);  // 8k
+	Init_Timer1_PWM(2400, 8);  // 8k
 	Init_ADC();
 	//init_timer2();
 /*

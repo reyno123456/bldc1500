@@ -631,71 +631,93 @@ void  AutoRunOne(void)
 //***************************************/
 void BLDC_RUN_ONESTEP(uint8 STEP)
 {
-	//TIM1->CNTRH = 0 ;  //计数器清0
-	//TIM1->CNTRL = 0 ;
+	TIM1->CNTRH = 0 ;  //计数器清0
+	TIM1->CNTRL = 0 ;
 	
 	PWM_AL_OUT_DIS();
 	PWM_BL_OUT_DIS();
 	PWM_CL_OUT_DIS();
 
+	PWM_AH_OUT_DIS();
+	PWM_BH_OUT_DIS();
+	PWM_CH_OUT_DIS();
+
 	switch(STEP)
 	{
 		case 1 : // AB
+			TIM1->CCMR1 =0x6c; 
+			TIM1->CCMR2 =0; 
+			TIM1->CCMR3 =0; 
 			PWM_AH_OUT_EN();
 			PWM_AL_OUT_EN();		// reyno added
 
-			PWM_BH_OUT_DIS();
+			//PWM_BH_OUT_DIS();
 			CNT_BL_OUT_EN();
 
-			PWM_CH_OUT_DIS();
+			//PWM_CH_OUT_DIS();
 			CNT_CL_OUT_DIS();
 			break ;
 		case 2 :	//AC
 			PWM_AH_OUT_EN();
 			PWM_AL_OUT_EN();		// reyno added
+			TIM1->CCMR1 =0x6c; 
+			TIM1->CCMR2 =0; 
+			TIM1->CCMR3 =0; 
 
-			PWM_BH_OUT_DIS();
+			//PWM_BH_OUT_DIS();
 			CNT_BL_OUT_DIS();
 
-			PWM_CH_OUT_DIS();
+			//PWM_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
 		case 3 : //BC
-			PWM_AH_OUT_DIS();
+			TIM1->CCMR1 =0; 
+			TIM1->CCMR2 =0x6c; 
+			TIM1->CCMR3 =0; 
+			//PWM_AH_OUT_DIS();
 			CNT_AL_OUT_DIS();		// reyno added
 
 			PWM_BH_OUT_EN();
 			PWM_BL_OUT_EN();
 
-			PWM_CH_OUT_DIS();
+			//PWM_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 
 			break ;
 		case 4 ://BA
-			PWM_AH_OUT_DIS();
+			TIM1->CCMR1 =0; 
+			TIM1->CCMR2 =0x6c; 
+			TIM1->CCMR3 =0; 
+			//PWM_AH_OUT_DIS();
 			CNT_AL_OUT_EN();		// reyno added
 
 			PWM_BH_OUT_EN();
 			PWM_BL_OUT_EN();
 
-			PWM_CH_OUT_DIS();
+			//PWM_CH_OUT_DIS();
 			CNT_CL_OUT_DIS();
 			break ;
 		case 5 ://CA
-			PWM_AH_OUT_DIS();
+			TIM1->CCMR1 =0; 
+			TIM1->CCMR2 =0; 
+			TIM1->CCMR3 =0x6c; 
+			//PWM_AH_OUT_DIS();
 			CNT_AL_OUT_EN();		// reyno added
 
-			PWM_BH_OUT_DIS();
+			//PWM_BH_OUT_DIS();
 			CNT_BL_OUT_DIS();
 
 			PWM_CH_OUT_EN();
 			PWM_CL_OUT_EN();
 			break ;
 		case 6 :	//CB
-			PWM_AH_OUT_DIS();
+			TIM1->CCMR1 =0; 
+			TIM1->CCMR2 =0; 
+			TIM1->CCMR3 =0x6c; 
+			//PWM_AH_OUT_DIS();
 			CNT_AL_OUT_DIS();		// reyno added
 
-			PWM_BH_OUT_DIS();
+			//PWM_BH_OUT_DIS();
 			CNT_BL_OUT_EN();
 
 			PWM_CH_OUT_EN();

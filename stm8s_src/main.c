@@ -354,16 +354,13 @@ void bldc_open_loop(void)
 	bldc_one_loop(60, 30);
 	bldc_one_loop(70, 20);
 */
+while(1)
+{
 	for (i = 0; i < 10; i++)
 	{
-		bldc_one_loop(70, 28);
-	}
-			
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(100, 15);
+		bldc_one_loop(50, 20);
 	}	
-
+}
 	for (i = 0; i < 10; i++)
 	{
 		bldc_one_loop(100, 3);

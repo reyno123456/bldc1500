@@ -393,10 +393,10 @@
 1010  0217 5f            	clrw	x
 1011  0218 1f03          	ldw	(OFST-1,sp),x
 1012  021a               L353:
-1013                     ; 363 		bldc_one_loop(100, 6);
-1015  021a ae0006        	ldw	x,#6
+1013                     ; 363 		bldc_one_loop(70, 20);
+1015  021a ae0014        	ldw	x,#20
 1016  021d 89            	pushw	x
-1017  021e ae0064        	ldw	x,#100
+1017  021e ae0046        	ldw	x,#70
 1018  0221 ad8a          	call	_bldc_one_loop
 1020  0223 85            	popw	x
 1021                     ; 361 	for (i = 0; i < 10; i++)
@@ -407,103 +407,103 @@
 1029  022d a3000a        	cpw	x,#10
 1030  0230 25e8          	jrult	L353
 1032  0232 20e3          	jra	L743
-1057                     ; 465 static void AppStopToAlignment(void)
-1057                     ; 466 {
+1057                     ; 466 static void AppStopToAlignment(void)
+1057                     ; 467 {
 1058                     	switch	.text
 1059  0234               L3_AppStopToAlignment:
-1063                     ; 467 	Timer1_PWM_Value(400);
+1063                     ; 468 	Timer1_PWM_Value(400);
 1065  0234 ae0190        	ldw	x,#400
 1066  0237 cd0000        	call	_Timer1_PWM_Value
-1068                     ; 468 	PWM_AH_OUT_DIS();
+1068                     ; 469 	PWM_AH_OUT_DIS();
 1070  023a 7211525c      	bres	21084,#0
-1071                     ; 469 	PWM_BH_OUT_DIS();
+1071                     ; 470 	PWM_BH_OUT_DIS();
 1073  023e 7219525c      	bres	21084,#4
-1074                     ; 470 	PWM_CH_OUT_EN();
+1074                     ; 471 	PWM_CH_OUT_EN();
 1076  0242 7210525d      	bset	21085,#0
-1077                     ; 471 	CNT_AL_OUT_EN();
+1077                     ; 472 	CNT_AL_OUT_EN();
 1079  0246 72105005      	bset	20485,#0
-1080                     ; 472 	CNT_BL_OUT_EN();
+1080                     ; 473 	CNT_BL_OUT_EN();
 1082  024a 72125005      	bset	20485,#1
-1083                     ; 473 	CNT_CL_OUT_DIS();
+1083                     ; 474 	CNT_CL_OUT_DIS();
 1085  024e 72155005      	bres	20485,#2
-1086                     ; 475 	delay_ms(100);
+1086                     ; 476 	delay_ms(100);
 1088  0252 ae0064        	ldw	x,#100
 1089  0255 cd0184        	call	_delay_ms
-1091                     ; 477 	Timer1_PWM_Value(50);
+1091                     ; 478 	Timer1_PWM_Value(50);
 1093  0258 ae0032        	ldw	x,#50
 1094  025b cd0000        	call	_Timer1_PWM_Value
-1096                     ; 478 	PWM_AH_OUT_DIS();
+1096                     ; 479 	PWM_AH_OUT_DIS();
 1098  025e 7211525c      	bres	21084,#0
-1099                     ; 479 	PWM_BH_OUT_DIS();
+1099                     ; 480 	PWM_BH_OUT_DIS();
 1101  0262 7219525c      	bres	21084,#4
-1102                     ; 480 	PWM_CH_OUT_DIS();
+1102                     ; 481 	PWM_CH_OUT_DIS();
 1104  0266 7211525d      	bres	21085,#0
-1105                     ; 481 	CNT_AL_OUT_DIS();
+1105                     ; 482 	CNT_AL_OUT_DIS();
 1107  026a 72115005      	bres	20485,#0
-1108                     ; 482 	CNT_BL_OUT_DIS();
+1108                     ; 483 	CNT_BL_OUT_DIS();
 1110  026e 72135005      	bres	20485,#1
-1111                     ; 483 	CNT_CL_OUT_DIS();	
+1111                     ; 484 	CNT_CL_OUT_DIS();	
 1113  0272 72155005      	bres	20485,#2
-1114                     ; 484 }
+1114                     ; 485 }
 1117  0276 81            	ret
 1120                     	bsct
 1121  0003               L173_flag:
 1122  0003 0000          	dc.w	0
-1169                     ; 486 void main(void)
-1169                     ; 487 {
+1169                     ; 487 void main(void)
+1169                     ; 488 {
 1170                     	switch	.text
 1171  0277               _main:
-1175                     ; 489 	_asm("sim");
+1175                     ; 490 	_asm("sim");
 1178  0277 9b            sim
-1180                     ; 491 	Init_Clk();
+1180                     ; 492 	Init_Clk();
 1182  0278 cd0000        	call	_Init_Clk
-1184                     ; 492 	Init_Io();
+1184                     ; 493 	Init_Io();
 1186  027b cd008a        	call	_Init_Io
-1188                     ; 493 	memset(&tBC_Param, 0, sizeof(tBC_Param));
+1188                     ; 494 	memset(&tBC_Param, 0, sizeof(tBC_Param));
 1190  027e ae002e        	ldw	x,#46
 1191  0281               L04:
 1192  0281 6fff          	clr	(_tBC_Param-1,x)
 1193  0283 5a            	decw	x
 1194  0284 26fb          	jrne	L04
-1195                     ; 494 	Init_Timer1_PWM(2400, 2);  // 8k
-1197  0286 ae0002        	ldw	x,#2
+1195                     ; 495 	Init_Timer1_PWM(1000, 1);  // 8k
+1197  0286 ae0001        	ldw	x,#1
 1198  0289 89            	pushw	x
-1199  028a ae0960        	ldw	x,#2400
+1199  028a ae03e8        	ldw	x,#1000
 1200  028d cd0005        	call	_Init_Timer1_PWM
 1202  0290 85            	popw	x
-1203                     ; 495 	Init_ADC();
+1203                     ; 496 	Init_ADC();
 1205  0291 cd00d3        	call	_Init_ADC
-1207                     ; 511 	_asm("rim");
+1207                     ; 512 	_asm("rim");
 1210  0294 9a            rim
-1212                     ; 512 	Timer1_PWM_Value(50);
+1212                     ; 513 	Timer1_PWM_Value(50);
 1214  0295 ae0032        	ldw	x,#50
 1215  0298 cd0000        	call	_Timer1_PWM_Value
-1217                     ; 513 	AppStopToAlignment();
+1217                     ; 514 	AppStopToAlignment();
 1219  029b ad97          	call	L3_AppStopToAlignment
-1221                     ; 514 	bldc_open_loop();
+1221                     ; 515 	bldc_open_loop();
 1223  029d cd01ca        	call	_bldc_open_loop
 1225  02a0               L114:
-1226                     ; 546 		if (tBC_Param.usTick1ms & 0x01)
+1226                     ; 547 		if (tBC_Param.usTick1ms & 0x01)
 1228  02a0 b618          	ld	a,_tBC_Param+24
 1229  02a2 a501          	bcp	a,#1
 1230  02a4 2708          	jreq	L514
-1231                     ; 548 			Run_Ctl();
+1231                     ; 549 			Run_Ctl();
 1233  02a6 cd0000        	call	_Run_Ctl
-1235                     ; 549 			SpeedRefAccDec();
+1235                     ; 550 			SpeedRefAccDec();
 1237  02a9 cd0000        	call	_SpeedRefAccDec
 1240  02ac 20f2          	jra	L114
 1241  02ae               L514:
-1242                     ; 551 		else if (tBC_Param.usTick1ms & 0x02)
+1242                     ; 552 		else if (tBC_Param.usTick1ms & 0x02)
 1244  02ae b618          	ld	a,_tBC_Param+24
 1245  02b0 a502          	bcp	a,#2
 1246  02b2 2765          	jreq	L124
-1247                     ; 553 			if (BldcStatus == STATUS_STOP)
+1247                     ; 554 			if (BldcStatus == STATUS_STOP)
 1249  02b4 3d08          	tnz	_tBC_Param+8
 1250  02b6 2618          	jrne	L324
-1251                     ; 555 				AdcSwitch(ADC_BUS_CHANNEL);
+1251                     ; 556 				AdcSwitch(ADC_BUS_CHANNEL);
 1253  02b8 a608          	ld	a,#8
 1254  02ba cd0000        	call	_AdcSwitch
-1256                     ; 556 				tBC_Param.usAD_DCbus = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
+1256                     ; 557 				tBC_Param.usAD_DCbus = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
 1258  02bd c65404        	ld	a,21508
 1259  02c0 5f            	clrw	x
 1260  02c1 97            	ld	xl,a
@@ -518,7 +518,7 @@
 1269  02cd 9f            	ld	a,xl
 1270  02ce b719          	ld	_tBC_Param+25,a
 1271  02d0               L324:
-1272                     ; 558 			FILTER_LP(tBC_Param.lDCbusVoltAcc, tBC_Param.usAD_DCbus, 4);
+1272                     ; 559 			FILTER_LP(tBC_Param.lDCbusVoltAcc, tBC_Param.usAD_DCbus, 4);
 1274  02d0 be19          	ldw	x,_tBC_Param+25
 1275  02d2 cd0000        	call	c_uitolx
 1277  02d5 a610          	ld	a,#16
@@ -529,43 +529,43 @@
 1284  02e2 cd0000        	call	c_lrsh
 1286  02e5 ae001d        	ldw	x,#_tBC_Param+29
 1287  02e8 cd0000        	call	c_lgadd
-1289                     ; 559 			tBC_Param.usDCbusVolt = tBC_Param.lDCbusVoltAcc>>16;
+1289                     ; 560 			tBC_Param.usDCbusVolt = tBC_Param.lDCbusVoltAcc>>16;
 1292  02eb be1d          	ldw	x,_tBC_Param+29
 1293  02ed bf1b          	ldw	_tBC_Param+27,x
-1294                     ; 561 			if (tBC_Param.usDCbusVolt > 930)  // 410V นýัน
+1294                     ; 562 			if (tBC_Param.usDCbusVolt > 930)  // 410V นýัน
 1296  02ef be1b          	ldw	x,_tBC_Param+27
 1297  02f1 a303a3        	cpw	x,#931
 1298  02f4 2506          	jrult	L524
-1299                     ; 563 				Error_code.bit.OverVoltage = 1;
+1299                     ; 564 				Error_code.bit.OverVoltage = 1;
 1301  02f6 72160000      	bset	_Error_code,#3
 1303  02fa 2018          	jra	L724
 1304  02fc               L524:
-1305                     ; 565 			else if (tBC_Param.usDCbusVolt < 453)  // 200V วทัน 
+1305                     ; 566 			else if (tBC_Param.usDCbusVolt < 453)  // 200V วทัน 
 1307  02fc be1b          	ldw	x,_tBC_Param+27
 1308  02fe a301c5        	cpw	x,#453
 1309  0301 2406          	jruge	L134
-1310                     ; 567 				if (BldcStatus != STATUS_STOP)
+1310                     ; 568 				if (BldcStatus != STATUS_STOP)
 1312  0303 3d08          	tnz	_tBC_Param+8
-1313                     ; 571 				tBC_Param.ucPowerOn = 0;
+1313                     ; 572 				tBC_Param.ucPowerOn = 0;
 1315  0305 3f2b          	clr	_tBC_Param+43
 1317  0307 200b          	jra	L724
 1318  0309               L134:
-1319                     ; 573 			else if (tBC_Param.usDCbusVolt > 470)
+1319                     ; 574 			else if (tBC_Param.usDCbusVolt > 470)
 1321  0309 be1b          	ldw	x,_tBC_Param+27
 1322  030b a301d7        	cpw	x,#471
 1323  030e 2504          	jrult	L724
-1324                     ; 575 				tBC_Param.ucPowerOn = 1;
+1324                     ; 576 				tBC_Param.ucPowerOn = 1;
 1326  0310 3501002b      	mov	_tBC_Param+43,#1
 1327  0314               L724:
-1328                     ; 578 			Key_Check();
+1328                     ; 579 			Key_Check();
 1330  0314 cd0000        	call	_Key_Check
 1333  0317 2087          	jra	L114
 1334  0319               L124:
-1335                     ; 582 			Led_Light();
+1335                     ; 583 			Led_Light();
 1337  0319 cd0000        	call	_Led_Light
 1339  031c 2082          	jra	L114
-1374                     ; 596 void assert_failed(u8* file, u32 line)
-1374                     ; 597 { 
+1374                     ; 597 void assert_failed(u8* file, u32 line)
+1374                     ; 598 { 
 1375                     	switch	.text
 1376  031e               _assert_failed:
 1380  031e               L164:

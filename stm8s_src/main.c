@@ -360,7 +360,8 @@ while(1)
 {
 	for (i = 0; i < 10; i++)
 	{
-		bldc_one_loop(100, 6);
+		bldc_one_loop(70, 20);
+		//bldc_one_loop(10, 100);
 	}	
 }
 	for (i = 0; i < 10; i++)
@@ -491,7 +492,7 @@ void main(void)
 	Init_Clk();
 	Init_Io();
 	memset(&tBC_Param, 0, sizeof(tBC_Param));
-	Init_Timer1_PWM(2400, 2);  // 8k
+	Init_Timer1_PWM(1000, 1);  // 8k
 	Init_ADC();
 	//init_timer2();
 /*

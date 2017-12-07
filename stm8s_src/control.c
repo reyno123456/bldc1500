@@ -667,7 +667,7 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
-		case 3 : //BC
+		case 5 : //BC
 			TIM1->CCMR1 =0; 
 			TIM1->CCMR2 =0x6c; 
 			TIM1->CCMR3 =0; 
@@ -684,7 +684,7 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
-		case 4 ://BA
+		case 6 ://BA
 			PWM_AH_OUT_DIS();
 			PWM_AL_OUT_DIS();		// reyno added
 			CNT_AH_OUT_DIS();		// reyno added
@@ -698,7 +698,7 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_DIS();
 			break ;
-		case 5 ://CA
+		case 3 ://CA
 			TIM1->CCMR1 =0; 
 			TIM1->CCMR2 =0; 
 			TIM1->CCMR3 =0x6c; 
@@ -716,7 +716,7 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			PWM_CH_OUT_EN();
 			PWM_CL_OUT_EN();
 			break ;
-		case 6 :	//CB
+		case 4 :	//CB
 			PWM_AH_OUT_DIS();
 			PWM_AL_OUT_DIS();
 			CNT_AH_OUT_DIS();		// reyno added

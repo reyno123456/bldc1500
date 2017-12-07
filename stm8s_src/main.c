@@ -106,6 +106,7 @@ void Init_Timer1_PWM (uint16 Tcon,uint16 Pscr)
 	//TIM1->BKR = (TIM1_BREAKPOLARITY_LOW|TIM1_BREAK_ENABLE|TIM1_OSSISTATE_ENABLE|TIM1_LOCKLEVEL_2);
 	//TIM1->BKR = 0x08;
 	TIM1->BKR |= TIM1_BKR_MOE;
+	TIM1->DTR = 0x10; //  ËÀÇøÊ±¼ä 0.125us *TIM1_DTR
 
 	//enable break interrupt
 	//TIM1->IER |= BIT7;
@@ -343,9 +344,10 @@ void bldc_open_loop(void)
 	for (duty = 1; duty < 120; ms--)
 	{
 		bldc_one_loop(duty, ms);
+		duty++;
 	}
 */
-/*
+
 	bldc_one_loop(10, 100);
 	bldc_one_loop(20, 80);
 	bldc_one_loop(30, 60);
@@ -353,7 +355,7 @@ void bldc_open_loop(void)
 	bldc_one_loop(50, 40);
 	bldc_one_loop(60, 30);
 	bldc_one_loop(70, 20);
-*/
+
 while(1)
 {
 	for (i = 0; i < 10; i++)
@@ -364,16 +366,21 @@ while(1)
 	for (i = 0; i < 10; i++)
 	{
 		bldc_one_loop(100, 3);
-	}	
-/*
+	}
+
+	for (i = 0; i < 10; i++)
+	{
+		bldc_one_loop(100, 5);
+	}
+
 while(1)
 {
 	for (i = 0; i < 10; i++)
 	{
-		bldc_one_loop(200, 3);
+		bldc_one_loop(100, 3);
 	}
 }
-*/
+
 while(1)
 {
 	for (i = 0; i < 10; i++)

@@ -667,76 +667,68 @@ void BLDC_RUN_ONESTEP(uint8 STEP)
 			CNT_CH_OUT_DIS();
 			CNT_CL_OUT_EN();
 			break ;
-		case 3 : //BC
-			TIM1->CCMR1 =0; 
-			TIM1->CCMR2 =0; 
-			TIM1->CCMR3 =0x6c; 
-			PWM_AH_OUT_DIS();
-			PWM_AL_OUT_DIS();		// reyno added
-			CNT_AH_OUT_DIS();		// reyno added
-			CNT_AL_OUT_EN();		// reyno added
-			
-			PWM_BH_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			CNT_BH_OUT_DIS();		// reyno added
-			CNT_BL_OUT_DIS();		// reyno added
-
-			PWM_CH_OUT_EN();
-			PWM_CL_OUT_EN();		// reyno added			
-			//CNT_CH_OUT_DIS();
-			//CNT_CL_OUT_EN();
-			break ;
-		case 4 ://BA
-			PWM_AH_OUT_DIS();
-			PWM_AL_OUT_DIS();		// reyno added
-			CNT_AH_OUT_DIS();		// reyno added
-			CNT_AL_OUT_DIS();		// reyno added
-
-			PWM_BH_OUT_DIS();
-			PWM_BL_OUT_DIS();
-			CNT_BH_OUT_DIS();		// reyno added
-			CNT_BL_OUT_EN();		// reyno added
-
-			PWM_CH_OUT_EN();
-			PWM_CL_OUT_EN();		// reyno added
-			//CNT_CH_OUT_DIS();
-			//CNT_CL_OUT_DIS();
-			break ;
-		case 5 ://CA
+		case 5 : //BC
 			TIM1->CCMR1 =0; 
 			TIM1->CCMR2 =0x6c; 
 			TIM1->CCMR3 =0; 
-
 			PWM_AH_OUT_DIS();
-			PWM_AL_OUT_DIS();
+			PWM_AL_OUT_DIS();		// reyno added
 			CNT_AH_OUT_DIS();		// reyno added
 			CNT_AL_OUT_DIS();		// reyno added
-
+			
 			PWM_BH_OUT_EN();
 			PWM_BL_OUT_EN();
-			//CNT_BH_OUT_DIS();
-			//CNT_BL_OUT_DIS();
 
 			PWM_CH_OUT_DIS();
-			PWM_CL_OUT_DIS();
-			CNT_CH_OUT_DIS();		// reyno added
-			CNT_CL_OUT_EN();		// reyno added
+			PWM_CL_OUT_DIS();		// reyno added			
+			CNT_CH_OUT_DIS();
+			CNT_CL_OUT_EN();
 			break ;
-		case 6 :	//CB
+		case 6 ://BA
 			PWM_AH_OUT_DIS();
-			PWM_AL_OUT_DIS();
+			PWM_AL_OUT_DIS();		// reyno added
 			CNT_AH_OUT_DIS();		// reyno added
 			CNT_AL_OUT_EN();		// reyno added
 
 			PWM_BH_OUT_EN();
 			PWM_BL_OUT_EN();
+
+			PWM_CH_OUT_DIS();
+			PWM_CL_OUT_DIS();		// reyno added
+			CNT_CH_OUT_DIS();
+			CNT_CL_OUT_DIS();
+			break ;
+		case 3 ://CA
+			TIM1->CCMR1 =0; 
+			TIM1->CCMR2 =0; 
+			TIM1->CCMR3 =0x6c; 
+
+			PWM_AH_OUT_DIS();
+			PWM_AL_OUT_DIS();
+			CNT_AH_OUT_DIS();		// reyno added
+			CNT_AL_OUT_EN();		// reyno added
+
+			PWM_BH_OUT_DIS();
+			PWM_BL_OUT_DIS();
+			CNT_BH_OUT_DIS();
+			CNT_BL_OUT_DIS();
+
+			PWM_CH_OUT_EN();
+			PWM_CL_OUT_EN();
+			break ;
+		case 4 :	//CB
+			PWM_AH_OUT_DIS();
+			PWM_AL_OUT_DIS();
+			CNT_AH_OUT_DIS();		// reyno added
+			CNT_AL_OUT_DIS();		// reyno added
+
+			PWM_BH_OUT_DIS();
+			PWM_BL_OUT_DIS();
 			CNT_BH_OUT_DIS();
 			CNT_BL_OUT_EN();
 
-			PWM_CH_OUT_DIS();
-			PWM_CL_OUT_DIS();
-			CNT_CH_OUT_DIS();		// reyno added
-			CNT_CL_OUT_DIS();		// reyno added
+			PWM_CH_OUT_EN();
+			PWM_CL_OUT_EN();
 			break ;		
 		default : 	
 			break ;

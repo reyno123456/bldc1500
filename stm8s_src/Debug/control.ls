@@ -126,11 +126,11 @@
  285                     	switch	.text
  286  0061               _OffSixPin:
  290                     ; 75 	CNT_AL_OUT_DIS();
- 292  0061 72105005      	bset	20485,#0
+ 292  0061 72115005      	bres	20485,#0
  293                     ; 76 	CNT_BL_OUT_DIS();
- 295  0065 72125005      	bset	20485,#1
+ 295  0065 72135005      	bres	20485,#1
  296                     ; 77 	CNT_CL_OUT_DIS();
- 298  0069 72145005      	bset	20485,#2
+ 298  0069 72155005      	bres	20485,#2
  299                     ; 78 	PWM_AH_OUT_DIS();
  301  006d 7211525c      	bres	21084,#0
  302                     ; 79 	PWM_BH_OUT_DIS();
@@ -150,11 +150,11 @@
  346                     ; 94 	PWM_CH_OUT_DIS();
  348  0082 7211525d      	bres	21085,#0
  349                     ; 95 	CNT_AL_OUT_EN();
- 351  0086 72115005      	bres	20485,#0
+ 351  0086 72105005      	bset	20485,#0
  352                     ; 96 	CNT_BL_OUT_EN();
- 354  008a 72135005      	bres	20485,#1
+ 354  008a 72125005      	bset	20485,#1
  355                     ; 97 	CNT_CL_OUT_EN();									
- 357  008e 72155005      	bres	20485,#2
+ 357  008e 72145005      	bset	20485,#2
  358                     ; 98 }
  361  0092 81            	ret
  395                     ; 101 void Timer1_CCR4_Value(uint16 InValue)
@@ -391,22 +391,22 @@
  854  01ae a30014        	cpw	x,#20
  855  01b1 240e          	jruge	L713
  856                     ; 259 			CNT_AL_OUT_EN();
- 858  01b3 72115005      	bres	20485,#0
+ 858  01b3 72105005      	bset	20485,#0
  859                     ; 260 			CNT_BL_OUT_EN();
- 861  01b7 72135005      	bres	20485,#1
+ 861  01b7 72125005      	bset	20485,#1
  862                     ; 261 			CNT_CL_OUT_EN();
- 864  01bb 72155005      	bres	20485,#2
+ 864  01bb 72145005      	bset	20485,#2
  866  01bf 2049          	jra	L113
  867  01c1               L713:
  868                     ; 265 			usChargeCnt = 0;
  870  01c1 5f            	clrw	x
  871  01c2 bf0e          	ldw	L752_usChargeCnt,x
  872                     ; 266 			CNT_AL_OUT_DIS();
- 874  01c4 72105005      	bset	20485,#0
+ 874  01c4 72115005      	bres	20485,#0
  875                     ; 267 			CNT_BL_OUT_DIS();
- 877  01c8 72125005      	bset	20485,#1
+ 877  01c8 72135005      	bres	20485,#1
  878                     ; 268 			CNT_CL_OUT_DIS();
- 880  01cc 72145005      	bset	20485,#2
+ 880  01cc 72155005      	bres	20485,#2
  881                     ; 270 			TIM1_BREAK_ENB();
  883  01d0 7218526d      	bset	21101,#4
  884                     ; 271 			TIM1->SR1 &= (u8)(~BIT7);
@@ -988,155 +988,243 @@
 1848                     ; 635 	TIM1->CNTRL = 0 ;
 1850  047a 725f525f      	clr	21087
 1851                     ; 637 	switch(STEP)
-1854                     ; 687 		default : 	
-1854                     ; 688 			break ;
+1854                     ; 741 		default : 	
+1854                     ; 742 			break ;
 1855  047e 4a            	dec	a
-1856  047f 2715          	jreq	L346
+1856  047f 271f          	jreq	L346
 1857  0481 4a            	dec	a
-1858  0482 272d          	jreq	L546
+1858  0482 2758          	jreq	L546
 1859  0484 4a            	dec	a
-1860  0485 2744          	jreq	L746
-1861  0487 4a            	dec	a
-1862  0488 275b          	jreq	L156
-1863  048a 4a            	dec	a
-1864  048b 2772          	jreq	L356
-1865  048d 4a            	dec	a
-1866  048e 2603cc0519    	jreq	L556
-1867  0493 cc0531        	jra	L107
-1868  0496               L346:
-1869                     ; 639 		case 1 : // AB
-1869                     ; 640 			PWM_AH_OUT_EN();
-1871  0496 7210525c      	bset	21084,#0
-1872                     ; 641 			PWM_BH_OUT_DIS();
-1874  049a 7219525c      	bres	21084,#4
-1875                     ; 642 			PWM_CH_OUT_DIS();
-1877  049e 7211525d      	bres	21085,#0
-1878                     ; 643 			CNT_AL_OUT_DIS();
-1880  04a2 72105005      	bset	20485,#0
-1881                     ; 644 			CNT_BL_OUT_EN();
-1883  04a6 72135005      	bres	20485,#1
-1884                     ; 645 			CNT_CL_OUT_DIS();
-1886  04aa 72145005      	bset	20485,#2
-1887                     ; 646 			break ;
-1889  04ae cc0531        	jra	L107
-1890  04b1               L546:
-1891                     ; 647 		case 2 :	//AC
-1891                     ; 648 			PWM_AH_OUT_EN();
-1893  04b1 7210525c      	bset	21084,#0
-1894                     ; 649 			PWM_BH_OUT_DIS();
-1896  04b5 7219525c      	bres	21084,#4
-1897                     ; 650 			PWM_CH_OUT_DIS();
-1899  04b9 7211525d      	bres	21085,#0
-1900                     ; 651 			CNT_AL_OUT_DIS();
-1902  04bd 72105005      	bset	20485,#0
-1903                     ; 652 			CNT_BL_OUT_DIS();
-1905  04c1 72125005      	bset	20485,#1
-1906                     ; 653 			CNT_CL_OUT_EN();
-1908  04c5 72155005      	bres	20485,#2
-1909                     ; 654 			break ;
-1911  04c9 2066          	jra	L107
-1912  04cb               L746:
-1913                     ; 655 		case 3 : //BC
-1913                     ; 656 			PWM_AH_OUT_DIS();
-1915  04cb 7211525c      	bres	21084,#0
-1916                     ; 657 			PWM_BH_OUT_EN();
-1918  04cf 7218525c      	bset	21084,#4
-1919                     ; 658 			PWM_CH_OUT_DIS();
-1921  04d3 7211525d      	bres	21085,#0
-1922                     ; 659 			CNT_AL_OUT_DIS();
-1924  04d7 72105005      	bset	20485,#0
-1925                     ; 660 			CNT_BL_OUT_DIS();
-1927  04db 72125005      	bset	20485,#1
-1928                     ; 661 			CNT_CL_OUT_EN();
-1930  04df 72155005      	bres	20485,#2
-1931                     ; 662 			break ;
-1933  04e3 204c          	jra	L107
-1934  04e5               L156:
-1935                     ; 663 		case 4 ://BA
-1935                     ; 664 			PWM_AH_OUT_DIS();
-1937  04e5 7211525c      	bres	21084,#0
-1938                     ; 665 			PWM_BH_OUT_EN();
-1940  04e9 7218525c      	bset	21084,#4
-1941                     ; 666 			PWM_CH_OUT_DIS();
-1943  04ed 7211525d      	bres	21085,#0
-1944                     ; 667 			CNT_AL_OUT_EN();
-1946  04f1 72115005      	bres	20485,#0
-1947                     ; 668 			CNT_BL_OUT_DIS();
-1949  04f5 72125005      	bset	20485,#1
-1950                     ; 669 			CNT_CL_OUT_DIS();
-1952  04f9 72145005      	bset	20485,#2
-1953                     ; 670 			break ;
-1955  04fd 2032          	jra	L107
-1956  04ff               L356:
-1957                     ; 671 		case 5 ://CA
-1957                     ; 672 			PWM_AH_OUT_DIS();
-1959  04ff 7211525c      	bres	21084,#0
-1960                     ; 673 			PWM_BH_OUT_DIS();
-1962  0503 7219525c      	bres	21084,#4
-1963                     ; 674 			PWM_CH_OUT_EN();
-1965  0507 7210525d      	bset	21085,#0
-1966                     ; 675 			CNT_AL_OUT_EN();
-1968  050b 72115005      	bres	20485,#0
-1969                     ; 676 			CNT_BL_OUT_DIS();
-1971  050f 72125005      	bset	20485,#1
-1972                     ; 677 			CNT_CL_OUT_DIS();
-1974  0513 72145005      	bset	20485,#2
-1975                     ; 678 			break ;
-1977  0517 2018          	jra	L107
-1978  0519               L556:
-1979                     ; 679 		case 6 :	//CB
-1979                     ; 680 			PWM_AH_OUT_DIS();
-1981  0519 7211525c      	bres	21084,#0
-1982                     ; 681 			PWM_BH_OUT_DIS();
-1984  051d 7219525c      	bres	21084,#4
-1985                     ; 682 			PWM_CH_OUT_EN();
-1987  0521 7210525d      	bset	21085,#0
-1988                     ; 683 			CNT_AL_OUT_DIS();
-1990  0525 72105005      	bset	20485,#0
-1991                     ; 684 			CNT_BL_OUT_EN();
-1993  0529 72135005      	bres	20485,#1
-1994                     ; 685 			CNT_CL_OUT_DIS();
-1996  052d 72145005      	bset	20485,#2
-1997                     ; 686 			break ;		
-1999  0531               L756:
-2000                     ; 687 		default : 	
-2000                     ; 688 			break ;
-2002  0531               L107:
-2003                     ; 690 }
-2006  0531 81            	ret
-2419                     	xdef	_TstAndSwit
-2420                     	xdef	_Nop
-2421                     	xdef	_DISP_TAB
-2422                     	xdef	_Tab_StepZen
-2423                     	xdef	_Tab_StepFan
-2424                     	xdef	_KSTBL
-2425                     	xdef	_KSTB
-2426                     	xdef	_KLST
-2427                     	xdef	_BLDC_RUN_ONESTEP
-2428                     	xdef	_AutoRunOne
-2429                     	xdef	_BldcRun
-2430                     	xdef	_BldcLik
-2431                     	xdef	_Check_BEMF_Voltage
-2432                     	xdef	_SpeedRefAccDec
-2433                     	xdef	_CmdPwmSlow
-2434                     	xdef	_DISP_Display
-2435                     	xdef	_BldcBak
-2436                     	xdef	_Key_Check
-2437                     	xdef	_Run_Ctl
-2438                     	xdef	_Led_Light
-2439                     	xdef	_Timer1_PWM_Value
-2440                     	xdef	_Timer1_CCR4_Value
-2441                     	xdef	_AdcSwitch
-2442                     	xdef	_OffSixPin
-2443                     	switch	.ubsct
-2444  0000               _Error_code:
-2445  0000 00            	ds.b	1
-2446                     	xdef	_Error_code
-2447  0001               _tBC_Param:
-2448  0001 000000000000  	ds.b	46
-2449                     	xdef	_tBC_Param
-2450                     	xref	_SPI_GetFlagStatus
-2451                     	xref	_SPI_SendData
-2452                     	xref	_GPIO_WriteLow
-2453                     	xref	_GPIO_WriteHigh
-2473                     	end
+1860  0485 2603cc050c    	jreq	L746
+1861  048a 4a            	dec	a
+1862  048b 2603          	jrne	L201
+1863  048d cc0547        	jp	L156
+1864  0490               L201:
+1865  0490 4a            	dec	a
+1866  0491 2603          	jrne	L401
+1867  0493 cc0575        	jp	L356
+1868  0496               L401:
+1869  0496 4a            	dec	a
+1870  0497 2603          	jrne	L601
+1871  0499 cc05af        	jp	L556
+1872  049c               L601:
+1873  049c ace305e3      	jpf	L107
+1874  04a0               L346:
+1875                     ; 639 		case 1 : // AB
+1875                     ; 640 			TIM1->CCMR1 =0x6c; 
+1877  04a0 356c5258      	mov	21080,#108
+1878                     ; 641 			TIM1->CCMR2 =0; 
+1880  04a4 725f5259      	clr	21081
+1881                     ; 642 			TIM1->CCMR3 =0; 
+1883  04a8 725f525a      	clr	21082
+1884                     ; 643 			PWM_AH_OUT_EN();
+1886  04ac 7210525c      	bset	21084,#0
+1887                     ; 644 			PWM_AL_OUT_EN();		// reyno added
+1889  04b0 c6525c        	ld	a,21084
+1890  04b3 aa0c          	or	a,#12
+1891  04b5 c7525c        	ld	21084,a
+1892                     ; 646 			PWM_BH_OUT_DIS();
+1894  04b8 7219525c      	bres	21084,#4
+1895                     ; 647 			PWM_BL_OUT_DIS();		// reyno added			
+1897  04bc 721d525c      	bres	21084,#6
+1898                     ; 648 			CNT_BH_OUT_DIS();
+1900  04c0 7215500a      	bres	20490,#2
+1901                     ; 649 			CNT_BL_OUT_EN();
+1903  04c4 72125005      	bset	20485,#1
+1904                     ; 651 			PWM_CH_OUT_DIS();
+1906  04c8 7211525d      	bres	21085,#0
+1907                     ; 652 			PWM_CL_OUT_DIS();		// reyno added
+1909  04cc 7215525d      	bres	21085,#2
+1910                     ; 653 			CNT_CH_OUT_DIS();
+1912  04d0 7217500a      	bres	20490,#3
+1913                     ; 654 			CNT_CL_OUT_DIS();
+1915  04d4 72155005      	bres	20485,#2
+1916                     ; 655 			break ;
+1918  04d8 ace305e3      	jpf	L107
+1919  04dc               L546:
+1920                     ; 656 		case 2 :	//AC
+1920                     ; 657 			PWM_AH_OUT_EN();
+1922  04dc 7210525c      	bset	21084,#0
+1923                     ; 658 			PWM_AL_OUT_EN();		// reyno added
+1925  04e0 c6525c        	ld	a,21084
+1926  04e3 aa0c          	or	a,#12
+1927  04e5 c7525c        	ld	21084,a
+1928                     ; 660 			PWM_BH_OUT_DIS();
+1930  04e8 7219525c      	bres	21084,#4
+1931                     ; 661 			PWM_BL_OUT_DIS();		// reyno added
+1933  04ec 721d525c      	bres	21084,#6
+1934                     ; 662 			CNT_BH_OUT_DIS();
+1936  04f0 7215500a      	bres	20490,#2
+1937                     ; 663 			CNT_BL_OUT_DIS();
+1939  04f4 72135005      	bres	20485,#1
+1940                     ; 665 			PWM_CH_OUT_DIS();
+1942  04f8 7211525d      	bres	21085,#0
+1943                     ; 666 			PWM_CL_OUT_DIS();		// reyno added			
+1945  04fc 7215525d      	bres	21085,#2
+1946                     ; 667 			CNT_CH_OUT_DIS();
+1948  0500 7217500a      	bres	20490,#3
+1949                     ; 668 			CNT_CL_OUT_EN();
+1951  0504 72145005      	bset	20485,#2
+1952                     ; 669 			break ;
+1954  0508 ace305e3      	jpf	L107
+1955  050c               L746:
+1956                     ; 670 		case 3 : //BC
+1956                     ; 671 			TIM1->CCMR1 =0; 
+1958  050c 725f5258      	clr	21080
+1959                     ; 672 			TIM1->CCMR2 =0; 
+1961  0510 725f5259      	clr	21081
+1962                     ; 673 			TIM1->CCMR3 =0x6c; 
+1964  0514 356c525a      	mov	21082,#108
+1965                     ; 674 			PWM_AH_OUT_DIS();
+1967  0518 7211525c      	bres	21084,#0
+1968                     ; 675 			PWM_AL_OUT_DIS();		// reyno added
+1970  051c 7215525c      	bres	21084,#2
+1971                     ; 676 			CNT_AH_OUT_DIS();		// reyno added
+1973  0520 7213500a      	bres	20490,#1
+1974                     ; 677 			CNT_AL_OUT_EN();		// reyno added
+1976  0524 72105005      	bset	20485,#0
+1977                     ; 679 			PWM_BH_OUT_DIS();
+1979  0528 7219525c      	bres	21084,#4
+1980                     ; 680 			PWM_BL_OUT_DIS();
+1982  052c 721d525c      	bres	21084,#6
+1983                     ; 681 			CNT_BH_OUT_DIS();		// reyno added
+1985  0530 7215500a      	bres	20490,#2
+1986                     ; 682 			CNT_BL_OUT_DIS();		// reyno added
+1988  0534 72135005      	bres	20485,#1
+1989                     ; 684 			PWM_CH_OUT_EN();
+1991  0538 7210525d      	bset	21085,#0
+1992                     ; 685 			PWM_CL_OUT_EN();		// reyno added			
+1994  053c c6525d        	ld	a,21085
+1995  053f aa0c          	or	a,#12
+1996  0541 c7525d        	ld	21085,a
+1997                     ; 688 			break ;
+1999  0544 cc05e3        	jra	L107
+2000  0547               L156:
+2001                     ; 689 		case 4 ://BA
+2001                     ; 690 			PWM_AH_OUT_DIS();
+2003  0547 7211525c      	bres	21084,#0
+2004                     ; 691 			PWM_AL_OUT_DIS();		// reyno added
+2006  054b 7215525c      	bres	21084,#2
+2007                     ; 692 			CNT_AH_OUT_DIS();		// reyno added
+2009  054f 7213500a      	bres	20490,#1
+2010                     ; 693 			CNT_AL_OUT_DIS();		// reyno added
+2012  0553 72115005      	bres	20485,#0
+2013                     ; 695 			PWM_BH_OUT_DIS();
+2015  0557 7219525c      	bres	21084,#4
+2016                     ; 696 			PWM_BL_OUT_DIS();
+2018  055b 721d525c      	bres	21084,#6
+2019                     ; 697 			CNT_BH_OUT_DIS();		// reyno added
+2021  055f 7215500a      	bres	20490,#2
+2022                     ; 698 			CNT_BL_OUT_EN();		// reyno added
+2024  0563 72125005      	bset	20485,#1
+2025                     ; 700 			PWM_CH_OUT_EN();
+2027  0567 7210525d      	bset	21085,#0
+2028                     ; 701 			PWM_CL_OUT_EN();		// reyno added
+2030  056b c6525d        	ld	a,21085
+2031  056e aa0c          	or	a,#12
+2032  0570 c7525d        	ld	21085,a
+2033                     ; 704 			break ;
+2035  0573 206e          	jra	L107
+2036  0575               L356:
+2037                     ; 705 		case 5 ://CA
+2037                     ; 706 			TIM1->CCMR1 =0; 
+2039  0575 725f5258      	clr	21080
+2040                     ; 707 			TIM1->CCMR2 =0x6c; 
+2042  0579 356c5259      	mov	21081,#108
+2043                     ; 708 			TIM1->CCMR3 =0; 
+2045  057d 725f525a      	clr	21082
+2046                     ; 710 			PWM_AH_OUT_DIS();
+2048  0581 7211525c      	bres	21084,#0
+2049                     ; 711 			PWM_AL_OUT_DIS();
+2051  0585 7215525c      	bres	21084,#2
+2052                     ; 712 			CNT_AH_OUT_DIS();		// reyno added
+2054  0589 7213500a      	bres	20490,#1
+2055                     ; 713 			CNT_AL_OUT_DIS();		// reyno added
+2057  058d 72115005      	bres	20485,#0
+2058                     ; 715 			PWM_BH_OUT_EN();
+2060  0591 7218525c      	bset	21084,#4
+2061                     ; 716 			PWM_BL_OUT_EN();
+2063  0595 c6525c        	ld	a,21084
+2064  0598 aac0          	or	a,#192
+2065  059a c7525c        	ld	21084,a
+2066                     ; 720 			PWM_CH_OUT_DIS();
+2068  059d 7211525d      	bres	21085,#0
+2069                     ; 721 			PWM_CL_OUT_DIS();
+2071  05a1 7215525d      	bres	21085,#2
+2072                     ; 722 			CNT_CH_OUT_DIS();		// reyno added
+2074  05a5 7217500a      	bres	20490,#3
+2075                     ; 723 			CNT_CL_OUT_EN();		// reyno added
+2077  05a9 72145005      	bset	20485,#2
+2078                     ; 724 			break ;
+2080  05ad 2034          	jra	L107
+2081  05af               L556:
+2082                     ; 725 		case 6 :	//CB
+2082                     ; 726 			PWM_AH_OUT_DIS();
+2084  05af 7211525c      	bres	21084,#0
+2085                     ; 727 			PWM_AL_OUT_DIS();
+2087  05b3 7215525c      	bres	21084,#2
+2088                     ; 728 			CNT_AH_OUT_DIS();		// reyno added
+2090  05b7 7213500a      	bres	20490,#1
+2091                     ; 729 			CNT_AL_OUT_EN();		// reyno added
+2093  05bb 72105005      	bset	20485,#0
+2094                     ; 731 			PWM_BH_OUT_EN();
+2096  05bf 7218525c      	bset	21084,#4
+2097                     ; 732 			PWM_BL_OUT_EN();
+2099  05c3 c6525c        	ld	a,21084
+2100  05c6 aac0          	or	a,#192
+2101  05c8 c7525c        	ld	21084,a
+2102                     ; 733 			CNT_BH_OUT_DIS();
+2104  05cb 7215500a      	bres	20490,#2
+2105                     ; 734 			CNT_BL_OUT_EN();
+2107  05cf 72125005      	bset	20485,#1
+2108                     ; 736 			PWM_CH_OUT_DIS();
+2110  05d3 7211525d      	bres	21085,#0
+2111                     ; 737 			PWM_CL_OUT_DIS();
+2113  05d7 7215525d      	bres	21085,#2
+2114                     ; 738 			CNT_CH_OUT_DIS();		// reyno added
+2116  05db 7217500a      	bres	20490,#3
+2117                     ; 739 			CNT_CL_OUT_DIS();		// reyno added
+2119  05df 72155005      	bres	20485,#2
+2120                     ; 740 			break ;		
+2122  05e3               L756:
+2123                     ; 741 		default : 	
+2123                     ; 742 			break ;
+2125  05e3               L107:
+2126                     ; 744 }
+2129  05e3 81            	ret
+2542                     	xdef	_TstAndSwit
+2543                     	xdef	_Nop
+2544                     	xdef	_DISP_TAB
+2545                     	xdef	_Tab_StepZen
+2546                     	xdef	_Tab_StepFan
+2547                     	xdef	_KSTBL
+2548                     	xdef	_KSTB
+2549                     	xdef	_KLST
+2550                     	xdef	_BLDC_RUN_ONESTEP
+2551                     	xdef	_AutoRunOne
+2552                     	xdef	_BldcRun
+2553                     	xdef	_BldcLik
+2554                     	xdef	_Check_BEMF_Voltage
+2555                     	xdef	_SpeedRefAccDec
+2556                     	xdef	_CmdPwmSlow
+2557                     	xdef	_DISP_Display
+2558                     	xdef	_BldcBak
+2559                     	xdef	_Key_Check
+2560                     	xdef	_Run_Ctl
+2561                     	xdef	_Led_Light
+2562                     	xdef	_Timer1_PWM_Value
+2563                     	xdef	_Timer1_CCR4_Value
+2564                     	xdef	_AdcSwitch
+2565                     	xdef	_OffSixPin
+2566                     	switch	.ubsct
+2567  0000               _Error_code:
+2568  0000 00            	ds.b	1
+2569                     	xdef	_Error_code
+2570  0001               _tBC_Param:
+2571  0001 000000000000  	ds.b	46
+2572                     	xdef	_tBC_Param
+2573                     	xref	_SPI_GetFlagStatus
+2574                     	xref	_SPI_SendData
+2575                     	xref	_GPIO_WriteLow
+2576                     	xref	_GPIO_WriteHigh
+2596                     	end

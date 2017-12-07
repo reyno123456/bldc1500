@@ -323,7 +323,7 @@ void delay_ms(unsigned int ms)
 
 void bldc_one_loop(unsigned short duty, unsigned int ms)
 {
-	unsigned char flag = 1;
+	unsigned char flag;
 	Timer1_PWM_Value(duty);
 
 	for (flag = 1; flag <= 6; flag++)
@@ -360,7 +360,7 @@ while(1)
 {
 	for (i = 0; i < 10; i++)
 	{
-		bldc_one_loop(240, 8);
+		bldc_one_loop(100, 6);
 	}	
 }
 	for (i = 0; i < 10; i++)

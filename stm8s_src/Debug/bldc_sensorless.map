@@ -1,5 +1,5 @@
 
-Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Fri Dec 08 14:07:29 2017
+Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Fri Dec 08 14:49:17 2017
 
 
                                --------
@@ -16,8 +16,8 @@ start 00000053 end 00000053 length     0 segment .bit
 start 00000053 end 00000053 length     0 segment .share
 start 00000100 end 00000100 length     0 segment .data
 start 00000100 end 00000100 length     0 segment .bss
-start 00000000 end 00000767 length  1895 segment .info.
-start 00000000 end 0000a54f length 42319 segment .debug
+start 00000000 end 000007da length  2010 segment .info.
+start 00000000 end 0000a593 length 42387 segment .debug
 start 00008000 end 00008080 length   128 segment .const
 start 000080db end 000080e3 length     8 segment .init
 
@@ -89,65 +89,69 @@ start 00000011 end 0000001a length     9 section .bsct
 start 00009c0e end 0000a429 length  2075 section .debug
 start 000003b4 end 00000424 length   112 section .info.
 
+Debug\application.o:
+start 0000a429 end 0000a46d length    68 section .debug
+start 00000424 end 00000497 length   115 section .info.
+
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lgadd.o:
 start 000092bb end 000092d2 length    23 section .text
-start 00000424 end 00000453 length    47 section .info.
+start 00000497 end 000004c6 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)llsh.o:
 start 000092d2 end 000092e1 length    15 section .text
-start 00000453 end 00000481 length    46 section .info.
+start 000004c6 end 000004f4 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lreg.o:
 start 00000049 end 0000004d length     4 section .ubsct
-start 00000481 end 000004af length    46 section .info.
+start 000004f4 end 00000522 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lrsh.o:
 start 000092e1 end 000092f0 length    15 section .text
-start 000004af end 000004dd length    46 section .info.
+start 00000522 end 00000550 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lsub.o:
 start 000092f0 end 00009308 length    24 section .text
-start 000004dd end 0000050b length    46 section .info.
+start 00000550 end 0000057e length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)ltor.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 0000050b end 00000539 length    46 section .info.
+start 0000057e end 000005ac length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)ludiv.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 00000539 end 00000568 length    47 section .info.
+start 000005ac end 000005db length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)ldiv.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 00000568 end 00000596 length    46 section .info.
+start 000005db end 00000609 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lgneg.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 00000596 end 000005c5 length    47 section .info.
+start 00000609 end 00000638 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lneg.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 000005c5 end 000005f3 length    46 section .info.
+start 00000638 end 00000666 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)rtol.o:
 start ******** end ******** length     0 section .text *** removed ***
-start 000005f3 end 00000621 length    46 section .info.
+start 00000666 end 00000694 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)utolx.o:
 start 00009308 end 0000930f length     7 section .text
-start 00000621 end 00000650 length    47 section .info.
+start 00000694 end 000006c3 length    47 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)xreg.o:
 start 0000004d end 00000050 length     3 section .ubsct
-start 00000650 end 0000067e length    46 section .info.
+start 000006c3 end 000006f1 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)yreg.o:
 start 00000050 end 00000053 length     3 section .ubsct
-start 0000067e end 000006ac length    46 section .info.
+start 000006f1 end 0000071f length    46 section .info.
 
 Debug\stm8_interrupt_vector.o:
-start 0000a429 end 0000a54f length   294 section .debug
-start 000006ac end 00000729 length   125 section .info.
+start 0000a46d end 0000a593 length   294 section .debug
+start 0000071f end 0000079c length   125 section .info.
 start 00008000 end 00008080 length   128 section .const
 
 

@@ -843,4 +843,3 @@ void bldc_run_onestep(uint8 STEP)
 		}
 	}
 }
-

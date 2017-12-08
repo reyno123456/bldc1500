@@ -59,6 +59,7 @@ Release\stm8s_tim4.o
 Release\control.o
 Release\main.o
 Release\stm8s_it.o
+Release\application.o
 #<END OBJECT_FILES>
 
 

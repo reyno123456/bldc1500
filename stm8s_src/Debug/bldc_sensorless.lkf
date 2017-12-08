@@ -59,6 +59,7 @@ Debug\stm8s_tim4.o
 Debug\control.o
 Debug\main.o
 Debug\stm8s_it.o
+Debug\application.o
 #<END OBJECT_FILES>
 
 

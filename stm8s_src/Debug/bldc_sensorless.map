@@ -1,5 +1,5 @@
 
-Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Fri Dec 08 16:03:51 2017
+Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Fri Dec 08 18:58:44 2017
 
 
                                --------
@@ -749,13 +749,13 @@ _function_test                      000087b7   defined in Debug\application.o se
 _g_app_state                        00000000   defined in Debug\application.o section .bsct, initialized
                                                used in Debug\main.o
 _g_direction                        00000006   defined in Debug\control.o section .bsct, initialized
-_get_adc                            00009060   defined in Debug\main.o section .text
-_init_adc                           0000900b   defined in Debug\main.o section .text
+_get_adc                            00009088   defined in Debug\main.o section .text
+_init_adc                           00009033   defined in Debug\main.o section .text
 _init_clk                           00008f38   defined in Debug\main.o section .text
-_init_io                            00008fc2   defined in Debug\main.o section .text
+_init_io                            00008fea   defined in Debug\main.o section .text
 _init_timer1                        00008f3d   defined in Debug\main.o section .text
-_init_timer2                        0000907d   defined in Debug\main.o section .text
-_init_timer4                        00008fa2   defined in Debug\main.o section .text
+_init_timer2                        00008fa2   defined in Debug\main.o section .text
+_init_timer4                        00008fca   defined in Debug\main.o section .text
 _main                               000090a5   defined in Debug\main.o section .text
                                                used in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8
 _tBC_Param                          00000021   defined in Debug\control.o section .ubsct

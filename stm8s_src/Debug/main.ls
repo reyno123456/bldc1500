@@ -70,185 +70,185 @@
  182                     ; 170 }
  185  0068 85            	popw	x
  186  0069 81            	ret
- 229                     ; 178 void init_timer4(uint8 Tcon,uint8 Pscr)
- 229                     ; 179 {								
- 230                     	switch	.text
- 231  006a               _init_timer4:
- 235                     ; 180 	TIM4->IER = 0x00 ;		// 禁止中断
- 237  006a 725f5341      	clr	21313
- 238                     ; 181 	TIM4->EGR = 0x01 ;		// 允许产生更新事件
- 240  006e 35015343      	mov	21315,#1
- 241                     ; 182 	TIM4->PSCR = Pscr ;		// 计数器时钟=16MHZ/16=1M
- 243  0072 9f            	ld	a,xl
- 244  0073 c75345        	ld	21317,a
- 245                     ; 186 	TIM4->ARR = Tcon;			// 1U*20 = 20U   
- 247  0076 9e            	ld	a,xh
- 248  0077 c75346        	ld	21318,a
- 249                     ; 187 	TIM4->CNTR = 0;				// 设定计数器的初值
- 251  007a 725f5344      	clr	21316
- 252                     ; 191 	TIM4->CR1 |= 0 ;
- 254  007e c65340        	ld	a,21312
- 255                     ; 194 	TIM4->IER |= 0x01;
- 257  0081 72105341      	bset	21313,#0
- 258                     ; 195 	TIM4->CR1 |= 0x01;
- 260  0085 72105340      	bset	21312,#0
- 261                     ; 196 }
- 264  0089 81            	ret
- 287                     ; 204 void init_io(void)
- 287                     ; 205 {
- 288                     	switch	.text
- 289  008a               _init_io:
- 293                     ; 206 	GPIOA->DDR = 0b11111111;
- 295  008a 35ff5002      	mov	20482,#255
- 296                     ; 207 	GPIOA->CR1 = 0xFF;
- 298  008e 35ff5003      	mov	20483,#255
- 299                     ; 208 	GPIOA->CR2 = 0;
- 301  0092 725f5004      	clr	20484
- 302                     ; 210 	GPIOB->DDR = 0b00000111;   // UL,VL,WL, ADC
- 304  0096 35075007      	mov	20487,#7
- 305                     ; 211 	GPIOB->CR1 = 0b00000111;
- 307  009a 35075008      	mov	20488,#7
- 308                     ; 212 	GPIOB->CR2 = 0;
- 310  009e 725f5009      	clr	20489
- 311                     ; 214 	GPIOC->DDR = 0b11111111;   // NULL,AH,BH,CH,NONE,SCK,MOSI,MISO
- 313  00a2 35ff500c      	mov	20492,#255
- 314                     ; 215 	GPIOC->CR1 = 0b11111111;
- 316  00a6 35ff500d      	mov	20493,#255
- 317                     ; 216 	GPIOC->CR2 = 0;
- 319  00aa 725f500e      	clr	20494
- 320                     ; 218 	GPIOD->DDR = 0b11111101;   // NONE,SWIM,LED-ERR,LED-RUN,T1,T2,T3,T4
- 322  00ae 35fd5011      	mov	20497,#253
- 323                     ; 219 	GPIOD->CR1 = 0b11111101;
- 325  00b2 35fd5012      	mov	20498,#253
- 326                     ; 220 	GPIOD->CR2 = 0;
- 328  00b6 725f5013      	clr	20499
- 329                     ; 222 	GPIOE->DDR = 0b11110101;  // NONE,RUN,PWM-EN,BKIN,NULL,RCK,NULL,NULL
- 331  00ba 35f55016      	mov	20502,#245
- 332                     ; 223 	GPIOE->CR1 = 0b11110111;
- 334  00be 35f75017      	mov	20503,#247
- 335                     ; 224 	GPIOE->CR2 = 0;
- 337  00c2 725f5018      	clr	20504
- 338                     ; 226 	PWM_OUT_DIS();
- 340  00c6 72145014      	bset	20500,#2
- 341                     ; 231 	LED_ERROR_OFF();
- 343  00ca 7214500f      	bset	20495,#2
- 344                     ; 232 	LED_RUN_OFF();
- 346  00ce 7216500f      	bset	20495,#3
- 347                     ; 233 }
- 350  00d2 81            	ret
- 393                     ; 241 void init_adc( void )
- 393                     ; 242 {
- 394                     	switch	.text
- 395  00d3               _init_adc:
- 397  00d3 5203          	subw	sp,#3
- 398       00000003      OFST:	set	3
- 401                     ; 246 	ADC2->CR1 = 0;
- 403  00d5 725f5401      	clr	21505
- 404                     ; 249 	ADC2->CSR = PHASE_C_BEMF_ADC_CHAN;
- 406  00d9 35035400      	mov	21504,#3
- 407                     ; 251 	ADC_TDR_tmp = 0;
- 409  00dd 5f            	clrw	x
- 410  00de 1f02          	ldw	(OFST-1,sp),x
- 411                     ; 252 	ADC_TDR_tmp |= (u16)(1) << PHASE_A_BEMF_ADC_CHAN;
- 413  00e0 7b03          	ld	a,(OFST+0,sp)
- 414  00e2 aa20          	or	a,#32
- 415  00e4 6b03          	ld	(OFST+0,sp),a
- 416                     ; 253 	ADC_TDR_tmp |= (u16)(1) << PHASE_B_BEMF_ADC_CHAN;
- 418  00e6 7b03          	ld	a,(OFST+0,sp)
- 419  00e8 aa10          	or	a,#16
- 420  00ea 6b03          	ld	(OFST+0,sp),a
- 421                     ; 254 	ADC_TDR_tmp |= (u16)(1) << PHASE_C_BEMF_ADC_CHAN;
- 423  00ec 7b03          	ld	a,(OFST+0,sp)
- 424  00ee aa08          	or	a,#8
- 425  00f0 6b03          	ld	(OFST+0,sp),a
- 426                     ; 255 	ADC_TDR_tmp |= (u16)(1) << ADC_CURRENT_CHANNEL;
- 428  00f2 7b02          	ld	a,(OFST-1,sp)
- 429  00f4 aa02          	or	a,#2
- 430  00f6 6b02          	ld	(OFST-1,sp),a
- 431                     ; 256 	ADC_TDR_tmp |= (u16)(1) << ADC_BUS_CHANNEL;
- 433  00f8 7b02          	ld	a,(OFST-1,sp)
- 434  00fa aa01          	or	a,#1
- 435  00fc 6b02          	ld	(OFST-1,sp),a
- 436                     ; 257 	ADC_TDR_tmp |= (u16)(1) << PHASE_REF_ADC_CHAN;
- 438  00fe 7b03          	ld	a,(OFST+0,sp)
- 439  0100 aa80          	or	a,#128
- 440  0102 6b03          	ld	(OFST+0,sp),a
- 441                     ; 258 	ADC_TDR_tmp |= (u16)(1) << PHASE_FED_ADC_CHAN;
- 443  0104 7b03          	ld	a,(OFST+0,sp)
- 444  0106 aa40          	or	a,#64
- 445  0108 6b03          	ld	(OFST+0,sp),a
- 446                     ; 260 	ToCMPxH( ADC2->TDRH, ADC_TDR_tmp);
- 448  010a 35035406      	mov	21510,#3
- 449                     ; 261 	ToCMPxL( ADC2->TDRL, ADC_TDR_tmp);
- 451  010e 35f85407      	mov	21511,#248
- 452                     ; 264 	ADC2->CR1 |= BIT0;
- 454  0112 72105401      	bset	21505,#0
- 455                     ; 266 	value=30;
- 457  0116 a61e          	ld	a,#30
- 458  0118 6b01          	ld	(OFST-2,sp),a
- 460  011a               L321:
- 461                     ; 267 	while(value--);                    
- 463  011a 7b01          	ld	a,(OFST-2,sp)
- 464  011c 0a01          	dec	(OFST-2,sp)
- 465  011e 4d            	tnz	a
- 466  011f 26f9          	jrne	L321
- 467                     ; 269 	ADC2->CSR &= (u8)(~BIT7);
- 469  0121 721f5400      	bres	21504,#7
- 470                     ; 272 }
- 473  0125 5b03          	addw	sp,#3
- 474  0127 81            	ret
- 509                     ; 274 unsigned short get_adc(void)
- 509                     ; 275 {
- 510                     	switch	.text
- 511  0128               _get_adc:
- 513  0128 89            	pushw	x
- 514       00000002      OFST:	set	2
- 517                     ; 277 	AdcSwitch(PHASE_C_BEMF_ADC_CHAN);
- 519  0129 a603          	ld	a,#3
- 520  012b cd0000        	call	_AdcSwitch
- 522                     ; 278 	value = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
- 524  012e c65404        	ld	a,21508
- 525  0131 5f            	clrw	x
- 526  0132 97            	ld	xl,a
- 527  0133 58            	sllw	x
- 528  0134 58            	sllw	x
- 529  0135 01            	rrwa	x,a
- 530  0136 cb5405        	add	a,21509
- 531  0139 2401          	jrnc	L02
- 532  013b 5c            	incw	x
- 533  013c               L02:
- 534  013c 02            	rlwa	x,a
- 535  013d 1f01          	ldw	(OFST-1,sp),x
- 536  013f 01            	rrwa	x,a
- 537                     ; 279 	return value; 
- 539  0140 1e01          	ldw	x,(OFST-1,sp)
- 542  0142 5b02          	addw	sp,#2
- 543  0144 81            	ret
- 566                     ; 282 void init_timer2(void)
- 566                     ; 283 {								
- 567                     	switch	.text
- 568  0145               _init_timer2:
- 572                     ; 284 	TIM2->IER = 0x00 ;		// 禁止中断
- 574  0145 725f5301      	clr	21249
- 575                     ; 285 	TIM2->EGR = 0x01 ;		// 允许产生更新事件
- 577  0149 35015304      	mov	21252,#1
- 578                     ; 286 	TIM2->PSCR = 32768 ;		// 计数器时钟=16MHZ/16=1M
- 580  014d 3500530c      	mov	21260,#0
- 581                     ; 288 	TIM2->ARRH = 60;
- 583  0151 353c530d      	mov	21261,#60
- 584                     ; 289 	TIM2->ARRL = 200;
- 586  0155 35c8530e      	mov	21262,#200
- 587                     ; 291 	TIM2->CNTRH = 0;				// 设定计数器的初值
- 589  0159 725f530a      	clr	21258
- 590                     ; 292 	TIM2->CNTRL = 0;				// 设定计数器的初值												
- 592  015d 725f530b      	clr	21259
- 593                     ; 295 	TIM2->CR1 |= 0 ;
- 595  0161 c65300        	ld	a,21248
- 596                     ; 298 	TIM2->IER |= 0x01;
- 598  0164 72105301      	bset	21249,#0
- 599                     ; 299 	TIM2->CR1 |= 0x01;
- 601  0168 72105300      	bset	21248,#0
- 602                     ; 300 }
+ 209                     ; 172 void init_timer2(void)
+ 209                     ; 173 {								
+ 210                     	switch	.text
+ 211  006a               _init_timer2:
+ 215                     ; 174 	TIM2->IER = 0x00 ;		// 禁止中断
+ 217  006a 725f5301      	clr	21249
+ 218                     ; 175 	TIM2->EGR = 0x01 ;		// 允许产生更新事件
+ 220  006e 35015304      	mov	21252,#1
+ 221                     ; 176 	TIM2->PSCR = 32768 ;		// 计数器时钟=16MHZ/16=1M
+ 223  0072 3500530c      	mov	21260,#0
+ 224                     ; 178 	TIM2->ARRH = 60;
+ 226  0076 353c530d      	mov	21261,#60
+ 227                     ; 179 	TIM2->ARRL = 200;
+ 229  007a 35c8530e      	mov	21262,#200
+ 230                     ; 181 	TIM2->CNTRH = 0;				// 设定计数器的初值
+ 232  007e 725f530a      	clr	21258
+ 233                     ; 182 	TIM2->CNTRL = 0;				// 设定计数器的初值												
+ 235  0082 725f530b      	clr	21259
+ 236                     ; 185 	TIM2->CR1 |= 0 ;
+ 238  0086 c65300        	ld	a,21248
+ 239                     ; 188 	TIM2->IER |= 0x01;
+ 241  0089 72105301      	bset	21249,#0
+ 242                     ; 189 	TIM2->CR1 |= 0x01;
+ 244  008d 72105300      	bset	21248,#0
+ 245                     ; 190 }
+ 248  0091 81            	ret
+ 291                     ; 198 void init_timer4(uint8 Tcon,uint8 Pscr)
+ 291                     ; 199 {								
+ 292                     	switch	.text
+ 293  0092               _init_timer4:
+ 297                     ; 200 	TIM4->IER = 0x00 ;		// 禁止中断
+ 299  0092 725f5341      	clr	21313
+ 300                     ; 201 	TIM4->EGR = 0x01 ;		// 允许产生更新事件
+ 302  0096 35015343      	mov	21315,#1
+ 303                     ; 202 	TIM4->PSCR = Pscr ;		// 计数器时钟=16MHZ/16=1M
+ 305  009a 9f            	ld	a,xl
+ 306  009b c75345        	ld	21317,a
+ 307                     ; 206 	TIM4->ARR = Tcon;			// 1U*20 = 20U   
+ 309  009e 9e            	ld	a,xh
+ 310  009f c75346        	ld	21318,a
+ 311                     ; 207 	TIM4->CNTR = 0;				// 设定计数器的初值
+ 313  00a2 725f5344      	clr	21316
+ 314                     ; 211 	TIM4->CR1 |= 0 ;
+ 316  00a6 c65340        	ld	a,21312
+ 317                     ; 214 	TIM4->IER |= 0x01;
+ 319  00a9 72105341      	bset	21313,#0
+ 320                     ; 215 	TIM4->CR1 |= 0x01;
+ 322  00ad 72105340      	bset	21312,#0
+ 323                     ; 216 }
+ 326  00b1 81            	ret
+ 349                     ; 224 void init_io(void)
+ 349                     ; 225 {
+ 350                     	switch	.text
+ 351  00b2               _init_io:
+ 355                     ; 226 	GPIOA->DDR = 0b11111111;
+ 357  00b2 35ff5002      	mov	20482,#255
+ 358                     ; 227 	GPIOA->CR1 = 0xFF;
+ 360  00b6 35ff5003      	mov	20483,#255
+ 361                     ; 228 	GPIOA->CR2 = 0;
+ 363  00ba 725f5004      	clr	20484
+ 364                     ; 230 	GPIOB->DDR = 0b00000111;   // UL,VL,WL, ADC
+ 366  00be 35075007      	mov	20487,#7
+ 367                     ; 231 	GPIOB->CR1 = 0b00000111;
+ 369  00c2 35075008      	mov	20488,#7
+ 370                     ; 232 	GPIOB->CR2 = 0;
+ 372  00c6 725f5009      	clr	20489
+ 373                     ; 234 	GPIOC->DDR = 0b11111111;   // NULL,AH,BH,CH,NONE,SCK,MOSI,MISO
+ 375  00ca 35ff500c      	mov	20492,#255
+ 376                     ; 235 	GPIOC->CR1 = 0b11111111;
+ 378  00ce 35ff500d      	mov	20493,#255
+ 379                     ; 236 	GPIOC->CR2 = 0;
+ 381  00d2 725f500e      	clr	20494
+ 382                     ; 238 	GPIOD->DDR = 0b11111101;   // NONE,SWIM,LED-ERR,LED-RUN,T1,T2,T3,T4
+ 384  00d6 35fd5011      	mov	20497,#253
+ 385                     ; 239 	GPIOD->CR1 = 0b11111101;
+ 387  00da 35fd5012      	mov	20498,#253
+ 388                     ; 240 	GPIOD->CR2 = 0;
+ 390  00de 725f5013      	clr	20499
+ 391                     ; 242 	GPIOE->DDR = 0b11110101;  // NONE,RUN,PWM-EN,BKIN,NULL,RCK,NULL,NULL
+ 393  00e2 35f55016      	mov	20502,#245
+ 394                     ; 243 	GPIOE->CR1 = 0b11110111;
+ 396  00e6 35f75017      	mov	20503,#247
+ 397                     ; 244 	GPIOE->CR2 = 0;
+ 399  00ea 725f5018      	clr	20504
+ 400                     ; 246 	PWM_OUT_DIS();
+ 402  00ee 72145014      	bset	20500,#2
+ 403                     ; 251 	LED_ERROR_OFF();
+ 405  00f2 7214500f      	bset	20495,#2
+ 406                     ; 252 	LED_RUN_OFF();
+ 408  00f6 7216500f      	bset	20495,#3
+ 409                     ; 253 }
+ 412  00fa 81            	ret
+ 455                     ; 261 void init_adc( void )
+ 455                     ; 262 {
+ 456                     	switch	.text
+ 457  00fb               _init_adc:
+ 459  00fb 5203          	subw	sp,#3
+ 460       00000003      OFST:	set	3
+ 463                     ; 266 	ADC2->CR1 = 0;
+ 465  00fd 725f5401      	clr	21505
+ 466                     ; 269 	ADC2->CSR = PHASE_C_BEMF_ADC_CHAN;
+ 468  0101 35035400      	mov	21504,#3
+ 469                     ; 271 	ADC_TDR_tmp = 0;
+ 471  0105 5f            	clrw	x
+ 472  0106 1f02          	ldw	(OFST-1,sp),x
+ 473                     ; 272 	ADC_TDR_tmp |= (u16)(1) << PHASE_A_BEMF_ADC_CHAN;
+ 475  0108 7b03          	ld	a,(OFST+0,sp)
+ 476  010a aa20          	or	a,#32
+ 477  010c 6b03          	ld	(OFST+0,sp),a
+ 478                     ; 273 	ADC_TDR_tmp |= (u16)(1) << PHASE_B_BEMF_ADC_CHAN;
+ 480  010e 7b03          	ld	a,(OFST+0,sp)
+ 481  0110 aa10          	or	a,#16
+ 482  0112 6b03          	ld	(OFST+0,sp),a
+ 483                     ; 274 	ADC_TDR_tmp |= (u16)(1) << PHASE_C_BEMF_ADC_CHAN;
+ 485  0114 7b03          	ld	a,(OFST+0,sp)
+ 486  0116 aa08          	or	a,#8
+ 487  0118 6b03          	ld	(OFST+0,sp),a
+ 488                     ; 275 	ADC_TDR_tmp |= (u16)(1) << ADC_CURRENT_CHANNEL;
+ 490  011a 7b02          	ld	a,(OFST-1,sp)
+ 491  011c aa02          	or	a,#2
+ 492  011e 6b02          	ld	(OFST-1,sp),a
+ 493                     ; 276 	ADC_TDR_tmp |= (u16)(1) << ADC_BUS_CHANNEL;
+ 495  0120 7b02          	ld	a,(OFST-1,sp)
+ 496  0122 aa01          	or	a,#1
+ 497  0124 6b02          	ld	(OFST-1,sp),a
+ 498                     ; 277 	ADC_TDR_tmp |= (u16)(1) << PHASE_REF_ADC_CHAN;
+ 500  0126 7b03          	ld	a,(OFST+0,sp)
+ 501  0128 aa80          	or	a,#128
+ 502  012a 6b03          	ld	(OFST+0,sp),a
+ 503                     ; 278 	ADC_TDR_tmp |= (u16)(1) << PHASE_FED_ADC_CHAN;
+ 505  012c 7b03          	ld	a,(OFST+0,sp)
+ 506  012e aa40          	or	a,#64
+ 507  0130 6b03          	ld	(OFST+0,sp),a
+ 508                     ; 280 	ToCMPxH( ADC2->TDRH, ADC_TDR_tmp);
+ 510  0132 35035406      	mov	21510,#3
+ 511                     ; 281 	ToCMPxL( ADC2->TDRL, ADC_TDR_tmp);
+ 513  0136 35f85407      	mov	21511,#248
+ 514                     ; 284 	ADC2->CR1 |= BIT0;
+ 516  013a 72105401      	bset	21505,#0
+ 517                     ; 286 	value=30;
+ 519  013e a61e          	ld	a,#30
+ 520  0140 6b01          	ld	(OFST-2,sp),a
+ 522  0142               L331:
+ 523                     ; 287 	while(value--);                    
+ 525  0142 7b01          	ld	a,(OFST-2,sp)
+ 526  0144 0a01          	dec	(OFST-2,sp)
+ 527  0146 4d            	tnz	a
+ 528  0147 26f9          	jrne	L331
+ 529                     ; 289 	ADC2->CSR &= (u8)(~BIT7);
+ 531  0149 721f5400      	bres	21504,#7
+ 532                     ; 292 }
+ 535  014d 5b03          	addw	sp,#3
+ 536  014f 81            	ret
+ 571                     ; 294 unsigned short get_adc(void)
+ 571                     ; 295 {
+ 572                     	switch	.text
+ 573  0150               _get_adc:
+ 575  0150 89            	pushw	x
+ 576       00000002      OFST:	set	2
+ 579                     ; 297 	AdcSwitch(PHASE_C_BEMF_ADC_CHAN);
+ 581  0151 a603          	ld	a,#3
+ 582  0153 cd0000        	call	_AdcSwitch
+ 584                     ; 298 	value = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
+ 586  0156 c65404        	ld	a,21508
+ 587  0159 5f            	clrw	x
+ 588  015a 97            	ld	xl,a
+ 589  015b 58            	sllw	x
+ 590  015c 58            	sllw	x
+ 591  015d 01            	rrwa	x,a
+ 592  015e cb5405        	add	a,21509
+ 593  0161 2401          	jrnc	L22
+ 594  0163 5c            	incw	x
+ 595  0164               L22:
+ 596  0164 02            	rlwa	x,a
+ 597  0165 1f01          	ldw	(OFST-1,sp),x
+ 598  0167 01            	rrwa	x,a
+ 599                     ; 299 	return value; 
+ 601  0168 1e01          	ldw	x,(OFST-1,sp)
+ 604  016a 5b02          	addw	sp,#2
  605  016c 81            	ret
  641                     ; 302 void main(void)
  641                     ; 303 {
@@ -259,7 +259,7 @@
  652                     ; 306 	init_clk();
  654  016e cd0000        	call	_init_clk
  656                     ; 307 	init_io();
- 658  0171 cd008a        	call	_init_io
+ 658  0171 cd00b2        	call	_init_io
  660                     ; 309 	init_timer1(1000, 1);  // 8k
  662  0174 ae0001        	ldw	x,#1
  663  0177 89            	pushw	x
@@ -267,7 +267,7 @@
  665  017b cd0005        	call	_init_timer1
  667  017e 85            	popw	x
  668                     ; 310 	init_adc();
- 670  017f cd00d3        	call	_init_adc
+ 670  017f cd00fb        	call	_init_adc
  672                     ; 312 	_asm("rim");
  675  0182 9a            rim
  677  0183               L561:
@@ -286,11 +286,11 @@
  729  018e               L702:
  730  018e 20fe          	jra	L702
  755                     	xdef	_main
- 756                     	xdef	_init_timer2
- 757                     	xdef	_get_adc
- 758                     	xdef	_init_adc
- 759                     	xdef	_init_io
- 760                     	xdef	_init_timer4
+ 756                     	xdef	_get_adc
+ 757                     	xdef	_init_adc
+ 758                     	xdef	_init_io
+ 759                     	xdef	_init_timer4
+ 760                     	xdef	_init_timer2
  761                     	xdef	_init_timer1
  762                     	xdef	_init_clk
  763                     	switch	.ubsct

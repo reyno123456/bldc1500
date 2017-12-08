@@ -1,5 +1,5 @@
 
-Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Fri Dec 08 14:49:17 2017
+Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Fri Dec 08 14:59:57 2017
 
 
                                --------
@@ -68,30 +68,30 @@ start 00007e5c end 00008a13 length  2999 section .debug
 start 00000267 end 000002d9 length   114 section .info.
 start ******** end ******** length     0 section .const *** removed ***
 
+Debug\application.o:
+start 00008a13 end 00008a57 length    68 section .debug
+start 000002d9 end 0000034c length   115 section .info.
+
 Debug\control.o:
 start 0000867e end 00008ddb length  1885 section .text
 start 00000000 end 00000011 length    17 section .bsct
 start 0000001a end 00000049 length    47 section .ubsct
-start 00008a13 end 000095dc length  3017 section .debug
-start 000002d9 end 00000348 length   111 section .info.
+start 00008a57 end 00009620 length  3017 section .debug
+start 0000034c end 000003bb length   111 section .info.
 start 000080cf end 000080db length    12 section .const
 
 Debug\main.o:
 start 00008ddb end 000090fb length   800 section .text
 start ******** end ******** length     0 section .bsct *** removed ***
 start ******** end ******** length     0 section .ubsct *** removed ***
-start 000095dc end 00009c0e length  1586 section .debug
-start 00000348 end 000003b4 length   108 section .info.
+start 00009620 end 00009c52 length  1586 section .debug
+start 000003bb end 00000427 length   108 section .info.
 
 Debug\stm8s_it.o:
 start 000090fb end 000092bb length   448 section .text
 start 00000011 end 0000001a length     9 section .bsct
-start 00009c0e end 0000a429 length  2075 section .debug
-start 000003b4 end 00000424 length   112 section .info.
-
-Debug\application.o:
-start 0000a429 end 0000a46d length    68 section .debug
-start 00000424 end 00000497 length   115 section .info.
+start 00009c52 end 0000a46d length  2075 section .debug
+start 00000427 end 00000497 length   112 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lgadd.o:
 start 000092bb end 000092d2 length    23 section .text

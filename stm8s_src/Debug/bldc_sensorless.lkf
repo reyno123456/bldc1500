@@ -56,10 +56,10 @@ Debug\stm8s_gpio.o
 Debug\stm8s_spi.o
 Debug\stm8s_tim1.o
 Debug\stm8s_tim4.o
+Debug\application.o
 Debug\control.o
 Debug\main.o
 Debug\stm8s_it.o
-Debug\application.o
 #<END OBJECT_FILES>
 
 

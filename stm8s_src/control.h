@@ -233,7 +233,7 @@ extern	void Check_BEMF_Voltage(void) ;
 extern	void  BldcLik(void) ;
 extern  void  BldcRun(void) ;
 extern	void  AutoRunOne(void) ;
-extern  void BLDC_RUN_ONESTEP(uint8 OUT_BLDC_STEP);
+extern  void bldc_run_onestep(uint8 OUT_BLDC_STEP);
 
-
+extern uint8 g_direction;
 #endif

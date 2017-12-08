@@ -318,9 +318,9 @@
  847  01b2 a601          	ld	a,#1
  848  01b4 6b01          	ld	(OFST+0,sp),a
  849  01b6               L303:
- 850                     ; 331 		BLDC_RUN_ONESTEP(flag);
+ 850                     ; 331 		bldc_run_onestep(flag);
  852  01b6 7b01          	ld	a,(OFST+0,sp)
- 853  01b8 cd0000        	call	_BLDC_RUN_ONESTEP
+ 853  01b8 cd0000        	call	_bldc_run_onestep
  855                     ; 332 		delay_ms(ms);
  857  01bb 1e06          	ldw	x,(OFST+5,sp)
  858  01bd adc5          	call	_delay_ms
@@ -586,7 +586,7 @@
 1419  0000 000000000000  	ds.b	20
 1420                     	xdef	_adc_table
 1421                     	xdef	_delay_us
-1422                     	xref	_BLDC_RUN_ONESTEP
+1422                     	xref	_bldc_run_onestep
 1423                     	xref	_SpeedRefAccDec
 1424                     	xref	_Key_Check
 1425                     	xref	_Run_Ctl

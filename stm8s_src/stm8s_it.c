@@ -654,7 +654,7 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		T_Dly30C -- ;
 		if(T_Dly30C == 0)
 		{					
-			BLDC_RUN_ONESTEP(BldcStep);	
+			bldc_run_onestep(BldcStep);	
 			BldcStatus = STATUS_RUN ;
 			tBC_Param.ucZeroCrossFlag = 0 ;
 

@@ -328,7 +328,7 @@ void bldc_one_loop(unsigned short duty, unsigned int ms)
 
 	for (flag = 1; flag <= 6; flag++)
 	{
-		BLDC_RUN_ONESTEP(flag);
+		bldc_run_onestep(flag);
 		delay_ms(ms);
 	}
 }
@@ -411,7 +411,7 @@ while(1)
 			if (i == 10)
 				i = 0;
 		}
-		BLDC_RUN_ONESTEP(step++);
+		bldc_run_onestep(step++);
 		if (step == 8)
 		{
 			adc_value = get_adc();
@@ -516,17 +516,17 @@ void main(void)
 #if 0
 	while(1)
 	{
-		BLDC_RUN_ONESTEP(1);
+		bldc_run_onestep(1);
 		delay_ms(200);		
-		BLDC_RUN_ONESTEP(2);
+		bldc_run_onestep(2);
 		delay_ms(200);
-		BLDC_RUN_ONESTEP(3);
+		bldc_run_onestep(3);
 		delay_ms(200);
-		BLDC_RUN_ONESTEP(4);
+		bldc_run_onestep(4);
 		delay_ms(200);
-		BLDC_RUN_ONESTEP(5);
+		bldc_run_onestep(5);
 		delay_ms(200);
-		BLDC_RUN_ONESTEP(6);
+		bldc_run_onestep(6);
 		delay_ms(200);
 		/*
 		if (flag == 0){

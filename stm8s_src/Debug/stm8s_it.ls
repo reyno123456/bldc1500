@@ -421,9 +421,9 @@
 1209                     ; 655 		if(T_Dly30C == 0)
 1211  019e be06          	ldw	x,_tBC_Param+6
 1212  01a0 260e          	jrne	L714
-1213                     ; 657 			BLDC_RUN_ONESTEP(BldcStep);	
+1213                     ; 657 			bldc_run_onestep(BldcStep);	
 1215  01a2 b609          	ld	a,_tBC_Param+9
-1216  01a4 cd0000        	call	_BLDC_RUN_ONESTEP
+1216  01a4 cd0000        	call	_bldc_run_onestep
 1218                     ; 658 			BldcStatus = STATUS_RUN ;
 1220  01a7 350a0008      	mov	_tBC_Param+8,#10
 1221                     ; 659 			tBC_Param.ucZeroCrossFlag = 0 ;
@@ -448,7 +448,7 @@
 1265  01bf               f_EEPROM_EEC_IRQHandler:
 1269                     ; 680 }
 1272  01bf 80            	iret
-1284                     	xref	_BLDC_RUN_ONESTEP
+1284                     	xref	_bldc_run_onestep
 1285                     	xref	_AutoRunOne
 1286                     	xref	_BldcRun
 1287                     	xref	_BldcLik

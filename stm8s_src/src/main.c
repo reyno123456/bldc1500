@@ -30,9 +30,8 @@
 #include "stm8s.h"
 #include "control.h"
 #include "string.h"
+#include "application.h"
 
-static void AppStopToAlignment(void);
-void delay_us(unsigned int us);
 
 unsigned short adc_table[10];
 
@@ -47,7 +46,7 @@ unsigned short adc_table[10];
 // 入口参数：无
 // 出口参数：无
 //***************************************/
-void Init_Clk(void)
+void init_clk(void)
 {
   CLK->CKDIVR = 0x00;   	// 16M
 }
@@ -58,7 +57,7 @@ void Init_Clk(void)
 // 入口参数：PWM等级 每级0.125U (1000*0.125 = 12.5U = 8K)
 // 出口参数：无
 /***************************************/
-void Init_Timer1_PWM (uint16 Tcon,uint16 Pscr)
+void init_timer1 (uint16 Tcon,uint16 Pscr)
 {
 
 	//16M系统时钟经预分频f=fck/(PSCR+1)  
@@ -176,7 +175,7 @@ void Init_Timer1_PWM (uint16 Tcon,uint16 Pscr)
 // 入口参数：定时器计数次数
 // 出口参数：无
 /***************************************/
-void Init_TIM4(uint8 Tcon,uint8 Pscr)
+void init_timer4(uint8 Tcon,uint8 Pscr)
 {								
 	TIM4->IER = 0x00 ;		// 禁止中断
 	TIM4->EGR = 0x01 ;		// 允许产生更新事件
@@ -202,7 +201,7 @@ void Init_TIM4(uint8 Tcon,uint8 Pscr)
 // 入口参数：无
 // 出口参数：无
 /***************************************/
-void Init_Io(void)
+void init_io(void)
 {
 	GPIOA->DDR = 0b11111111;
 	GPIOA->CR1 = 0xFF;
@@ -239,7 +238,7 @@ void Init_Io(void)
 // 入口参数：无
 // 出口参数：无
 /***************************************/
-void Init_ADC( void )
+void init_adc( void )
 {
 	u8 value;
 	u16 ADC_TDR_tmp;
@@ -300,219 +299,24 @@ void init_timer2(void)
 	TIM2->CR1 |= 0x01;
 }
 
-void delay_us(unsigned int us)
-{
-	unsigned int i;
-	for (i = 0; i < us; i++)
-	{
-		
-	}
-}
-
-void delay_ms(unsigned int ms)
-{
-	unsigned int i,j;
-	for (j = 0; j < ms; j++)
-	{
-		for (i = 0; i < 1000; i++)
-		{
-			
-		}
-	}
-}
-
-void bldc_one_loop(unsigned short duty, unsigned int ms)
-{
-	unsigned char flag;
-	Timer1_PWM_Value(duty);
-
-	for (flag = 1; flag <= 6; flag++)
-	{
-		bldc_run_onestep(flag);
-		delay_ms(ms);
-	}
-}
-
-void bldc_open_loop(void)
-{
-	unsigned short duty;
-	unsigned int ms = 121;
-	static unsigned char step = 1;
-	unsigned int i;
-	static unsigned short adc_value = 0;
-/*
-	for (duty = 1; duty < 120; ms--)
-	{
-		bldc_one_loop(duty, ms);
-		duty++;
-	}
-*/
-
-	bldc_one_loop(10, 100);
-	bldc_one_loop(20, 80);
-	bldc_one_loop(30, 60);
-	bldc_one_loop(40, 50);
-	bldc_one_loop(50, 40);
-	bldc_one_loop(60, 30);
-	bldc_one_loop(70, 20);
-
-while(1)
-{
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(70, 20);
-		//bldc_one_loop(10, 100);
-	}	
-}
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(100, 3);
-	}
-
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(100, 5);
-	}
-
-while(1)
-{
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(150, 2);
-	}
-}
-
-while(1)
-{
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(150, 2);
-	}	
-}
-	for (i = 0; i < 100; i++)
-	{
-		bldc_one_loop(200, 3);
-	}
-
-	for (i = 0; i < 100; i++)
-	{
-		bldc_one_loop(280,2);
-	}
-
-		bldc_one_loop(300,2);
-
-
-#if 0
-	i = 0;
-	while(1)
-	{
-		if (step == 5)
-		{
-			if (i == 10)
-				i = 0;
-		}
-		bldc_run_onestep(step++);
-		if (step == 8)
-		{
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-			
-			adc_value = get_adc();
-			adc_table[i++] = adc_value;
-			delay_us(300);
-		}
-		
-		delay_ms(8);
-		if (step > 6){
-			step = 1;
-		}
-	}
-#endif
-}
-
-static void AppStopToAlignment(void)
-{
-	Timer1_PWM_Value(400);
-	PWM_AH_OUT_DIS();
-	PWM_BH_OUT_DIS();
-	PWM_CH_OUT_EN();
-	CNT_AL_OUT_EN();
-	CNT_BL_OUT_EN();
-	CNT_CL_OUT_DIS();
-
-	delay_ms(100);
-
-	Timer1_PWM_Value(50);
-	PWM_AH_OUT_DIS();
-	PWM_BH_OUT_DIS();
-	PWM_CH_OUT_DIS();
-	CNT_AL_OUT_DIS();
-	CNT_BL_OUT_DIS();
-	CNT_CL_OUT_DIS();	
-}
-
 void main(void)
 {
-	static uint16 flag = 0;
 	_asm("sim");
 	
-	Init_Clk();
-	Init_Io();
-	memset(&tBC_Param, 0, sizeof(tBC_Param));
-	Init_Timer1_PWM(1000, 1);  // 8k
-	Init_ADC();
+	init_clk();
+	init_io();
+	// memset(&tBC_Param, 0, sizeof(tBC_Param));
+	init_timer1(1000, 1);  // 8k
+	init_adc();
 	//init_timer2();
-/*
+	_asm("rim");
+
+
 	while(1)
 	{
-		if (flag == 0){
-			LED_RUN_ON();
-			delay_ms(1000);
-			flag = 1;
-		}else{		
-			LED_RUN_OFF();
-			delay_ms(1000);
-			flag = 0;
-		}
+		AppStateMachine[g_app_state]();
 	}
-*/	
-	_asm("rim");
-	Timer1_PWM_Value(50);
-	AppStopToAlignment();
-	bldc_open_loop();
+	
 #if 0
 	while(1)
 	{

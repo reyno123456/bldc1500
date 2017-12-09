@@ -94,7 +94,7 @@ static void bldc_open_loop(void)
 		duty++;
 	}
 */
-
+/*
 	bldc_one_loop(10, 100);
 	bldc_one_loop(20, 80);
 	bldc_one_loop(30, 60);
@@ -102,10 +102,10 @@ static void bldc_open_loop(void)
 	bldc_one_loop(50, 40);
 	bldc_one_loop(60, 30);
 	bldc_one_loop(70, 20);
-
+*/
 while(1)
 {
-	bldc_one_loop(70, 20);
+	bldc_one_loop(80, 18);
 }
 	for (i = 0; i < 10; i++)
 	{

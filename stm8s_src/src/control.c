@@ -1,7 +1,55 @@
 
 #include "control.h"
 
-uint8 g_direction = 0;
+uint8 g_direction = 1;
+
+void CNT_AL_OUT_EN(void)
+{
+	if (g_direction == 0)
+		(GPIOB->ODR &= (uint8_t)(~GPIO_PIN_0));
+	else
+		(GPIOB->ODR |= GPIO_PIN_0);
+}
+
+void CNT_AL_OUT_DIS(void)
+{
+	if (g_direction == 0)
+		(GPIOB->ODR |= GPIO_PIN_0);
+	else
+		(GPIOB->ODR &= (uint8_t)(~GPIO_PIN_0));
+}
+
+void CNT_BL_OUT_EN(void)
+{
+	if (g_direction == 0)
+		(GPIOB->ODR &= (uint8_t)(~GPIO_PIN_1));
+	else
+		(GPIOB->ODR |= GPIO_PIN_1);
+}
+
+void CNT_BL_OUT_DIS(void)
+{
+	if (g_direction == 0)
+		(GPIOB->ODR |= GPIO_PIN_1);
+	else
+		(GPIOB->ODR &= (uint8_t)(~GPIO_PIN_1));
+}
+
+void CNT_CL_OUT_EN(void)
+{
+	if (g_direction == 0)
+		(GPIOB->ODR &= (uint8_t)(~GPIO_PIN_2));
+	else
+		(GPIOB->ODR |= GPIO_PIN_2);
+}
+
+void CNT_CL_OUT_DIS(void)
+{
+	if (g_direction == 0)
+		(GPIOB->ODR |= GPIO_PIN_2);
+	else
+		(GPIOB->ODR &= (uint8_t)(~GPIO_PIN_2));
+}
 
 tBLDC_Param tBC_Param ;
 tFlg Error_code;
@@ -697,8 +745,8 @@ void bldc_run_onestep(uint8 STEP)
 				PWM_BH_OUT_EN();
 				PWM_BL_OUT_EN();
 
-				PWM_CH_OUT_EN();
-				PWM_CL_OUT_EN();		
+				PWM_CH_OUT_DIS();
+				PWM_CL_OUT_DIS();		
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_DIS();
 				break ;

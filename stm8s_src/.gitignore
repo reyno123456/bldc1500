@@ -1,0 +1,13 @@
+
+
+*.ao
+*.a
+*.bin
+*.dis
+*.elf
+*.map
+*.mif
+*.depend
+.nfs*
+Output/
+.APPLICATION_SCENARIO

@@ -1,5 +1,8 @@
 
-
+*.o
+*.ls
+*.wdb
+*.wed
 *.ao
 *.a
 *.bin

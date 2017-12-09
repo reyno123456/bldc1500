@@ -99,74 +99,8 @@ void init_timer1 (uint16 Tcon,uint16 Pscr)
 	
 	TIM1->CR1 |= TIM1_CR1_CEN;
 
-	//TIM1->CR2 |= 1;
-
-	//设置刹车寄存器
-	//TIM1->BKR = (TIM1_BREAKPOLARITY_LOW|TIM1_BREAK_ENABLE|TIM1_OSSISTATE_ENABLE|TIM1_LOCKLEVEL_2);
-	//TIM1->BKR = 0x08;
 	TIM1->BKR |= TIM1_BKR_MOE;
 	TIM1->DTR = 0x10; //  死区时间 0.125us *TIM1_DTR
-
-	//enable break interrupt
-	//TIM1->IER |= BIT7;
-
-/*
-	TIM1->EGR |= 0x01;   //重新初始化TIM1 
-    TIM1->CR1 = 0x00;   //B7(0)可以直接写入 B65(00)边缘对齐模式B4(0)向上计数B3(0)计数器不停止发生更新事件
-    TIM1->RCR = 0x00;  
-    TIM1->PSCRH =0;     //设定预分频为,16分频 1M
-    TIM1->PSCRL =0x80;  //PWM的时钟 影响周期
-    TIM1->CCER1 = 0x0F; //CC2ER1开启1,2,高电平有效
-    TIM1->CCMR1 = 0x60; //PWM模式1,CC1配置入输出
-    TIM1->ARRH = 0;     //设定重装载值
-    TIM1->ARRL = 0xFF;  //PWM的周期 
-    TIM1->CCR1H = 0;
-    TIM1->CCR1L = 0x80;  // 占空比值
-    TIM1->CR1 |= 0x01; //使能TIM1计数器
-    TIM1->BKR |= 0x80;
-
-	while(1);
-*/
-
-/*
-	TIM1->ARRH = 0x00;		 // 计数周期
-	TIM1->ARRL = 0x20;
-	TIM1->CCR1H = 0x00;		  // TIM1比较/捕获寄存器1
-	TIM1->CCR1L = 0x0b;
-	TIM1->CCR2H = 0x00;
-	TIM1->CCR2L = 0x0b;
-	TIM1->PSCRH = 0; 			   // 分频比
-	TIM1->PSCRL = 1;
-
-	TIM1->CR1 |= 0x20;		 // CMS(01) : Center-aligned mode 1
-	TIM1->CR1 |= 0x80;		 // set ARPE
-	TIM1->IER |= 0x03;
-	TIM1->IER |= 0x04;
-	//TIM1_IER |= 0x20;
-	//TIM1_IER |= 0x40;
-	//TIM1_IER |= 0x80;
-	TIM1->CCMR1 |= 0x60; 	   // OC1M(110) : PWM Mode 1
-	TIM1->CCMR1 |= 0x08; 				// set OC1PE
-	TIM1->CCMR2 |= 0x60; 
-	TIM1->CCMR2 |= 0x08; 
-	TIM1->CCER1 |= 0x01; 	   // set CC1E
-	TIM1->CCER1 |= 0x08; 	   // set CC1NP
-	TIM1->CCER1 |= 0x04; 	   // set CC1NE
-	TIM1->CCER1 |= 0x02;
-	TIM1->CCER1 |= 0x10; 	   // set CC1E
-	TIM1->CCER1 |= 0x20; 	   // set CC1NP
-	TIM1->CCER1 |= 0x40; 	   // set CC1NE
-	TIM1->CCER1 |= 0x80;
-	TIM1->CR2 |= 0x01;		 // set CCPC
-	TIM1->CR2 |= 0x04;
-	TIM1->CR2 |= 0x04;
-	TIM1->EGR |= 0x20;		 // set COMG
-	TIM1->DTR = 0x05;		// Deadtime generator
-	TIM1->BKR |= 0x08;		 // set OSSR
-	TIM1->BKR |= 0x80;		 // set MOE
-	TIM1->CR1 |= 0x01;		 // 开启计数?
-	TIM1->OISR |= 0x0f;
-*/
 }
 
 void init_timer2(void)
@@ -289,14 +223,6 @@ void init_adc( void )
 	ADC2->CSR &= (u8)(~BIT7);
 	
 	//ADC2->CSR |= BIT5; // Bit 5 EOCIE: Interrupt enable for EOC
-}
-
-unsigned short get_adc(void)
-{
-	unsigned short value;
-	AdcSwitch(PHASE_C_BEMF_ADC_CHAN);
-	value = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
-	return value; 
 }
 
 void main(void)

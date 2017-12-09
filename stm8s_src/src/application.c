@@ -5,6 +5,13 @@ unsigned char g_app_state = 0;
 
 static void bldc_one_loop(unsigned short duty, unsigned int ms);
 
+unsigned short get_adc(unsigned char channel)
+{
+	unsigned short value;
+	AdcSwitch(channel);
+	value = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
+	return value; 
+}
 
 void delay_us(unsigned int us)
 {
@@ -51,11 +58,24 @@ static void AppStopToAlignment(void)
 static void bldc_one_loop(unsigned short duty, unsigned int ms)
 {
 	unsigned char flag;
+	unsigned short adc_value;
+	unsigned short adc_bus;
 	Timer1_PWM_Value(duty);
 
 	for (flag = 1; flag <= 6; flag++)
 	{
 		bldc_run_onestep(flag);
+		switch (flag)
+		{
+			case 1:
+				adc_value = get_adc(PHASE_C_BEMF_ADC_CHAN);
+				adc_bus = get_adc(ADC_BUS_CHANNEL);
+				if (adc_value == 1 || adc_bus == 1)
+				{
+					delay_us(1);
+				}
+			default:break;
+		}
 		delay_ms(ms);
 	}
 }
@@ -85,11 +105,7 @@ static void bldc_open_loop(void)
 
 while(1)
 {
-	for (i = 0; i < 10; i++)
-	{
-		bldc_one_loop(70, 20);
-		//bldc_one_loop(10, 100);
-	}	
+	bldc_one_loop(70, 20);
 }
 	for (i = 0; i < 10; i++)
 	{

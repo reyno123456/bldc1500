@@ -21,6 +21,7 @@ void AppRun(void);
 void AppStop(void);
 void AppFault(void);
 void function_test(void);
+unsigned short get_adc(unsigned char);
 
 
 extern unsigned char g_app_state;

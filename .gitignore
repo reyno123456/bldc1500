@@ -1,3 +1,5 @@
+*.spy
+*.dep
 *.txt
 *.pdb
 *.o

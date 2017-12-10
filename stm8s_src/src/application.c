@@ -1,7 +1,10 @@
 #include "application.h"
 #include "control.h"
+#include "stm8s.h"
 
 unsigned char g_app_state = 0;
+unsigned short g_pwm_on_duty = 0;
+unsigned short g_counter_ms = 0;
 
 static void bldc_one_loop(unsigned short duty, unsigned int ms);
 
@@ -68,12 +71,27 @@ static void bldc_one_loop(unsigned short duty, unsigned int ms)
 		switch (flag)
 		{
 			case 1:
-				adc_value = get_adc(PHASE_C_BEMF_ADC_CHAN);
-				adc_bus = get_adc(ADC_BUS_CHANNEL);
-				if (adc_value == 1 || adc_bus == 1)
-				{
-					delay_us(1);
-				}
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+			
+			case 2:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+
+			case 3:
+				delay_us(746);
+				init_timer2(1000,1);
+			break;
+
+			case 4:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+
+			case 5:
+			break;
+
+			case 6:
+			break;
 			default:break;
 		}
 		delay_ms(ms);
@@ -88,9 +106,10 @@ static void bldc_open_loop(void)
 	unsigned int i;
 	static unsigned short adc_value = 0;
 
+	g_pwm_on_duty = 100;
 	while(1)
 	{
-		bldc_one_loop(80, 12);
+		bldc_one_loop(g_pwm_on_duty, 50);
 	}
 }
 
@@ -159,4 +178,49 @@ void function_test(void)
 			flag = 0;
 		}
 	}	
+}
+
+void timer2_service(void)
+{
+	static unsigned short adc_phase_a[10];
+	static unsigned short adc_phase_b[10];
+	static unsigned short adc_phase_c[10];
+	static unsigned char i = 0;
+	static unsigned short adc_bus = 0;
+	static unsigned char flag = 0;
+
+	//adc_phase_c = get_adc(PHASE_C_BEMF_ADC_CHAN);
+
+	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
+	adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
+	adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
+	adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
+	adc_bus = get_adc(ADC_BUS_CHANNEL);
+	(GPIOD->ODR |= GPIO_PIN_7);
+	if(++i >= 10)
+	{
+		i = 0;
+		TIM2->IER &=~ 1 << 0;
+		if (g_counter_ms > 10000)
+		{
+			g_counter_ms = 0;
+		}
+	}
+}
+
+void init_timer2(unsigned short Tcon,unsigned char Pscr)
+{								
+	TIM2->IER = 0x00;		// 禁止中断
+	TIM2->EGR = 0x01;		// 允许产生更新事件
+
+	TIM2->PSCR = Pscr;
+	
+	TIM2->ARRH = (Tcon >> 8) & 0xff;
+	TIM2->ARRL = Tcon & 0xff;
+
+	TIM2->CNTRH = 0;
+	TIM2->CNTRL = 0;								
+
+	TIM2->CR1 |= 0x01;
+	TIM2->IER |=  1 << 6 | 1 << 0;
 }

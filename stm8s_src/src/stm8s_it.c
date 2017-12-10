@@ -30,6 +30,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
 #include "control.h"
+#include "application.h"
 
 
 /** @addtogroup Template_Project
@@ -329,16 +330,16 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-  //static unsigned char flag = 0;
+  static unsigned char flag = 0;
 		
 	TIM2->SR1 = 0x00;  // 清除更新标志
-
+	timer2_service();
 /*
 	if (flag == 0){
-		LED_RUN_ON();
+		(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
 		flag = 1;
 	}else{		
-		LED_RUN_OFF();
+		(GPIOD->ODR |= GPIO_PIN_7);
 		flag = 0;
 	}
 */
@@ -553,10 +554,10 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 	volatile static uint16 usCnt = 0 ;
 	static uint16 IT_NT1 =  0 ;
 	static uint16 usPwmValue =  1;
-	//static unsigned char flag = 0;
+	static unsigned char flag = 0;
 		
 	TIM4->SR1 = 0x00;  // 清除更新标志
-
+	g_counter_ms++;
 /*
 	if (flag == 0){
 		LED_RUN_ON();
@@ -566,103 +567,6 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		flag = 0;
 	}
 */
-	usCnt++;
-	if(usCnt >= 5)    // 20us * 50 = 1ms
-	{
-		usCnt = 0 ;
-		tBC_Param.usTick1ms++;
-	}
-	
-	// BLDC 停止状态
-	if(BldcStatus == STATUS_STOP)
-	{
-		usPwmValue = 1;
-		return ;
-	}
-		
-	T_Dly60C++;
-	
-	if ( BldcStatus == STATUS_START)   // 启动中	
-	{
-		if (tBC_Param.StartStep == 0 )	//运行第一步
-		{
-			T_Dly60C = 0 ;
-			tBC_Param.StartStep ++ ;
-			Timer1_PWM_Value(R_CurPwm);
-			AutoRunOne() ;
-			IT_NT1 = 0;
-		}
-	
-		if (tBC_Param.StartStep >= 20)
-		{		
-			TIM1_CMP4_IEN_ENB();
-		}
-
-		IT_NT1++;
-		if (IT_NT1 >= START_ORIEN_PERIOD)
-		{
-			IT_NT1  = 0 ;
-			if(R_CurPwm <= V_PWMRUN_MIN)
-			{
-				R_CurPwm ++ ;
-				Timer1_PWM_Value(R_CurPwm);
-			}
-		}
-		
-		if (T_Dly60C >= START_INIT_PERIOD)
-		{
-			T_Dly60C = 0;
-			
-			tBC_Param.StartStep++;
-			if (tBC_Param.StartStep > 2000)
-			{
-				Error_code.bit.ErStart = 1 ;
-			}
-			else
-			{
-				AutoRunOne();
-				T_DlyTest = DEMAGNETIZE;
-			}
-		}
-	}	
-	else if(BldcStatus == STATUS_RUN )   // 运行中
-	{
-		IT_NT1++ ;
-		if( IT_NT1 >= 4000)
-		{
-			IT_NT1  = 0 ;
-			CmdPwmSlow() ;
-		}
-		
-		//延时检测 滤波
-		if(T_DlyTest != 0)
-		{
-			T_DlyTest-- ;
-		}	
-		else
-		{
-			usValue = ((uint16)TIM1->CNTRH<<8)+TIM1->CNTRL;
-			if (usValue < (R_CurPwm-10))
-			{
-				Check_BEMF_Voltage();
-				BldcRun();
-			}
-		}							
-	}
-	else if( BldcStatus == STATUS_DLY3C)// 延时30C中
-	{
-		T_Dly30C -- ;
-		if(T_Dly30C == 0)
-		{					
-			bldc_run_onestep(BldcStep);	
-			BldcStatus = STATUS_RUN ;
-			tBC_Param.ucZeroCrossFlag = 0 ;
-
-#ifdef	DLY_ADVANCED		
-			T_Dly60C = 0 ;	
-#endif
-		}	
-	}
 }
 
 #endif /* (STM8S903) || (STM8AF622x)*/

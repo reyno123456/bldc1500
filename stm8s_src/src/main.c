@@ -103,26 +103,6 @@ void init_timer1 (uint16 Tcon,uint16 Pscr)
 	TIM1->DTR = 0x10; //  死区时间 0.125us *TIM1_DTR
 }
 
-void init_timer2(void)
-{								
-	TIM2->IER = 0x00 ;		// 禁止中断
-	TIM2->EGR = 0x01 ;		// 允许产生更新事件
-	TIM2->PSCR = 32768 ;		// 计数器时钟=16MHZ/16=1M
-													
-	TIM2->ARRH = 60;
-	TIM2->ARRL = 200;
-
-	TIM2->CNTRH = 0;				// 设定计数器的初值
-	TIM2->CNTRL = 0;				// 设定计数器的初值												
-	// b0 = 1,允许计数器工作 b1 = 0,允许更新
-	// 设置控制器，启动定时器
-	TIM2->CR1 |= 0 ;
-
-	// 允许更新中断
-	TIM2->IER |= 0x01;
-	TIM2->CR1 |= 0x01;
-}
-
 //*************************************
 // 函数名称：Init_Timer4
 // 函数功能：定时器4初始化 0.25U计数一次
@@ -234,7 +214,7 @@ void main(void)
 	// memset(&tBC_Param, 0, sizeof(tBC_Param));
 	init_timer1(1000, 1);  // 8k
 	init_adc();
-	//init_timer2();
+	init_timer4(0x80,0x07);	
 	_asm("rim");
 
 

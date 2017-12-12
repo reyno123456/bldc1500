@@ -891,3 +891,25 @@ void bldc_run_onestep(uint8 STEP)
 		}
 	}
 }
+
+void bldc_stop(void)
+{
+	TIM1->CCMR1 =0; 
+	TIM1->CCMR2 =0; 
+	TIM1->CCMR3 =0; 
+	PWM_AH_OUT_DIS();
+	PWM_AL_OUT_DIS();
+	CNT_AH_OUT_DIS();
+	CNT_AL_OUT_DIS();
+
+	PWM_BH_OUT_DIS();
+	PWM_BL_OUT_DIS();	
+	CNT_BH_OUT_DIS();
+	CNT_BL_OUT_DIS();
+
+	PWM_CH_OUT_DIS();
+	PWM_CL_OUT_DIS();
+	CNT_CH_OUT_DIS();
+	CNT_CL_OUT_DIS();
+}
+

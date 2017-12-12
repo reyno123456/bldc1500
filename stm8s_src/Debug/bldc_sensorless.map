@@ -1,5 +1,5 @@
 
-Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Sun Dec 10 18:16:59 2017
+Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Wed Dec 13 00:23:27 2017
 
 
                                --------
@@ -7,17 +7,17 @@ Map of Debug\bldc_sensorless.sm8 from link file Debug\bldc_sensorless.lkf - Sun 
                                --------
 
 start 00008080 end 000080e9 length   105 segment .const
-start 00008110 end 000091d5 length  4293 segment .text
+start 00008110 end 0000920f length  4351 segment .text
 start 00004000 end 00004000 length     0 segment .eeprom
 start 00000000 end 0000001f length    31 segment .bsct, initialized
 start 000080f1 end 00008110 length    31 segment .bsct, from
-start 0000001f end 00000090 length   113 segment .ubsct
-start 00000090 end 00000090 length     0 segment .bit
-start 00000090 end 00000090 length     0 segment .share
+start 0000001f end 000000cc length   173 segment .ubsct
+start 000000cc end 000000cc length     0 segment .bit
+start 000000cc end 000000cc length     0 segment .share
 start 00000100 end 00000100 length     0 segment .data
 start 00000100 end 00000100 length     0 segment .bss
 start 00000000 end 000006f2 length  1778 segment .info.
-start 00000000 end 0000ab13 length 43795 segment .debug
+start 00000000 end 0000ab56 length 43862 segment .debug
 start 00008000 end 00008080 length   128 segment .const
 start 000080e9 end 000080f1 length     8 segment .init
 
@@ -71,29 +71,29 @@ start ******** end ******** length     0 section .const *** removed ***
 Debug\application.o:
 start 00008691 end 0000883d length   428 section .text
 start 00000000 end 0000000e length    14 section .bsct
-start 0000001f end 0000005b length    60 section .ubsct
-start 00008a13 end 00009164 length  1873 section .debug
+start 0000001f end 00000097 length   120 section .ubsct
+start 00008a13 end 0000916c length  1881 section .debug
 start 000002d9 end 0000034c length   115 section .info.
 start 000080cf end 000080dd length    14 section .const
 
 Debug\control.o:
-start 0000883d end 00008fca length  1933 section .text
+start 0000883d end 00009004 length  1991 section .text
 start 0000000e end 0000001f length    17 section .bsct
-start 0000005b end 0000008a length    47 section .ubsct
-start 00009164 end 00009eaa length  3398 section .debug
+start 00000097 end 000000c6 length    47 section .ubsct
+start 0000916c end 00009eed length  3457 section .debug
 start 0000034c end 000003bb length   111 section .info.
 start 000080dd end 000080e9 length    12 section .const
 
 Debug\main.o:
-start 00008fca end 0000911d length   339 section .text
+start 00009004 end 00009157 length   339 section .text
 start ******** end ******** length     0 section .ubsct *** removed ***
-start 00009eaa end 0000a1b7 length   781 section .debug
+start 00009eed end 0000a1fa length   781 section .debug
 start 000003bb end 00000427 length   108 section .info.
 
 Debug\stm8s_it.o:
-start 0000911d end 000091d5 length   184 section .text
+start 00009157 end 0000920f length   184 section .text
 start ******** end ******** length     0 section .bsct *** removed ***
-start 0000a1b7 end 0000a9ed length  2102 section .debug
+start 0000a1fa end 0000aa30 length  2102 section .debug
 start 00000427 end 00000497 length   112 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)lreg.o:
@@ -125,15 +125,15 @@ start ******** end ******** length     0 section .text *** removed ***
 start 000005ad end 000005db length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)xreg.o:
-start 0000008a end 0000008d length     3 section .ubsct
+start 000000c6 end 000000c9 length     3 section .ubsct
 start 000005db end 00000609 length    46 section .info.
 
 (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)yreg.o:
-start 0000008d end 00000090 length     3 section .ubsct
+start 000000c9 end 000000cc length     3 section .ubsct
 start 00000609 end 00000637 length    46 section .info.
 
 Debug\stm8_interrupt_vector.o:
-start 0000a9ed end 0000ab13 length   294 section .debug
+start 0000aa30 end 0000ab56 length   294 section .debug
 start 00000637 end 000006b4 length   125 section .info.
 start 00008000 end 00008080 length   128 section .const
 
@@ -143,9 +143,9 @@ start 00008000 end 00008080 length   128 section .const
                              -----------
 
 Debug\application.o:
-L322_bldc_open_loop                    19   (4)
-L331_AppStopToAlignment                10   (2)
-L3_bldc_one_loop                       15   (7)
+L31_bldc_one_loop                      15   (7)
+L332_bldc_open_loop                    19   (4)
+L341_AppStopToAlignment                10   (2)
 _AppAlignment                      >    2   (2)
 _AppCalib                          >   12   (2)
 _AppFault                          >    2   (2)
@@ -185,6 +185,7 @@ _Timer1_CCR4_Value                      2   (2)
 _Timer1_PWM_Value                       4   (4)
 _TstAndSwit                             3   (3)
 _bldc_run_onestep                       5   (3)
+_bldc_stop                         >    4   (2)
 
 Debug\main.o:
 _assert_failed                          6   (6)
@@ -262,7 +263,7 @@ Stack size: 43
    1 > _AppAlignment: (2)
 
    2 > _AppCalib: (2)
-   3      + L331_AppStopToAlignment: (2)
+   3      + L341_AppStopToAlignment: (2)
    4      |    + _CNT_AL_OUT_DIS: (2)
    5      |    + _CNT_AL_OUT_EN: (2)
    6      |    + _CNT_BL_OUT_DIS: (2)
@@ -279,8 +280,8 @@ Stack size: 43
   13 > _AppRun: (2)
 
   14 > _AppStart: (2)
-  15      + L322_bldc_open_loop: (4)
-  16      |    + L3_bldc_one_loop: (7)
+  15      + L332_bldc_open_loop: (4)
+  16      |    + L31_bldc_one_loop: (7)
   17      |    |    + _Timer1_PWM_Value --> 9
   18      |    |    + _bldc_run_onestep: (3)
   19      |    |    |    + _CNT_AL_OUT_DIS --> 4
@@ -400,156 +401,161 @@ Stack size: 43
 
   95 > __stext: (0)
 
-  96 > _function_test: (2)
-  97      + _delay_ms --> 10
+  96 > _bldc_stop: (2)
+  97      + _CNT_AL_OUT_DIS --> 4
+  98      + _CNT_BL_OUT_DIS --> 6
+  99      + _CNT_CL_OUT_DIS --> 8
        
-  98 > _main: (2)
-  99      + [_AppAlignment] --> 1
- 100      + [_AppCalib] --> 2
- 101      + [_AppFault] --> 11
- 102      + [_AppInit] --> 12
- 103      + [_AppRun] --> 13
- 104      + [_AppStart] --> 14
- 105      + [_AppStop] --> 28
- 106      + _init_adc: (5)
- 107      + _init_clk: (2)
- 108      + _init_io: (2)
- 109      + _init_timer1: (6)
- 110      + _init_timer4: (2)
+ 100 > _function_test: (2)
+ 101      + _delay_ms --> 10
        
- 111 > f_ADC2_IRQHandler: (5)
+ 102 > _main: (2)
+ 103      + [_AppAlignment] --> 1
+ 104      + [_AppCalib] --> 2
+ 105      + [_AppFault] --> 11
+ 106      + [_AppInit] --> 12
+ 107      + [_AppRun] --> 13
+ 108      + [_AppStart] --> 14
+ 109      + [_AppStop] --> 28
+ 110      + _init_adc: (5)
+ 111      + _init_clk: (2)
+ 112      + _init_io: (2)
+ 113      + _init_timer1: (6)
+ 114      + _init_timer4: (2)
+       
+ 115 > f_ADC2_IRQHandler: (5)
 
- 112 > f_AWU_IRQHandler: (5)
+ 116 > f_AWU_IRQHandler: (5)
 
- 113 > f_CLK_IRQHandler: (5)
+ 117 > f_CLK_IRQHandler: (5)
 
- 114 > f_EEPROM_EEC_IRQHandler: (5)
+ 118 > f_EEPROM_EEC_IRQHandler: (5)
 
- 115 > f_EXTI_PORTA_IRQHandler: (5)
+ 119 > f_EXTI_PORTA_IRQHandler: (5)
 
- 116 > f_EXTI_PORTB_IRQHandler: (5)
+ 120 > f_EXTI_PORTB_IRQHandler: (5)
 
- 117 > f_EXTI_PORTC_IRQHandler: (5)
+ 121 > f_EXTI_PORTC_IRQHandler: (5)
 
- 118 > f_EXTI_PORTD_IRQHandler: (5)
+ 122 > f_EXTI_PORTD_IRQHandler: (5)
 
- 119 > f_EXTI_PORTE_IRQHandler: (5)
+ 123 > f_EXTI_PORTE_IRQHandler: (5)
 
- 120 > f_I2C_IRQHandler: (5)
+ 124 > f_I2C_IRQHandler: (5)
 
- 121 > f_NonHandledInterrupt: (5)
+ 125 > f_NonHandledInterrupt: (5)
 
- 122 > f_SPI_IRQHandler: (5)
+ 126 > f_SPI_IRQHandler: (5)
 
- 123 > f_TIM1_CAP_COM_IRQHandler: (13)
- 124      + _AdcSwitch: (2)
- 125      + _BldcLik: (3)
- 126      + _BldcRun: (2)
- 127      |    + _TstAndSwit: (3)
- 128      |    + _bldc_run_onestep --> 18
+ 127 > f_TIM1_CAP_COM_IRQHandler: (13)
+ 128      + _AdcSwitch: (2)
+ 129      + _BldcLik: (3)
+ 130      + _BldcRun: (2)
+ 131      |    + _TstAndSwit: (3)
+ 132      |    + _bldc_run_onestep --> 18
           | 
- 129      + _Check_BEMF_Voltage: (4)
- 130      |    + _AdcSwitch --> 124
+ 133      + _Check_BEMF_Voltage: (4)
+ 134      |    + _AdcSwitch --> 128
           | 
        
- 131 > f_TIM1_UPD_OVF_TRG_BRK_IRQHandler: (5)
+ 135 > f_TIM1_UPD_OVF_TRG_BRK_IRQHandler: (5)
 
- 132 > f_TIM2_CAP_COM_IRQHandler: (5)
+ 136 > f_TIM2_CAP_COM_IRQHandler: (5)
 
- 133 > f_TIM2_UPD_OVF_BRK_IRQHandler: (11)
- 134      + _timer2_service: (2)
- 135      |    + _get_adc: (4)
- 136      |    |    + _AdcSwitch --> 124
+ 137 > f_TIM2_UPD_OVF_BRK_IRQHandler: (11)
+ 138      + _timer2_service: (2)
+ 139      |    + _get_adc: (4)
+ 140      |    |    + _AdcSwitch --> 128
           |    | 
           | 
        
- 137 > f_TIM3_CAP_COM_IRQHandler: (5)
+ 141 > f_TIM3_CAP_COM_IRQHandler: (5)
 
- 138 > f_TIM3_UPD_OVF_BRK_IRQHandler: (5)
+ 142 > f_TIM3_UPD_OVF_BRK_IRQHandler: (5)
 
- 139 > f_TIM4_UPD_OVF_IRQHandler: (5)
+ 143 > f_TIM4_UPD_OVF_IRQHandler: (5)
 
- 140 > f_TLI_IRQHandler: (5)
+ 144 > f_TLI_IRQHandler: (5)
 
- 141 > f_TRAP_IRQHandler: (5)
+ 145 > f_TRAP_IRQHandler: (5)
 
- 142 > f_UART1_RX_IRQHandler: (5)
+ 146 > f_UART1_RX_IRQHandler: (5)
 
- 143 > f_UART1_TX_IRQHandler: (5)
+ 147 > f_UART1_TX_IRQHandler: (5)
 
- 144 > f_UART3_RX_IRQHandler: (5)
+ 148 > f_UART3_RX_IRQHandler: (5)
 
- 145 > f_UART3_TX_IRQHandler: (5)
+ 149 > f_UART3_TX_IRQHandler: (5)
 
- 146   L322_bldc_open_loop --> 15
+ 150   L31_bldc_one_loop --> 16
 
- 147   L331_AppStopToAlignment --> 3
+ 151   L332_bldc_open_loop --> 15
 
- 148   L3_bldc_one_loop --> 16
+ 152   L341_AppStopToAlignment --> 3
 
- 149   _AdcSwitch --> 124
+ 153   _AdcSwitch --> 128
 
- 150   _BldcLik --> 125
+ 154   _BldcLik --> 129
 
- 151   _BldcRun --> 126
+ 155   _BldcRun --> 130
 
- 152   _CNT_AL_OUT_DIS --> 4
+ 156   _CNT_AL_OUT_DIS --> 4
 
- 153   _CNT_AL_OUT_EN --> 5
+ 157   _CNT_AL_OUT_EN --> 5
 
- 154   _CNT_BL_OUT_DIS --> 6
+ 158   _CNT_BL_OUT_DIS --> 6
 
- 155   _CNT_BL_OUT_EN --> 7
+ 159   _CNT_BL_OUT_EN --> 7
 
- 156   _CNT_CL_OUT_DIS --> 8
+ 160   _CNT_CL_OUT_DIS --> 8
 
- 157   _CNT_CL_OUT_EN --> 24
+ 161   _CNT_CL_OUT_EN --> 24
 
- 158   _Check_BEMF_Voltage --> 129
+ 162   _Check_BEMF_Voltage --> 133
 
- 159   _GPIO_WriteHigh --> 38
+ 163   _GPIO_WriteHigh --> 38
 
- 160   _GPIO_WriteLow --> 39
+ 164   _GPIO_WriteLow --> 39
 
- 161   _OffSixPin --> 63
+ 165   _OffSixPin --> 63
 
- 162   _SPI_CalculateCRCCmd --> 89
+ 166   _SPI_CalculateCRCCmd --> 89
 
- 163   _SPI_Cmd --> 91
+ 167   _SPI_Cmd --> 91
 
- 164   _SPI_GetFlagStatus --> 40
+ 168   _SPI_GetFlagStatus --> 40
 
- 165   _SPI_SendData --> 42
+ 169   _SPI_SendData --> 42
 
- 166   _Timer1_CCR4_Value --> 67
+ 170   _Timer1_CCR4_Value --> 67
 
- 167   _Timer1_PWM_Value --> 9
+ 171   _Timer1_PWM_Value --> 9
 
- 168   _TstAndSwit --> 127
+ 172   _TstAndSwit --> 131
 
- 169   _assert_failed --> 41
+ 173   _assert_failed --> 41
 
- 170   _bldc_run_onestep --> 18
+ 174   _bldc_run_onestep --> 18
 
- 171   _delay_ms --> 10
+ 175   _delay_ms --> 10
 
- 172   _delay_us --> 26
+ 176   _delay_us --> 26
 
- 173   _get_adc --> 135
+ 177   _get_adc --> 139
 
- 174   _init_adc --> 106
+ 178   _init_adc --> 110
 
- 175   _init_clk --> 107
+ 179   _init_clk --> 111
 
- 176   _init_io --> 108
+ 180   _init_io --> 112
 
- 177   _init_timer1 --> 109
+ 181   _init_timer1 --> 113
 
- 178   _init_timer2 --> 27
+ 182   _init_timer2 --> 27
 
- 179   _init_timer4 --> 110
+ 183   _init_timer4 --> 114
 
- 180   _timer2_service --> 134
+ 184   _timer2_service --> 138
 
 
 
@@ -629,7 +635,7 @@ _Check_BEMF_Voltage                 00008ac5   defined in Debug\control.o sectio
 _CmdPwmSlow                         000089b6   defined in Debug\control.o section .text
 _DISP_Display                       000088a1   defined in Debug\control.o section .text
 _DISP_TAB                           00000012   defined in Debug\control.o section .bsct, initialized
-_Error_code                         0000005b   defined in Debug\control.o section .ubsct
+_Error_code                         00000097   defined in Debug\control.o section .ubsct
                                                used in Debug\stm8s_it.o
 _GPIO_DeInit                        0000815b   defined in Debug\stm8s_gpio.o section .text
 _GPIO_ExternalPullUpConfig          00008269   defined in Debug\stm8s_gpio.o section .text
@@ -772,7 +778,7 @@ _Timer1_PWM_Value                   0000892e   defined in Debug\control.o sectio
 _TstAndSwit                         00008b47   defined in Debug\control.o section .text
 __endmem                            000013ff   defined in command file
                                                *** not used ***
-__endzp                             00000090   defined in command file section .ubsct
+__endzp                             000000cc   defined in command file section .ubsct
                                                used in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8
 __idesc__                           000080e9   defined in linker section .init
                                                used in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8
@@ -786,7 +792,7 @@ __stext                             00008110   defined in C:\Program Files (x86)
                                                used in Debug\stm8_interrupt_vector.o
 __vectab                            00008000   defined in Debug\stm8_interrupt_vector.o section .const
 _adc_table                          ********   *** removed from Debug\main.o ***
-_assert_failed                      0000911b   defined in Debug\main.o section .text
+_assert_failed                      00009155   defined in Debug\main.o section .text
                                                used in Debug\stm8s_adc2.o
                                                        Debug\stm8s_clk.o
                                                        Debug\stm8s_gpio.o
@@ -795,6 +801,7 @@ _assert_failed                      0000911b   defined in Debug\main.o section .
                                                        Debug\stm8s_tim4.o
 _bldc_run_onestep                   00008d00   defined in Debug\control.o section .text
                                                used in Debug\application.o
+_bldc_stop                          00008fca   defined in Debug\control.o section .text
 _delay_ms                           000086c3   defined in Debug\application.o section .text
 _delay_us                           000086ac   defined in Debug\application.o section .text
 _exit                               00008159   defined in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8 section .text
@@ -806,15 +813,15 @@ _g_counter_ms                       00000003   defined in Debug\application.o se
 _g_direction                        0000000e   defined in Debug\control.o section .bsct, initialized
 _g_pwm_on_duty                      00000001   defined in Debug\application.o section .bsct, initialized
 _get_adc                            00008691   defined in Debug\application.o section .text
-_init_adc                           0000909d   defined in Debug\main.o section .text
-_init_clk                           00008fca   defined in Debug\main.o section .text
-_init_io                            00009054   defined in Debug\main.o section .text
-_init_timer1                        00008fcf   defined in Debug\main.o section .text
+_init_adc                           000090d7   defined in Debug\main.o section .text
+_init_clk                           00009004   defined in Debug\main.o section .text
+_init_io                            0000908e   defined in Debug\main.o section .text
+_init_timer1                        00009009   defined in Debug\main.o section .text
 _init_timer2                        0000880f   defined in Debug\application.o section .text
-_init_timer4                        00009034   defined in Debug\main.o section .text
-_main                               000090f2   defined in Debug\main.o section .text
+_init_timer4                        0000906e   defined in Debug\main.o section .text
+_main                               0000912c   defined in Debug\main.o section .text
                                                used in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8
-_tBC_Param                          0000005c   defined in Debug\control.o section .ubsct
+_tBC_Param                          00000098   defined in Debug\control.o section .ubsct
                                                used in Debug\stm8s_it.o
 _timer2_service                     000087b7   defined in Debug\application.o section .text
                                                used in Debug\stm8s_it.o
@@ -826,60 +833,60 @@ c_lreg                              ********   *** removed from (C:\Program File
 c_ltor                              ********   *** removed from (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)ltor.o ***
 c_ludv                              ********   *** removed from (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)ludiv.o ***
 c_rtol                              ********   *** removed from (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)rtol.o ***
-c_x                                 0000008a   defined in (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)xreg.o section .ubsct
+c_x                                 000000c6   defined in (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)xreg.o section .ubsct
                                                used in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8
                                                        Debug\stm8s_it.o
                                                        (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)ldiv.o
-c_y                                 0000008d   defined in (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)yreg.o section .ubsct
+c_y                                 000000c9   defined in (C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\libm0.sm8)yreg.o section .ubsct
                                                used in C:\Program Files (x86)\COSMIC\CXSTM8_32K\Lib\crtsi0.sm8
                                                        Debug\stm8s_it.o
-f_ADC2_IRQHandler                   000091c7   defined in Debug\stm8s_it.o section .text
+f_ADC2_IRQHandler                   00009201   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_AWU_IRQHandler                    00009120   defined in Debug\stm8s_it.o section .text
+f_AWU_IRQHandler                    0000915a   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_CLK_IRQHandler                    00009121   defined in Debug\stm8s_it.o section .text
+f_CLK_IRQHandler                    0000915b   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EEPROM_EEC_IRQHandler             000091d4   defined in Debug\stm8s_it.o section .text
+f_EEPROM_EEC_IRQHandler             0000920e   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTA_IRQHandler             00009122   defined in Debug\stm8s_it.o section .text
+f_EXTI_PORTA_IRQHandler             0000915c   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTB_IRQHandler             00009123   defined in Debug\stm8s_it.o section .text
+f_EXTI_PORTB_IRQHandler             0000915d   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTC_IRQHandler             00009124   defined in Debug\stm8s_it.o section .text
+f_EXTI_PORTC_IRQHandler             0000915e   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTD_IRQHandler             00009125   defined in Debug\stm8s_it.o section .text
+f_EXTI_PORTD_IRQHandler             0000915f   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_EXTI_PORTE_IRQHandler             00009126   defined in Debug\stm8s_it.o section .text
+f_EXTI_PORTE_IRQHandler             00009160   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_I2C_IRQHandler                    000091c4   defined in Debug\stm8s_it.o section .text
+f_I2C_IRQHandler                    000091fe   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_NonHandledInterrupt               0000911d   defined in Debug\stm8s_it.o section .text
+f_NonHandledInterrupt               00009157   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_SPI_IRQHandler                    00009127   defined in Debug\stm8s_it.o section .text
+f_SPI_IRQHandler                    00009161   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM1_CAP_COM_IRQHandler           00009131   defined in Debug\stm8s_it.o section .text
+f_TIM1_CAP_COM_IRQHandler           0000916b   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM1_UPD_OVF_TRG_BRK_IRQHandler   00009128   defined in Debug\stm8s_it.o section .text
+f_TIM1_UPD_OVF_TRG_BRK_IRQHandler   00009162   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM2_CAP_COM_IRQHandler           000091bf   defined in Debug\stm8s_it.o section .text
+f_TIM2_CAP_COM_IRQHandler           000091f9   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM2_UPD_OVF_BRK_IRQHandler       0000919f   defined in Debug\stm8s_it.o section .text
+f_TIM2_UPD_OVF_BRK_IRQHandler       000091d9   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM3_CAP_COM_IRQHandler           000091c1   defined in Debug\stm8s_it.o section .text
+f_TIM3_CAP_COM_IRQHandler           000091fb   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM3_UPD_OVF_BRK_IRQHandler       000091c0   defined in Debug\stm8s_it.o section .text
+f_TIM3_UPD_OVF_BRK_IRQHandler       000091fa   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TIM4_UPD_OVF_IRQHandler           000091c8   defined in Debug\stm8s_it.o section .text
+f_TIM4_UPD_OVF_IRQHandler           00009202   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TLI_IRQHandler                    0000911f   defined in Debug\stm8s_it.o section .text
+f_TLI_IRQHandler                    00009159   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_TRAP_IRQHandler                   0000911e   defined in Debug\stm8s_it.o section .text
+f_TRAP_IRQHandler                   00009158   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_UART1_RX_IRQHandler               000091c3   defined in Debug\stm8s_it.o section .text
+f_UART1_RX_IRQHandler               000091fd   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_UART1_TX_IRQHandler               000091c2   defined in Debug\stm8s_it.o section .text
+f_UART1_TX_IRQHandler               000091fc   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_UART3_RX_IRQHandler               000091c6   defined in Debug\stm8s_it.o section .text
+f_UART3_RX_IRQHandler               00009200   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o
-f_UART3_TX_IRQHandler               000091c5   defined in Debug\stm8s_it.o section .text
+f_UART3_TX_IRQHandler               000091ff   defined in Debug\stm8s_it.o section .text
                                                used in Debug\stm8_interrupt_vector.o

@@ -11,6 +11,8 @@ typedef void (*tp_func)(void);  /* pointer to a function */
 #define APP_STOP                5
 #define APP_FAULT               6
 
+#define ADC_SAMPLE_SIZE				20
+
 void delay_us(unsigned int us);
 void delay_ms(unsigned int ms);
 void AppInit(void);

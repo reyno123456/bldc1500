@@ -6,6 +6,12 @@ unsigned char g_app_state = 0;
 unsigned short g_pwm_on_duty = 0;
 unsigned short g_counter_ms = 0;
 
+static unsigned short g_adc_phase_a[ADC_SAMPLE_SIZE];
+static unsigned short g_adc_phase_b[ADC_SAMPLE_SIZE];
+static unsigned short g_adc_phase_c[ADC_SAMPLE_SIZE];
+static unsigned short g_adc_bus = 0;
+
+
 static void bldc_one_loop(unsigned short duty, unsigned int ms);
 
 unsigned short get_adc(unsigned char channel)
@@ -109,7 +115,9 @@ static void bldc_open_loop(void)
 	g_pwm_on_duty = 100;
 	while(1)
 	{
-		bldc_one_loop(g_pwm_on_duty, 50);
+		bldc_one_loop(g_pwm_on_duty, 3);
+		//bldc_stop();
+		//delay_ms(1000);
 	}
 }
 
@@ -182,22 +190,16 @@ void function_test(void)
 
 void timer2_service(void)
 {
-	static unsigned short adc_phase_a[10];
-	static unsigned short adc_phase_b[10];
-	static unsigned short adc_phase_c[10];
-	static unsigned char i = 0;
-	static unsigned short adc_bus = 0;
 	static unsigned char flag = 0;
-
-	//adc_phase_c = get_adc(PHASE_C_BEMF_ADC_CHAN);
+	static unsigned char i = 0;
 
 	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
-	adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
-	adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
-	adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
-	adc_bus = get_adc(ADC_BUS_CHANNEL);
+	g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
+	g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
+	g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
+	g_adc_bus = get_adc(ADC_BUS_CHANNEL);
 	(GPIOD->ODR |= GPIO_PIN_7);
-	if(++i >= 10)
+	if(++i >= ADC_SAMPLE_SIZE)
 	{
 		i = 0;
 		TIM2->IER &=~ 1 << 0;

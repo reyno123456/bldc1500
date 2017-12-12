@@ -244,4 +244,7 @@ void CNT_BL_OUT_DIS(void);
 void CNT_CL_OUT_EN(void);
 void CNT_CL_OUT_DIS(void);
 
+void bldc_stop(void);
+
+
 #endif

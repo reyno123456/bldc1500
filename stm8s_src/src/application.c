@@ -100,7 +100,10 @@ static void bldc_one_loop(unsigned short duty, unsigned int ms)
 			break;
 			default:break;
 		}
-		delay_ms(ms);
+		if (ms > 100)
+			delay_us(ms);
+		else
+			delay_ms(ms);
 	}
 }
 
@@ -112,12 +115,24 @@ static void bldc_open_loop(void)
 	unsigned int i;
 	static unsigned short adc_value = 0;
 
-	g_pwm_on_duty = 100;
+	static unsigned int phase_us = 2500;
+
+	g_pwm_on_duty = 45;
 	while(1)
 	{
-		bldc_one_loop(g_pwm_on_duty, 3);
+		bldc_one_loop(g_pwm_on_duty, phase_us);
+
+		if (--phase_us < 1950)
+			phase_us = 1950;
+		//if (g_counter_ms > 5000)
+		//	break;
 		//bldc_stop();
 		//delay_ms(1000);
+	}
+
+	while(1)
+	{
+		bldc_one_loop(g_pwm_on_duty, 1720);
 	}
 }
 

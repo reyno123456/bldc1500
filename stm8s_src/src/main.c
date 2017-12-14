@@ -212,7 +212,7 @@ void main(void)
 	init_clk();
 	init_io();
 	// memset(&tBC_Param, 0, sizeof(tBC_Param));
-	init_timer1(1000, 1);  // 8k
+	init_timer1(400, 1);  // 8k
 	init_adc();
 	init_timer4(0x80,0x07);	
 	_asm("rim");

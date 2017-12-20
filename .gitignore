@@ -10,8 +10,6 @@
 *.a
 *.bin
 *.dis
-*.elf
-*.map
 *.mif
 *.depend
 .nfs*

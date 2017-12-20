@@ -115,15 +115,16 @@ static void bldc_open_loop(void)
 	unsigned int i;
 	static unsigned short adc_value = 0;
 
-	static unsigned int phase_us = 3000;
+	static unsigned int phase_us = 5000;
 
 	g_pwm_on_duty = 45;
 	while(1)
 	{
 		bldc_one_loop(g_pwm_on_duty, phase_us);
 
-		if (--phase_us < 1750)
+		if (phase_us < 1750)
 			phase_us = 1750;
+		phase_us -= 10;
 		//if (g_counter_ms > 5000)
 		//	break;
 		//bldc_stop();

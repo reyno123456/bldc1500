@@ -11,8 +11,11 @@ static unsigned short g_adc_phase_b[ADC_SAMPLE_SIZE];
 static unsigned short g_adc_phase_c[ADC_SAMPLE_SIZE];
 static unsigned short g_adc_bus = 0;
 
+s_flags g_flags = {0};
 
-static void bldc_one_loop(unsigned short duty, unsigned int ms);
+static void bldc_one_loop(unsigned short duty, unsigned int us);
+static void bldc_auto_run(void);
+
 
 unsigned short get_adc(unsigned char channel)
 {
@@ -64,7 +67,7 @@ static void AppStopToAlignment(void)
 	CNT_CL_OUT_DIS();	
 }
 
-static void bldc_one_loop(unsigned short duty, unsigned int ms)
+static void bldc_one_loop(unsigned short duty, unsigned int us)
 {
 	unsigned char flag;
 	unsigned short adc_value;
@@ -81,11 +84,10 @@ static void bldc_one_loop(unsigned short duty, unsigned int ms)
 			break;
 			
 			case 2:
-				//init_timer2(g_pwm_on_duty/3,1);
+				//init_timer2(400,32,1);
 			break;
 
 			case 3:
-				//delay_us(746);
 				init_timer2(400*2,32,1);
 			break;
 
@@ -100,10 +102,7 @@ static void bldc_one_loop(unsigned short duty, unsigned int ms)
 			break;
 			default:break;
 		}
-		if (ms > 100)
-			delay_us(ms);
-		else
-			delay_ms(ms);
+		delay_us(us);
 	}
 }
 
@@ -122,8 +121,8 @@ static void bldc_open_loop(void)
 	{
 		bldc_one_loop(g_pwm_on_duty, phase_us);
 
-		if (phase_us < 1750)
-			phase_us = 1750;
+		if (phase_us < 1600)
+			phase_us = 1600;
 		phase_us -= 10;
 		//if (g_counter_ms > 5000)
 		//	break;
@@ -210,11 +209,9 @@ void timer2_service(void)
 	static unsigned char i = 0;
 
 	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
-	g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
-	//g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
+	//g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
+	g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
 	//g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
-	g_adc_bus = get_adc(ADC_BUS_CHANNEL);
-	(GPIOD->ODR |= GPIO_PIN_7);
 	if(++i >= ADC_SAMPLE_SIZE)
 	{
 		i = 0;
@@ -222,8 +219,11 @@ void timer2_service(void)
 		if (g_counter_ms > 10000)
 		{
 			g_counter_ms = 0;
+			g_flags.open_loop_finished = 1;
 		}
 	}
+	g_adc_bus = get_adc(ADC_BUS_CHANNEL);
+	(GPIOD->ODR |= GPIO_PIN_7);
 }
 
 void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr)
@@ -247,3 +247,42 @@ void timer2_disable(void)
 {
 	TIM2->IER = 0x00;		// ½ûÖ¹ÖÐ¶Ï
 }
+
+void bldc_auto_run(void)
+{
+	unsigned char flag;
+	unsigned short adc_value;
+	unsigned short adc_bus;
+
+	for (g_flags.commutation = 0; g_flags.commutation < 6; g_flags.commutation++)
+	{
+		bldc_run_onestep(flag);
+		switch (flag)
+		{
+			case 1:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+			
+			case 2:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+
+			case 3:
+				//delay_us(746);
+				init_timer2(400*2,32,1);
+			break;
+
+			case 4:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+
+			case 5:
+			break;
+
+			case 6:
+			break;
+			default:break;
+		}
+	}
+}
+

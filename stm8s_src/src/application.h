@@ -12,6 +12,14 @@ typedef void (*tp_func)(void);  /* pointer to a function */
 #define APP_FAULT               6
 
 #define ADC_SAMPLE_SIZE				20
+#define ADC_DOWN_BEMF_SHIFT			93
+
+typedef struct
+{
+	unsigned open_loop_finished : 1;
+	unsigned reserved : 7;
+	unsigned char commutation;
+}s_flags;
 
 void delay_us(unsigned int us);
 void delay_ms(unsigned int ms);
@@ -32,4 +40,5 @@ extern unsigned char g_app_state;
 extern const tp_func AppStateMachine[];
 extern unsigned short g_pwm_on_duty;
 extern unsigned short g_counter_ms;
+extern s_flags g_flags;
 #endif

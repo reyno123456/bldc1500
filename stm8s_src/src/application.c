@@ -85,8 +85,8 @@ static void bldc_one_loop(unsigned short duty, unsigned int ms)
 			break;
 
 			case 3:
-				delay_us(746);
-				init_timer2(1000,1);
+				//delay_us(746);
+				//init_timer2(1000,1);
 			break;
 
 			case 4:
@@ -115,15 +115,15 @@ static void bldc_open_loop(void)
 	unsigned int i;
 	static unsigned short adc_value = 0;
 
-	static unsigned int phase_us = 2500;
+	static unsigned int phase_us = 3000;
 
 	g_pwm_on_duty = 45;
 	while(1)
 	{
 		bldc_one_loop(g_pwm_on_duty, phase_us);
 
-		if (--phase_us < 1950)
-			phase_us = 1950;
+		if (--phase_us < 1750)
+			phase_us = 1750;
 		//if (g_counter_ms > 5000)
 		//	break;
 		//bldc_stop();

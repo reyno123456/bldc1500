@@ -12,6 +12,8 @@ static unsigned short g_adc_phase_c[ADC_SAMPLE_SIZE];
 static unsigned short g_adc_bus = 0;
 
 s_flags g_flags = {0};
+s_global_value g_values = {0};
+
 
 static void bldc_one_loop(unsigned short duty, unsigned int us);
 static void bldc_auto_run(void);
@@ -102,7 +104,8 @@ static void bldc_one_loop(unsigned short duty, unsigned int us)
 			break;
 			default:break;
 		}
-		delay_us(us);
+		//delay_us(us);
+		delay_us_with_timer(us / 10);
 	}
 }
 
@@ -286,3 +289,14 @@ void bldc_auto_run(void)
 	}
 }
 
+void delay_us_with_timer(unsigned int us)
+{
+	TIM4->IER = 0x00;		// ½ûÖ¹ÖÐ¶Ï
+	g_values.us_cnt_top = us;
+	g_values.us_cnt = 0;
+	g_flags.us_timeout = 0;
+	TIM4->IER = 0x01;
+
+	while(g_flags.us_timeout == 0);
+	TIM4->IER = 0x00;
+}

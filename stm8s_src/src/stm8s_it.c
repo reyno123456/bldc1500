@@ -558,7 +558,10 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		
 	TIM4->SR1 = 0x00;  // 清除更新标志
 	g_counter_ms++;
-/*
+	if(++g_values.us_cnt >= g_values.us_cnt_top){
+		g_flags.us_timeout = 1;
+	}
+
 	if (flag == 0){
 		LED_RUN_ON();
 		flag = 1;
@@ -566,7 +569,7 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		LED_RUN_OFF();
 		flag = 0;
 	}
-*/
+
 }
 
 #endif /* (STM8S903) || (STM8AF622x)*/

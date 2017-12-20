@@ -17,9 +17,17 @@ typedef void (*tp_func)(void);  /* pointer to a function */
 typedef struct
 {
 	unsigned open_loop_finished : 1;
-	unsigned reserved : 7;
+	unsigned us_timeout : 1;
+	unsigned reserved : 6;
 	unsigned char commutation;
 }s_flags;
+
+typedef struct
+{
+	unsigned int us_cnt_top;
+	unsigned int us_cnt;
+}s_global_value;
+
 
 void delay_us(unsigned int us);
 void delay_ms(unsigned int ms);
@@ -35,10 +43,13 @@ unsigned short get_adc(unsigned char);
 void init_timer2(unsigned short Tcon,unsigned short, unsigned char Pscr);
 void timer2_service(void);
 void timer2_disable(void);
+void delay_us_with_timer(unsigned int us);
 
 extern unsigned char g_app_state;
 extern const tp_func AppStateMachine[];
 extern unsigned short g_pwm_on_duty;
 extern unsigned short g_counter_ms;
 extern s_flags g_flags;
+extern s_global_value g_values;
+
 #endif

@@ -24,8 +24,9 @@ void AppStop(void);
 void AppFault(void);
 void function_test(void);
 unsigned short get_adc(unsigned char);
-void init_timer2(unsigned short Tcon,unsigned char Pscr);
+void init_timer2(unsigned short Tcon,unsigned short, unsigned char Pscr);
 void timer2_service(void);
+void timer2_disable(void);
 
 extern unsigned char g_app_state;
 extern const tp_func AppStateMachine[];

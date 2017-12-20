@@ -86,7 +86,7 @@ static void bldc_one_loop(unsigned short duty, unsigned int ms)
 
 			case 3:
 				//delay_us(746);
-				//init_timer2(1000,1);
+				init_timer2(400*2,32,1);
 			break;
 
 			case 4:
@@ -211,14 +211,14 @@ void timer2_service(void)
 
 	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
 	g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
-	g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
-	g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
+	//g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
+	//g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
 	g_adc_bus = get_adc(ADC_BUS_CHANNEL);
 	(GPIOD->ODR |= GPIO_PIN_7);
 	if(++i >= ADC_SAMPLE_SIZE)
 	{
 		i = 0;
-		TIM2->IER &=~ 1 << 0;
+		timer2_disable();
 		if (g_counter_ms > 10000)
 		{
 			g_counter_ms = 0;
@@ -226,7 +226,7 @@ void timer2_service(void)
 	}
 }
 
-void init_timer2(unsigned short Tcon,unsigned char Pscr)
+void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr)
 {								
 	TIM2->IER = 0x00;		// 禁止中断
 	TIM2->EGR = 0x01;		// 允许产生更新事件
@@ -236,12 +236,14 @@ void init_timer2(unsigned short Tcon,unsigned char Pscr)
 	TIM2->ARRH = (Tcon >> 8) & 0xff;
 	TIM2->ARRL = Tcon & 0xff;
 
-	TIM2->CNTRH = 0;
-	TIM2->CNTRL = 0;								
+	TIM2->CNTRH = (init_cnt >> 8) & 0xff;;
+	TIM2->CNTRL = init_cnt & 0xff;								
 
 	TIM2->CR1 |= 0x01;
 	TIM2->IER |=  1 << 6 | 1 << 0;
 }
 
-
-
+void timer2_disable(void)
+{
+	TIM2->IER = 0x00;		// 禁止中断
+}

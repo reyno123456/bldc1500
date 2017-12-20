@@ -241,3 +241,4 @@ void init_timer2(unsigned short Tcon,unsigned char Pscr)
 	TIM2->CR1 |= 0x01;
 	TIM2->IER |=  1 << 6 | 1 << 0;
 }
+

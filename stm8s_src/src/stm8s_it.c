@@ -555,11 +555,18 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 	static uint16 IT_NT1 =  0 ;
 	static uint16 usPwmValue =  1;
 	static unsigned char flag = 0;
+	static unsigned char cnt;
 		
 	TIM4->SR1 = 0x00;  // 清除更新标志
-	g_counter_ms++;
-	if(++g_values.us_cnt >= g_values.us_cnt_top){
-		g_flags.us_timeout = 1;
+	if (++cnt >= 100){
+		cnt = 0;
+		g_values.ms_cnt++;
+	}
+
+	if (g_flags.us_enable){
+		if(++g_values.us_cnt >= g_values.us_cnt_top){
+			g_flags.us_timeout = 1;
+		}
 	}
 
 	if (flag == 0){

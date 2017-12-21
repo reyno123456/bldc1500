@@ -18,7 +18,8 @@ typedef struct
 {
 	unsigned open_loop_finished : 1;
 	unsigned us_timeout : 1;
-	unsigned reserved : 6;
+	unsigned us_enable : 1;
+	unsigned reserved : 5;
 	unsigned char commutation;
 }s_flags;
 
@@ -26,6 +27,7 @@ typedef struct
 {
 	unsigned int us_cnt_top;
 	unsigned int us_cnt;
+	unsigned int ms_cnt;
 }s_global_value;
 
 

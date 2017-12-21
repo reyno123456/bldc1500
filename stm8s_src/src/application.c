@@ -86,11 +86,11 @@ static void bldc_one_loop(unsigned short duty, unsigned int us)
 			break;
 			
 			case 2:
-				//init_timer2(400,32,1);
+				init_timer2(400*2,32,1);
 			break;
 
 			case 3:
-				init_timer2(400*2,32,1);
+				//init_timer2(400*2,32,1);
 			break;
 
 			case 4:
@@ -213,15 +213,15 @@ void timer2_service(void)
 
 	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
 	//g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
-	g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
+	g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
 	//g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
 	if(++i >= ADC_SAMPLE_SIZE)
 	{
 		i = 0;
 		timer2_disable();
-		if (g_counter_ms > 10000)
+		if (g_values.ms_cnt > 10000)
 		{
-			g_counter_ms = 0;
+			g_values.ms_cnt = 0;
 			g_flags.open_loop_finished = 1;
 		}
 	}
@@ -291,12 +291,14 @@ void bldc_auto_run(void)
 
 void delay_us_with_timer(unsigned int us)
 {
-	TIM4->IER = 0x00;		// ½ûÖ¹ÖÐ¶Ï
+	//TIM4->IER = 0x00;		// ½ûÖ¹ÖÐ¶Ï
 	g_values.us_cnt_top = us;
 	g_values.us_cnt = 0;
 	g_flags.us_timeout = 0;
-	TIM4->IER = 0x01;
+	g_flags.us_enable = 1;
+	//TIM4->IER = 0x01;
 
 	while(g_flags.us_timeout == 0);
-	TIM4->IER = 0x00;
+	g_flags.us_enable = 0;
+	//TIM4->IER = 0x00;
 }

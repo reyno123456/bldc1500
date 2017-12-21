@@ -11,7 +11,7 @@ typedef void (*tp_func)(void);  /* pointer to a function */
 #define APP_STOP                5
 #define APP_FAULT               6
 
-#define ADC_SAMPLE_SIZE				20
+#define ADC_SAMPLE_SIZE				32
 #define ADC_DOWN_BEMF_SHIFT			93
 #define ADC_UP_BEMF_SHIFT			105
 
@@ -20,7 +20,8 @@ typedef struct
 	unsigned open_loop_finished : 1;
 	unsigned us_timeout : 1;
 	unsigned us_enable : 1;
-	unsigned reserved : 5;
+	unsigned commutation_enable : 1;
+	unsigned reserved : 4;
 	unsigned char commutation;
 }s_flags;
 
@@ -29,6 +30,9 @@ typedef struct
 	unsigned int us_cnt_top;
 	unsigned int us_cnt;
 	unsigned int ms_cnt;
+
+	unsigned int commutation_cnt;
+	unsigned int phase_60degree_cnt;
 }s_global_value;
 
 
@@ -45,7 +49,7 @@ void function_test(void);
 unsigned short get_adc(unsigned char);
 void init_timer2(unsigned short Tcon,unsigned short, unsigned char Pscr);
 void timer2_service(void);
-void timer2_service_auto_run(void);
+void timer2_service_close_loop(void);
 void timer2_disable(void);
 void delay_us_with_timer(unsigned int us);
 

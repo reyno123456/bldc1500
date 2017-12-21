@@ -243,55 +243,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   */
 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 {
-	/* In order to detect unexpected events during development,
-		it is recommended to set a breakpoint on the following instruction.
-	*/
-	volatile static	uint16 It = 0;
-	volatile uint16 Value = 0 ;
-	static uint8 ucFlag = 0;
-		
-	TIM1->SR1 &= 0xEF ;	//clr interrupt flag	
-
-	if (BldcStatus == STATUS_STOP)
-	{
-		return ;
-	}
-			
-	Check_BEMF_Voltage();
 	
-	AdcSwitch(PHASE_REF_ADC_CHAN);
-	tBC_Param.R_VRAD = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
-	AdcSwitch(PHASE_FED_ADC_CHAN);
-	tBC_Param.PresFedAD = ((uint16)ADC2->DRH<<2) + ADC2->DRL;
-
-#ifdef	STROM_PROTENT_ENB
-	AdcSwitch(ADC_CURRENT_CHANNEL);
-	R_CurAd = ADC2->DRH;
-	// 计算过流值
-	if(R_CurAd >= V_CUR_PROTECT) 	
-	{
-		It++ ;
-		if(It >= V_TIMER_PRO)//保护次数 V_TIMER_PRO*8
-		{
-			Error_code.bit.OverCurrent = 1 ;
-			TIM1_CtrlPWMOutputs(DISABLE);
-			It = 0 ;
-		}
-	}			
-	else  
-	{
-		It = 0 ;
-	}	
-#endif
-
-	if (BldcStatus == STATUS_RUN)	
-	{			
-		BldcRun() ;
-	}
-	else if (BldcStatus == STATUS_START)	
-	{
-		BldcLik() ;	
-	}
 }
 
 #if defined (STM8S903) || defined (STM8AF622x)
@@ -337,8 +289,9 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 		timer2_service();
 	}
 	else{
-		timer2_service_auto_run();
+		timer2_service_close_loop();
 	}
+
 		
 /*
 	if (flag == 0){
@@ -575,6 +528,10 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		}
 	}
 
+	if (g_flags.commutation_enable){
+		g_values.commutation_cnt++;
+	}
+/*
 	if (flag == 0){
 		LED_RUN_ON();
 		flag = 1;
@@ -582,7 +539,7 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		LED_RUN_OFF();
 		flag = 0;
 	}
-
+*/
 }
 
 #endif /* (STM8S903) || (STM8AF622x)*/

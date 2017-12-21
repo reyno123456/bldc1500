@@ -9,15 +9,19 @@ unsigned short g_counter_ms = 0;
 static unsigned short g_adc_phase_a[ADC_SAMPLE_SIZE];
 static unsigned short g_adc_phase_b[ADC_SAMPLE_SIZE];
 static unsigned short g_adc_phase_c[ADC_SAMPLE_SIZE];
+
+static unsigned short g_adc_close_loop_phase_b[4][10];
+
 static unsigned short g_adc_bus = 0;
 
 s_flags g_flags = {0};
 s_global_value g_values = {0};
 
 
-static void bldc_one_loop(unsigned short duty, unsigned int us);
-static void bldc_auto_run(void);
-
+static void bldc_one_open_loop(unsigned short duty, unsigned int us);
+static void bldc_open_loop(void);
+static void bldc_close_loop(void);
+static void bldc_one_close_loop(unsigned short duty, unsigned int us);
 
 unsigned short get_adc(unsigned char channel)
 {
@@ -69,7 +73,42 @@ static void AppStopToAlignment(void)
 	CNT_CL_OUT_DIS();	
 }
 
-static void bldc_one_loop(unsigned short duty, unsigned int us)
+static void bldc_open_loop(void)
+{
+	unsigned short duty;
+	unsigned int ms = 121;
+	static unsigned char step = 1;
+	unsigned int i;
+	static unsigned short adc_value = 0;
+
+	static unsigned int phase_us = 5000;
+
+	g_pwm_on_duty = 45;
+	while(1)
+	{
+		bldc_one_open_loop(g_pwm_on_duty, phase_us);
+
+		if (phase_us < 1300)
+			phase_us = 1300;
+		phase_us -= 10;
+
+		if (g_flags.open_loop_finished)
+		{
+			g_values.phase_60degree_cnt = phase_us;
+			break;
+		}
+	}
+}
+
+static void bldc_close_loop(void)
+{
+	while(1)
+	{
+		bldc_one_close_loop(g_pwm_on_duty, g_values.phase_60degree_cnt);
+	}
+}
+
+static void bldc_one_open_loop(unsigned short duty, unsigned int us)
 {
 	unsigned short adc_value;
 	unsigned short adc_bus;
@@ -85,7 +124,7 @@ static void bldc_one_loop(unsigned short duty, unsigned int us)
 			break;
 			
 			case 1:
-				init_timer2(400*4,44,1);
+				init_timer2(400,56,1);
 			break;
 
 			case 2:
@@ -103,41 +142,51 @@ static void bldc_one_loop(unsigned short duty, unsigned int us)
 			break;
 			default:break;
 		}
-		//delay_us(us);
-		delay_us_with_timer(us / 10);
+		delay_us(us);
+		//delay_us_with_timer(us / 10);
 	}
 }
 
-static void bldc_open_loop(void)
+static void bldc_one_close_loop(unsigned short duty, unsigned int us)
 {
-	unsigned short duty;
-	unsigned int ms = 121;
-	static unsigned char step = 1;
-	unsigned int i;
-	static unsigned short adc_value = 0;
+	unsigned short adc_value;
+	unsigned short adc_bus;
+	Timer1_PWM_Value(duty);
 
-	static unsigned int phase_us = 5000;
-
-	g_pwm_on_duty = 45;
-	while(1)
+	for (g_flags.commutation = 0; g_flags.commutation < 6; g_flags.commutation++)
 	{
-		bldc_one_loop(g_pwm_on_duty, phase_us);
+		bldc_run_onestep(g_flags.commutation);
+		switch (g_flags.commutation)
+		{
+			case 0:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+			
+			case 1:
+				g_flags.commutation_enable = 1;
+				g_values.commutation_cnt = 0;
+				init_timer2(400,56,1);
+			break;
 
-		if (phase_us < 1680)
-			phase_us = 1680;
-		phase_us -= 10;
-		//if (g_counter_ms > 5000)
-		//	break;
-		//bldc_stop();
-		//delay_ms(1000);
-	}
+			case 2:
+				//init_timer2(400*2,32,1);
+			break;
 
-	while(1)
-	{
-		bldc_one_loop(g_pwm_on_duty, 1720);
+			case 3:
+				//init_timer2(g_pwm_on_duty/3,1);
+			break;
+
+			case 4:
+			break;
+
+			case 5:
+			break;
+			default:break;
+		}
+		delay_us(us);
+		//delay_us_with_timer(us / 10);
 	}
 }
-
 
 const tp_func AppStateMachine[] = 
 {
@@ -175,7 +224,7 @@ void AppStart(void)
 
 void AppRun(void)
 {
-
+	bldc_close_loop();
 }
 
 void AppStop(void)
@@ -213,24 +262,74 @@ void timer2_service(void)
 	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
 	//g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
 	g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
+	(GPIOD->ODR |= GPIO_PIN_7);
 	//g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
 	if(++i >= ADC_SAMPLE_SIZE)
 	{
 		i = 0;
 		timer2_disable();
-		if (g_values.ms_cnt > 20000)
+		if (g_values.ms_cnt > 10000)
 		{
 			g_values.ms_cnt = 0;
 			g_flags.open_loop_finished = 1;
 		}
 	}
 	g_adc_bus = get_adc(ADC_BUS_CHANNEL);
-	(GPIOD->ODR |= GPIO_PIN_7);
 }
 
-void timer2_service_auto_run(void)
+void timer2_service_close_loop(void)
 {
+	unsigned short adc_value;
+	volatile static unsigned char i = 0;
+	static unsigned short phase_count_us = 0;
+	unsigned char j,k;
 
+	switch(g_flags.commutation)
+	{
+		case 0:
+		break;
+
+		case 1:
+			if (g_flags.commutation_enable)
+			{
+				(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
+				adc_value = get_adc(PHASE_B_BEMF_ADC_CHAN);
+				(GPIOD->ODR |= GPIO_PIN_7);
+
+				j = i/10;
+				k = i - j*10;
+				g_adc_close_loop_phase_b[j][k] = adc_value;
+
+				if (adc_value > 150 && 
+					adc_value < 300)
+				{
+					//phase_count_us = g_values.commutation_cnt;
+					//g_values.phase_60degree_cnt = phase_count_us*2*10;					
+					//i = 0;
+					//g_flags.commutation_enable = 0;
+					//timer2_disable();
+				}
+				if(++i > ADC_SAMPLE_SIZE)
+				{
+					i = 0;
+					g_flags.commutation_enable = 0;
+					timer2_disable();
+				}
+			}
+		break;
+
+		case 2:
+		break;
+
+		case 3:
+		break;
+
+		case 4:
+		break;
+
+		case 5:
+		break;
+	}
 }
 
 void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr)
@@ -240,11 +339,11 @@ void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr
 
 	TIM2->PSCR = Pscr;
 	
-	TIM2->ARRH = (Tcon >> 8) & 0xff;
-	TIM2->ARRL = Tcon & 0xff;
+	TIM2->ARRH = Tcon >> 8;
+	TIM2->ARRL = Tcon;
 
-	TIM2->CNTRH = (init_cnt >> 8) & 0xff;;
-	TIM2->CNTRL = init_cnt & 0xff;								
+	TIM2->CNTRH = init_cnt >> 8;
+	TIM2->CNTRL = init_cnt;								
 
 	TIM2->CR1 |= 0x01;
 	TIM2->IER |=  1 << 6 | 1 << 0;
@@ -253,44 +352,6 @@ void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr
 void timer2_disable(void)
 {
 	TIM2->IER = 0x00;		// ½ûÖ¹ÖÐ¶Ï
-}
-
-void bldc_auto_run(void)
-{
-	unsigned char flag;
-	unsigned short adc_value;
-	unsigned short adc_bus;
-
-	for (g_flags.commutation = 0; g_flags.commutation < 6; g_flags.commutation++)
-	{
-		bldc_run_onestep(flag);
-		switch (flag)
-		{
-			case 1:
-				//init_timer2(g_pwm_on_duty/3,1);
-			break;
-			
-			case 2:
-				//init_timer2(g_pwm_on_duty/3,1);
-			break;
-
-			case 3:
-				//delay_us(746);
-				init_timer2(400*2,32,1);
-			break;
-
-			case 4:
-				//init_timer2(g_pwm_on_duty/3,1);
-			break;
-
-			case 5:
-			break;
-
-			case 6:
-			break;
-			default:break;
-		}
-	}
 }
 
 void delay_us_with_timer(unsigned int us)

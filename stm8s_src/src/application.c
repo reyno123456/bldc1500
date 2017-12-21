@@ -86,7 +86,7 @@ static void bldc_one_loop(unsigned short duty, unsigned int us)
 			break;
 			
 			case 2:
-				init_timer2(400*2,32,1);
+				init_timer2(400*4,44,1);
 			break;
 
 			case 3:
@@ -124,8 +124,8 @@ static void bldc_open_loop(void)
 	{
 		bldc_one_loop(g_pwm_on_duty, phase_us);
 
-		if (phase_us < 1600)
-			phase_us = 1600;
+		if (phase_us < 1680)
+			phase_us = 1680;
 		phase_us -= 10;
 		//if (g_counter_ms > 5000)
 		//	break;
@@ -213,13 +213,13 @@ void timer2_service(void)
 
 	(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
 	//g_adc_phase_a[i] = get_adc(PHASE_A_BEMF_ADC_CHAN);
-	g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
+	g_adc_phase_b[i] = get_adc(PHASE_B_BEMF_ADC_CHAN);
 	//g_adc_phase_c[i] = get_adc(PHASE_C_BEMF_ADC_CHAN);
 	if(++i >= ADC_SAMPLE_SIZE)
 	{
 		i = 0;
 		timer2_disable();
-		if (g_values.ms_cnt > 10000)
+		if (g_values.ms_cnt > 20000)
 		{
 			g_values.ms_cnt = 0;
 			g_flags.open_loop_finished = 1;
@@ -301,4 +301,9 @@ void delay_us_with_timer(unsigned int us)
 	while(g_flags.us_timeout == 0);
 	g_flags.us_enable = 0;
 	//TIM4->IER = 0x00;
+}
+
+unsigned char check_commutation(unsigned char phase, unsigned char up_down)
+{
+
 }

@@ -1,7 +1,7 @@
 
 #include "control.h"
 
-uint8 g_direction = 1;
+uint8 g_direction = 0;
 
 void CNT_AL_OUT_EN(void)
 {

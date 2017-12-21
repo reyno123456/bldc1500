@@ -13,6 +13,7 @@ typedef void (*tp_func)(void);  /* pointer to a function */
 
 #define ADC_SAMPLE_SIZE				20
 #define ADC_DOWN_BEMF_SHIFT			93
+#define ADC_UP_BEMF_SHIFT			105
 
 typedef struct
 {

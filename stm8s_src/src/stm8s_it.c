@@ -333,7 +333,13 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   static unsigned char flag = 0;
 		
 	TIM2->SR1 = 0x00;  // 清除更新标志
-	timer2_service();
+	if(g_flags.open_loop_finished == 0){
+		timer2_service();
+	}
+	else{
+		timer2_service_auto_run();
+	}
+		
 /*
 	if (flag == 0){
 		(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));

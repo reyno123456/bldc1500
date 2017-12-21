@@ -45,6 +45,7 @@ void function_test(void);
 unsigned short get_adc(unsigned char);
 void init_timer2(unsigned short Tcon,unsigned short, unsigned char Pscr);
 void timer2_service(void);
+void timer2_service_auto_run(void);
 void timer2_disable(void);
 void delay_us_with_timer(unsigned int us);
 

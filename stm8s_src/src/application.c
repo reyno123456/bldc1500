@@ -71,36 +71,35 @@ static void AppStopToAlignment(void)
 
 static void bldc_one_loop(unsigned short duty, unsigned int us)
 {
-	unsigned char flag;
 	unsigned short adc_value;
 	unsigned short adc_bus;
 	Timer1_PWM_Value(duty);
 
-	for (flag = 1; flag <= 6; flag++)
+	for (g_flags.commutation = 0; g_flags.commutation < 6; g_flags.commutation++)
 	{
-		bldc_run_onestep(flag);
-		switch (flag)
+		bldc_run_onestep(g_flags.commutation);
+		switch (g_flags.commutation)
 		{
-			case 1:
+			case 0:
 				//init_timer2(g_pwm_on_duty/3,1);
 			break;
 			
-			case 2:
+			case 1:
 				init_timer2(400*4,44,1);
 			break;
 
-			case 3:
+			case 2:
 				//init_timer2(400*2,32,1);
 			break;
 
-			case 4:
+			case 3:
 				//init_timer2(g_pwm_on_duty/3,1);
 			break;
 
-			case 5:
+			case 4:
 			break;
 
-			case 6:
+			case 5:
 			break;
 			default:break;
 		}
@@ -227,6 +226,11 @@ void timer2_service(void)
 	}
 	g_adc_bus = get_adc(ADC_BUS_CHANNEL);
 	(GPIOD->ODR |= GPIO_PIN_7);
+}
+
+void timer2_service_auto_run(void)
+{
+
 }
 
 void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr)

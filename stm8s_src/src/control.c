@@ -688,7 +688,7 @@ void bldc_run_onestep(uint8 STEP)
 	{
 		switch(STEP)
 		{
-			case 1 : // AB
+			case 0 : // AB
 				TIM1->CCMR1 =0x6c; 
 				TIM1->CCMR2 =0; 
 				TIM1->CCMR3 =0; 
@@ -705,7 +705,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_DIS();
 				break ;
-			case 2 :	//AC
+			case 1 :	//AC
 				PWM_AH_OUT_EN();
 				PWM_AL_OUT_EN();
 
@@ -719,7 +719,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_EN();
 				break ;
-			case 3 : //BC
+			case 2 : //BC
 				TIM1->CCMR1 =0; 
 				TIM1->CCMR2 =0x6c; 
 				TIM1->CCMR3 =0; 
@@ -736,7 +736,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_EN();
 				break ;
-			case 4 ://BA
+			case 3 ://BA
 				PWM_AH_OUT_DIS();
 				PWM_AL_OUT_DIS();		
 				CNT_AH_OUT_DIS();		
@@ -750,7 +750,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_DIS();
 				break ;
-			case 5 ://CA
+			case 4 ://CA
 				TIM1->CCMR1 =0; 
 				TIM1->CCMR2 =0; 
 				TIM1->CCMR3 =0x6c; 
@@ -768,7 +768,7 @@ void bldc_run_onestep(uint8 STEP)
 				PWM_CH_OUT_EN();
 				PWM_CL_OUT_EN();
 				break ;
-			case 6 :	//CB
+			case 5 :	//CB
 				PWM_AH_OUT_DIS();
 				PWM_AL_OUT_DIS();
 				CNT_AH_OUT_DIS();		
@@ -790,7 +790,7 @@ void bldc_run_onestep(uint8 STEP)
 	{
 		switch(STEP)
 		{
-			case 1 : // AB
+			case 0 : // AB
 				TIM1->CCMR1 =0x6c; 
 				TIM1->CCMR2 =0; 
 				TIM1->CCMR3 =0; 
@@ -807,7 +807,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_DIS();
 				break ;
-			case 2 :	//AC
+			case 1 :	//AC
 				PWM_AH_OUT_EN();
 				PWM_AL_OUT_EN();
 
@@ -821,7 +821,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_EN();
 				break ;
-			case 3 : //BC
+			case 2 : //BC
 				TIM1->CCMR1 =0; 
 				TIM1->CCMR2 =0; 
 				TIM1->CCMR3 =0x6c; 
@@ -838,7 +838,7 @@ void bldc_run_onestep(uint8 STEP)
 				PWM_CH_OUT_EN();
 				PWM_CL_OUT_EN();
 				break ;
-			case 4 ://BA
+			case 3 ://BA
 				PWM_AH_OUT_DIS();
 				PWM_AL_OUT_DIS();
 				CNT_AH_OUT_DIS();
@@ -852,7 +852,7 @@ void bldc_run_onestep(uint8 STEP)
 				PWM_CH_OUT_EN();
 				PWM_CL_OUT_EN();
 				break ;
-			case 5 ://CA
+			case 4 ://CA
 				TIM1->CCMR1 =0; 
 				TIM1->CCMR2 =0x6c; 
 				TIM1->CCMR3 =0; 
@@ -870,7 +870,7 @@ void bldc_run_onestep(uint8 STEP)
 				CNT_CH_OUT_DIS();
 				CNT_CL_OUT_EN();
 				break ;
-			case 6 :	//CB
+			case 5 :	//CB
 				PWM_AH_OUT_DIS();
 				PWM_AL_OUT_DIS();
 				CNT_AH_OUT_DIS();

@@ -105,6 +105,17 @@ static void bldc_close_loop(void)
 	while(1)
 	{
 		bldc_one_close_loop(g_pwm_on_duty, g_values.phase_60degree_cnt);
+		
+		if (g_values.ms_cnt % 100 == 0)
+		{
+			g_values.ms_cnt++;
+			g_pwm_on_duty++;
+
+			if (g_pwm_on_duty > 100){
+				g_pwm_on_duty = 100;
+			}
+		}
+		
 	}
 }
 
@@ -270,7 +281,7 @@ void timer2_service(void)
 		timer2_disable();
 		if (g_values.ms_cnt > 10000)
 		{
-			g_values.ms_cnt = 0;
+			//g_values.ms_cnt = 0;
 			g_flags.open_loop_finished = 1;
 		}
 	}
@@ -300,14 +311,22 @@ void timer2_service_close_loop(void)
 				k = i - j*10;
 				g_adc_close_loop_phase_b[j][k] = adc_value;
 
-				if (adc_value > 150 && 
+				if (adc_value > 140 && 
 					adc_value < 300)
 				{
-					//phase_count_us = g_values.commutation_cnt;
-					//g_values.phase_60degree_cnt = phase_count_us*2*10;					
-					//i = 0;
-					//g_flags.commutation_enable = 0;
-					//timer2_disable();
+					phase_count_us = g_values.commutation_cnt;
+					phase_count_us =  phase_count_us*2*10;
+					if (phase_count_us > g_values.phase_60degree_cnt)
+					{
+						g_values.phase_60degree_cnt += 10;
+					}
+					else if(phase_count_us < g_values.phase_60degree_cnt)
+					{
+						g_values.phase_60degree_cnt -= 10;
+					}
+					i = 0;
+					g_flags.commutation_enable = 0;
+					timer2_disable();
 				}
 				if(++i > ADC_SAMPLE_SIZE)
 				{

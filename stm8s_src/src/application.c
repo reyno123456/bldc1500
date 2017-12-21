@@ -316,11 +316,11 @@ void timer2_service_close_loop(void)
 				{
 					phase_count_us = g_values.commutation_cnt;
 					phase_count_us =  phase_count_us*2*10;
-					if (phase_count_us > g_values.phase_60degree_cnt + 10)
+					if (phase_count_us > g_values.phase_60degree_cnt + 20)
 					{
 						g_values.phase_60degree_cnt += 1;
 					}
-					else if(phase_count_us < g_values.phase_60degree_cnt - 10)
+					else if(phase_count_us < g_values.phase_60degree_cnt - 20)
 					{
 						g_values.phase_60degree_cnt -= 1;
 					}

@@ -52,58 +52,6 @@ void init_clk(void)
 }
 
 //*************************************
-// 函数名称：Init_Timer1_PWM
-// 函数功能：定时器1作PWM输出时初始化
-// 入口参数：PWM等级 每级0.125U (1000*0.125 = 12.5U = 8K)
-// 出口参数：无
-/***************************************/
-void init_timer1 (uint16 Tcon,uint16 Pscr)
-{
-
-	//16M系统时钟经预分频f=fck/(PSCR+1)  
-	//f=16M/2=8M，每个计数周期0.125U
-	TIM1->PSCRH = (Pscr >> 8) & 0xff ;
-	TIM1->PSCRL = Pscr & 0xff ;
-	
-	//设定重装载时的寄存器值，255是最大值			
-	TIM1->ARRH = (Tcon >> 8) & 0xff ;
-	TIM1->ARRL = Tcon & 0xff ;
-	
-	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
-	TIM1->CCMR1 =0x6C ; 
-	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
-	TIM1->CCMR2 =0x6C ; 
-	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
-	TIM1->CCMR3 =0x6C ; 
-	//冻结模式,TIM1_CNT<TIM1_CCR1时有效		
-	TIM1->CCMR4 =0x08 ; 
-		
-	//PWM 占空比 清0
-	TIM1->CCR1H = 0;
-	TIM1->CCR1L = 0;
-	TIM1->CCR2H = 0;
-	TIM1->CCR2L = 0;
-	TIM1->CCR3H = 0;
-	TIM1->CCR3L = 0;
-		
-	//允许比较4中断
-	//TIM1->IER |= BIT4 ;
-	
-	PWM_AH_OUT_DIS();
-	PWM_BH_OUT_DIS();
-	PWM_CH_OUT_DIS();
-		
-	TIM1->EGR = BIT0 ; //UG = 1 ;初始化计数器 预装载载入影子寄存器中
-	TIM1->CNTRH = 0 ;   //计数器清0
-	TIM1->CNTRL = 0 ;
-	
-	TIM1->CR1 |= TIM1_CR1_CEN;
-
-	TIM1->BKR |= TIM1_BKR_MOE;
-	TIM1->DTR = 0x10; //  死区时间 0.125us *TIM1_DTR
-}
-
-//*************************************
 // 函数名称：Init_Timer4
 // 函数功能：定时器4初始化 0.25U计数一次
 // 入口参数：定时器计数次数
@@ -215,9 +163,7 @@ void main(void)
 	init_timer1(400, 1);  // 8k
 	init_adc();
 	init_timer4(0x80,0x07);
-	init_timer3(0xFFFF, 0x04);		// 16M / 16 = 1us 
 	_asm("rim");
-
 
 	while(1)
 	{

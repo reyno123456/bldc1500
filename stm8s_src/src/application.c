@@ -54,6 +54,10 @@ void delay_ms(unsigned int ms)
 
 static void AppStopToAlignment(void)
 {
+	PWM_AH_OUT_DIS();
+	PWM_BH_OUT_DIS();
+	PWM_CH_OUT_DIS();
+	
 	Timer1_PWM_Value(400);
 	PWM_AH_OUT_DIS();
 	PWM_BH_OUT_DIS();
@@ -88,8 +92,8 @@ static void bldc_open_loop(void)
 	{
 		bldc_one_open_loop(g_pwm_on_duty, phase_us);
 
-		if (phase_us < 1750)
-			phase_us = 1750;
+		if (phase_us < 1600)
+			phase_us = 1600;
 		phase_us -= 10;
 
 		if (g_flags.open_loop_finished)
@@ -111,8 +115,8 @@ static void bldc_close_loop(void)
 			g_values.ms_cnt++;
 			g_pwm_on_duty++;
 
-			if (g_pwm_on_duty > 300){
-				g_pwm_on_duty = 300;
+			if (g_pwm_on_duty > 150){
+				g_pwm_on_duty = 150;
 			}
 		}
 		
@@ -177,12 +181,13 @@ static void bldc_one_close_loop(unsigned short duty, unsigned int us)
 				//init_timer2(g_pwm_on_duty/3,1);
 			break;
 			
-			case 1:
+			case 1:			
+				init_timer3(0xFFFF, 0x04);		// 16M / 16 = 1us 
 				g_flags.commutation_enable = 1;
-				g_values.commutation_cnt = 0;
+				//init_timer2(400,0,1);
 				//init_timer2(400,56 + TIM1->CNTRL,1);
-				//init_timer2(400,56,1);
-				init_timer2(400,TIM1->CNTRL,1);
+				init_timer2(400,56,1);
+				//delay_us(4);
 			break;
 
 			case 2:
@@ -285,7 +290,7 @@ void timer2_service(void)
 	{
 		i = 0;
 		timer2_disable();
-		if (g_values.ms_cnt > 600000)
+		if (g_values.ms_cnt > 10000)
 		{
 			//g_values.ms_cnt = 0;
 			g_flags.open_loop_finished = 1;
@@ -298,7 +303,7 @@ void timer2_service_close_loop(void)
 {
 	unsigned short adc_value;
 	volatile static unsigned char i = 0;
-	static unsigned short phase_count_us = 0;
+	volatile unsigned short phase_count_us = 0;
 	unsigned char j,k;
 
 	switch(g_flags.commutation)
@@ -317,18 +322,22 @@ void timer2_service_close_loop(void)
 				k = i - j*10;
 				g_adc_close_loop_phase_b[j][k] = adc_value;
 
-				if (adc_value > 140 && 
-					adc_value < 300)
+				if (adc_value > 139 && 
+					adc_value < 300 &&
+					i > 3)
 				{
-					phase_count_us = g_values.commutation_cnt;
-					phase_count_us =  phase_count_us*2*10;
-					if (phase_count_us > g_values.phase_60degree_cnt + 50)
+					phase_count_us = TIM3->CNTRH;
+					phase_count_us <<= 8;
+					phase_count_us += TIM3->CNTRL; 
+					phase_count_us <<= 1;
+					
+					if (phase_count_us > g_values.phase_60degree_cnt + 30)
 					{
-						g_values.phase_60degree_cnt += 2;
+						g_values.phase_60degree_cnt += 1;
 					}
-					else if(phase_count_us < g_values.phase_60degree_cnt - 50)
+					else if(phase_count_us < g_values.phase_60degree_cnt - 30)
 					{
-						g_values.phase_60degree_cnt -= 2;
+						g_values.phase_60degree_cnt -= 1;
 					}
 					i = 0;
 					g_flags.commutation_enable = 0;
@@ -374,6 +383,11 @@ void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr
 	TIM2->IER |=  1 << 6 | 1 << 0;
 }
 
+void timer2_enable(void)
+{
+	TIM2->IER |=  1 << 6 | 1 << 0;
+}
+
 void timer2_disable(void)
 {
 	TIM2->IER = 0x00;		// 禁止中断
@@ -398,7 +412,7 @@ unsigned char check_commutation(unsigned char phase, unsigned char up_down)
 
 }
 
-void init_timer3(uint8 Tcon,uint8 Pscr)
+void init_timer3(unsigned short Tcon,uint8 Pscr)
 {								
 	TIM3->IER = 0x00;		// 禁止中断
 	// TIM3->EGR = 0x01;		// 允许产生更新事件
@@ -414,4 +428,101 @@ void init_timer3(uint8 Tcon,uint8 Pscr)
 	TIM3->CR1 = 0x01;
 	//TIM3->IER = 0x01;	
 }
+
+void test_timer3(void)
+{
+	volatile unsigned char test_count_high = 0;
+	volatile unsigned char test_count_low = 0;
+	
+	//init_timer3(0, 0x04);		// 16M / 16 = 1us 
+	delay_ms(5000);
+
+	test_count_high = TIM1->CNTRH;
+	test_count_low = TIM1->CNTRL;
+
+	test_count_high = TIM3->CNTRH;
+	test_count_low = TIM3->CNTRL;
+	
+	while (1)
+	{
+		test_count_high = TIM3->CNTRH;
+		test_count_low = TIM3->CNTRL;
+		delay_us(100);
+	}
+}
+
+
+//*************************************
+// 函数名称：Init_Timer1_PWM
+// 函数功能：定时器1作PWM输出时初始化
+// 入口参数：PWM等级 每级0.125U (1000*0.125 = 12.5U = 8K)
+// 出口参数：无
+/***************************************/
+void init_timer1 (uint16 Tcon,uint16 Pscr)
+{
+
+	//16M系统时钟经预分频f=fck/(PSCR+1)  
+	//f=16M/2=8M，每个计数周期0.125U
+	TIM1->PSCRH = (Pscr >> 8) & 0xff ;
+	TIM1->PSCRL = Pscr & 0xff ;
+	
+	//设定重装载时的寄存器值，255是最大值			
+	TIM1->ARRH = (Tcon >> 8) & 0xff ;
+	TIM1->ARRL = Tcon & 0xff ;
+	
+	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
+	TIM1->CCMR1 =0x6C ; 
+	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
+	TIM1->CCMR2 =0x6C ; 
+	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
+	TIM1->CCMR3 =0x6C ; 
+	//冻结模式,TIM1_CNT<TIM1_CCR1时有效		
+	TIM1->CCMR4 =0x08 ; 
+		
+	//PWM 占空比 清0
+	TIM1->CCR1H = 0;
+	TIM1->CCR1L = 0;
+	TIM1->CCR2H = 0;
+	TIM1->CCR2L = 0;
+	TIM1->CCR3H = 0;
+	TIM1->CCR3L = 0;
+		
+	//允许比较4中断
+	//TIM1->IER |= BIT4 ;
+			
+	TIM1->EGR = BIT0 ; //UG = 1 ;初始化计数器 预装载载入影子寄存器中
+	TIM1->CNTRH = 0 ;   //计数器清0
+	TIM1->CNTRL = 0 ;
+	
+	TIM1->CR1 |= TIM1_CR1_CEN;
+
+	TIM1->BKR |= TIM1_BKR_MOE;
+	TIM1->DTR = 0x10; //  死区时间 0.125us *TIM1_DTR
+}
+
+void reload_timer1 (uint16 Tcon,uint16 Pscr)
+{
+
+	//16M系统时钟经预分频f=fck/(PSCR+1)  
+	//f=16M/2=8M，每个计数周期0.125U
+	TIM1->PSCRH = (Pscr >> 8) & 0xff ;
+	TIM1->PSCRL = Pscr & 0xff ;
+	
+	//设定重装载时的寄存器值，255是最大值			
+	TIM1->ARRH = (Tcon >> 8) & 0xff ;
+	TIM1->ARRL = Tcon & 0xff ;
+				
+	//允许比较4中断
+	//TIM1->IER |= BIT4 ;
+			
+	TIM1->EGR = BIT0 ; //UG = 1 ;初始化计数器 预装载载入影子寄存器中
+	TIM1->CNTRH = 0 ;   //计数器清0
+	TIM1->CNTRL = 0 ;
+	
+	TIM1->CR1 |= TIM1_CR1_CEN;
+
+	TIM1->BKR |= TIM1_BKR_MOE;
+	TIM1->DTR = 0x10; //  死区时间 0.125us *TIM1_DTR
+}
+
 

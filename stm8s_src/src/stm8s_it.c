@@ -537,9 +537,7 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 		}
 	}
 */
-	if (g_flags.commutation_enable){
-		g_values.commutation_cnt++;
-	}
+
 /*
 	if (flag == 0){
 		LED_RUN_ON();

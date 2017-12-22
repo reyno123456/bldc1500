@@ -54,7 +54,11 @@ void timer2_service(void);
 void timer2_service_close_loop(void);
 void timer2_disable(void);
 void delay_us_with_timer(unsigned int us);
-void init_timer3(uint8 Tcon,uint8 Pscr);
+void init_timer3(unsigned short Tcon,uint8 Pscr);
+void test_timer3(void);
+void init_timer1 (uint16 Tcon,uint16 Pscr);
+void reload_timer1 (uint16 Tcon,uint16 Pscr);
+void timer2_enable(void);
 
 extern unsigned char g_app_state;
 extern const tp_func AppStateMachine[];

@@ -8,12 +8,13 @@ Blank check before programming (when available)=1
 Erase device memory before programming (when available)=0
 Unlock protection before a programming cycle=0
 [DATA MEMORY]
-Count=0
+Count=1
+File0=D:\project\working\bldc1500\stm8s_src\Debug\bldc_sensorless.s19
 ProgramEvenIfBlank=0
 [PROGRAM MEMORY]
 Count=0
 ProgramEvenIfBlank=0
 [OPTION BYTE]
 Count=1
-File0=D:\project\BLDC1500\stm8s_src\bldc_sensorless_Programmer\bldc_sensorless_STVP_OPTION BYTE.hex
+File0=D:\project\working\bldc1500\stm8s_src\bldc_sensorless_Programmer\bldc_sensorless_STVP_OPTION BYTE.hex
 ProgramEvenIfBlank=0

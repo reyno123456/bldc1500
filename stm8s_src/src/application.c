@@ -111,8 +111,8 @@ static void bldc_close_loop(void)
 			g_values.ms_cnt++;
 			g_pwm_on_duty++;
 
-			if (g_pwm_on_duty > 250){
-				g_pwm_on_duty = 250;
+			if (g_pwm_on_duty > 300){
+				g_pwm_on_duty = 300;
 			}
 		}
 		
@@ -316,11 +316,11 @@ void timer2_service_close_loop(void)
 				{
 					phase_count_us = g_values.commutation_cnt;
 					phase_count_us =  phase_count_us*2*10;
-					if (phase_count_us > g_values.phase_60degree_cnt + 20)
+					if (phase_count_us > g_values.phase_60degree_cnt + 30)
 					{
 						g_values.phase_60degree_cnt += 1;
 					}
-					else if(phase_count_us < g_values.phase_60degree_cnt - 20)
+					else if(phase_count_us < g_values.phase_60degree_cnt - 30)
 					{
 						g_values.phase_60degree_cnt -= 1;
 					}

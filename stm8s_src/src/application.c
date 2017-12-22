@@ -135,7 +135,11 @@ static void bldc_one_open_loop(unsigned short duty, unsigned int us)
 			break;
 			
 			case 1:
-				init_timer2(400,56,1);
+				//TIM1->CNTRH = 0 ;  //¼ÆÊýÆ÷Çå0
+				//TIM1->CNTRL = 0 ;
+				//init_timer2(400,56 + TIM1->CNTRL,1);
+				//init_timer2(400,56,1);
+				init_timer2(400,TIM1->CNTRL,1);
 			break;
 
 			case 2:
@@ -176,7 +180,9 @@ static void bldc_one_close_loop(unsigned short duty, unsigned int us)
 			case 1:
 				g_flags.commutation_enable = 1;
 				g_values.commutation_cnt = 0;
-				init_timer2(400,56,1);
+				//init_timer2(400,56 + TIM1->CNTRL,1);
+				//init_timer2(400,56,1);
+				init_timer2(400,TIM1->CNTRL,1);
 			break;
 
 			case 2:
@@ -316,13 +322,13 @@ void timer2_service_close_loop(void)
 				{
 					phase_count_us = g_values.commutation_cnt;
 					phase_count_us =  phase_count_us*2*10;
-					if (phase_count_us > g_values.phase_60degree_cnt + 30)
+					if (phase_count_us > g_values.phase_60degree_cnt + 50)
 					{
-						g_values.phase_60degree_cnt += 1;
+						g_values.phase_60degree_cnt += 2;
 					}
-					else if(phase_count_us < g_values.phase_60degree_cnt - 30)
+					else if(phase_count_us < g_values.phase_60degree_cnt - 50)
 					{
-						g_values.phase_60degree_cnt -= 1;
+						g_values.phase_60degree_cnt -= 2;
 					}
 					i = 0;
 					g_flags.commutation_enable = 0;

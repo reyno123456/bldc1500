@@ -214,7 +214,8 @@ void main(void)
 	// memset(&tBC_Param, 0, sizeof(tBC_Param));
 	init_timer1(400, 1);  // 8k
 	init_adc();
-	init_timer4(160,0x0);	
+	init_timer4(0x80,0x07);
+	init_timer3(0xFFFF, 0x04);		// 16M / 16 = 1us 
 	_asm("rim");
 
 

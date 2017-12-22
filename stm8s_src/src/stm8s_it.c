@@ -326,9 +326,15 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   */
  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
  {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
+ 	static unsigned char flag = 0;
+	TIM3->SR1 = 0x00;  // 清除更新标志
+	if (flag == 0){
+		(GPIOD->ODR &= (uint8_t)(~GPIO_PIN_7));
+		flag = 1;
+	}else{		
+		(GPIOD->ODR |= GPIO_PIN_7);
+		flag = 0;
+	}
  }
 
 /**
@@ -517,17 +523,20 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 	static unsigned char cnt;
 		
 	TIM4->SR1 = 0x00;  // 清除更新标志
+/*
 	if (++cnt >= 100){
 		cnt = 0;
 		g_values.ms_cnt++;
 	}
-
+*/
+	g_values.ms_cnt++;
+/*
 	if (g_flags.us_enable){
 		if(++g_values.us_cnt >= g_values.us_cnt_top){
 			g_flags.us_timeout = 1;
 		}
 	}
-
+*/
 	if (g_flags.commutation_enable){
 		g_values.commutation_cnt++;
 	}

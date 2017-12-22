@@ -88,8 +88,8 @@ static void bldc_open_loop(void)
 	{
 		bldc_one_open_loop(g_pwm_on_duty, phase_us);
 
-		if (phase_us < 1300)
-			phase_us = 1300;
+		if (phase_us < 1750)
+			phase_us = 1750;
 		phase_us -= 10;
 
 		if (g_flags.open_loop_finished)
@@ -285,7 +285,7 @@ void timer2_service(void)
 	{
 		i = 0;
 		timer2_disable();
-		if (g_values.ms_cnt > 10000)
+		if (g_values.ms_cnt > 600000)
 		{
 			//g_values.ms_cnt = 0;
 			g_flags.open_loop_finished = 1;
@@ -397,3 +397,21 @@ unsigned char check_commutation(unsigned char phase, unsigned char up_down)
 {
 
 }
+
+void init_timer3(uint8 Tcon,uint8 Pscr)
+{								
+	TIM3->IER = 0x00;		// 禁止中断
+	// TIM3->EGR = 0x01;		// 允许产生更新事件
+
+	TIM3->PSCR = Pscr;
+	
+	TIM3->ARRH = Tcon >> 8;
+	TIM3->ARRL = Tcon;
+
+	TIM3->CNTRH = 0;
+	TIM3->CNTRL = 0;								
+
+	TIM3->CR1 = 0x01;
+	//TIM3->IER = 0x01;	
+}
+

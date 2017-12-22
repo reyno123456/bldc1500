@@ -1,6 +1,8 @@
 #ifndef _APPLICATION_H
 #define _APPLICATION_H
 
+#include "stm8s.h"
+
 typedef void (*tp_func)(void);  /* pointer to a function */
 
 #define APP_INIT                0   /* Application states */
@@ -52,6 +54,7 @@ void timer2_service(void);
 void timer2_service_close_loop(void);
 void timer2_disable(void);
 void delay_us_with_timer(unsigned int us);
+void init_timer3(uint8 Tcon,uint8 Pscr);
 
 extern unsigned char g_app_state;
 extern const tp_func AppStateMachine[];

@@ -232,8 +232,6 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
 	/* In order to detect unexpected events during development,
 	    it is recommended to set a breakpoint on the following instruction.
 	*/
-	TIM1->SR1 &= (u8)(~BIT7);
-	Error_code.bit.OverCurrent = 1 ;
 }
 
 /**
@@ -243,7 +241,13 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   */
 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 {
-	
+	TIM1->SR1 &= ~(1<<4);
+	if(g_flags.open_loop_finished == 0){
+		timer2_service();
+	}
+	else{
+		timer2_service_close_loop();
+	}
 }
 
 #if defined (STM8S903) || defined (STM8AF622x)

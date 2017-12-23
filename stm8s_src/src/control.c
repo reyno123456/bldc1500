@@ -1,5 +1,5 @@
-
 #include "control.h"
+#include "application.h"
 
 uint8 g_direction = 0;
 
@@ -164,6 +164,9 @@ void Timer1_PWM_Value(uint16 OUT_PWM)
 	ToCMPxL(TIM1->CCR2L,OUT_PWM);
 	ToCMPxH(TIM1->CCR3H,OUT_PWM);
 	ToCMPxL(TIM1->CCR3L,OUT_PWM);
+	ToCMPxH(TIM1->CCR4H,0);
+	ToCMPxL(TIM1->CCR4L,g_pwm_on_duty-40);
+	//ToCMPxL(TIM1->CCR4L,10 + g_pwm_on_duty / 20);
 }
 
 //********************************************

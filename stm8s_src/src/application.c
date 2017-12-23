@@ -110,13 +110,13 @@ static void bldc_close_loop(void)
 	{
 		bldc_one_close_loop(g_pwm_on_duty, g_values.phase_60degree_cnt);
 		
-		if (g_values.ms_cnt % 100 == 0)
+		if (g_values.ms_cnt % 50 == 0)
 		{
 			g_values.ms_cnt++;
 			g_pwm_on_duty++;
 
-			if (g_pwm_on_duty > 150){
-				g_pwm_on_duty = 150;
+			if (g_pwm_on_duty > 250){
+				g_pwm_on_duty = 250;
 			}
 		}
 		
@@ -322,8 +322,8 @@ void timer2_service_close_loop(void)
 				k = i - j*10;
 				g_adc_close_loop_phase_b[j][k] = adc_value;
 
-				if (adc_value > 139 && 
-					adc_value < 300 &&
+				if (adc_value > 154 && 
+					adc_value < 200 &&
 					i > 3)
 				{
 					phase_count_us = TIM3->CNTRH;
@@ -331,11 +331,11 @@ void timer2_service_close_loop(void)
 					phase_count_us += TIM3->CNTRL; 
 					phase_count_us <<= 1;
 					
-					if (phase_count_us > g_values.phase_60degree_cnt + 30)
+					if (phase_count_us > g_values.phase_60degree_cnt + 3)
 					{
 						g_values.phase_60degree_cnt += 1;
 					}
-					else if(phase_count_us < g_values.phase_60degree_cnt - 30)
+					else if(phase_count_us < g_values.phase_60degree_cnt - 3)
 					{
 						g_values.phase_60degree_cnt -= 1;
 					}
@@ -367,7 +367,9 @@ void timer2_service_close_loop(void)
 }
 
 void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr)
-{								
+{
+	TIM1->IER |= 1<<4;
+/*
 	TIM2->IER = 0x00;		// 禁止中断
 	TIM2->EGR = 0x01;		// 允许产生更新事件
 
@@ -381,6 +383,7 @@ void init_timer2(unsigned short Tcon,unsigned short init_cnt, unsigned char Pscr
 
 	TIM2->CR1 |= 0x01;
 	TIM2->IER |=  1 << 6 | 1 << 0;
+*/
 }
 
 void timer2_enable(void)
@@ -390,7 +393,8 @@ void timer2_enable(void)
 
 void timer2_disable(void)
 {
-	TIM2->IER = 0x00;		// 禁止中断
+	//TIM2->IER = 0x00;		// 禁止中断
+	TIM1->IER &= ~(1<<4);
 }
 
 void delay_us_with_timer(unsigned int us)
@@ -477,7 +481,7 @@ void init_timer1 (uint16 Tcon,uint16 Pscr)
 	//PWM1模式,TIM1_CNT<TIM1_CCR1时有效		
 	TIM1->CCMR3 =0x6C ; 
 	//冻结模式,TIM1_CNT<TIM1_CCR1时有效		
-	TIM1->CCMR4 =0x08 ; 
+	TIM1->CCMR4 =0x6C ; 
 		
 	//PWM 占空比 清0
 	TIM1->CCR1H = 0;
@@ -486,9 +490,11 @@ void init_timer1 (uint16 Tcon,uint16 Pscr)
 	TIM1->CCR2L = 0;
 	TIM1->CCR3H = 0;
 	TIM1->CCR3L = 0;
+	TIM1->CCR4H = 0;
+	TIM1->CCR4L = 0;
 		
 	//允许比较4中断
-	//TIM1->IER |= BIT4 ;
+	// TIM1->IER |= 1<<4;
 			
 	TIM1->EGR = BIT0 ; //UG = 1 ;初始化计数器 预装载载入影子寄存器中
 	TIM1->CNTRH = 0 ;   //计数器清0
